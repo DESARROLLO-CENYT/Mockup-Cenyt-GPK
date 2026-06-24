@@ -65,7 +65,7 @@ const Inicio = () => {
         {/* Resplandor blanco difuminado para que el logo negro puro resalte sobre el fondo oscuro */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-white/40 blur-[40px] rounded-full pointer-events-none"></div>
         <img 
-          src="/Logo GEOPARK_2400.png" 
+          src="./Logo GEOPARK_2400.png" 
           alt="Logo GeoPark Principal" 
           className="relative z-10 w-full h-auto max-h-[140px] object-contain transition-all drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)] contrast-150"
           onError={(e) => {

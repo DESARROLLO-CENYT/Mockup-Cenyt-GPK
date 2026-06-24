@@ -39,7 +39,7 @@ const Sidebar = () => {
         
         <Link to="/" className={`h-[72px] w-full shrink-0 border-b flex justify-center items-center overflow-hidden px-5 py-4 ${isHome ? 'border-transparent' : 'border-[var(--sidebar-border)]'}`}>
           <img 
-            src="/Logo GEOPARK_200.png" 
+            src="./Logo GEOPARK_200.png" 
             alt="GeoPark Nav" 
             className={`w-full h-full object-contain transition-all duration-300 ease-in-out brightness-0 ${forceDarkText ? 'invert' : ''}`}
             onError={(e) => {

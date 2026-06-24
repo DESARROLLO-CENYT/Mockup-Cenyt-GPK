@@ -41,9 +41,9 @@ const Layout = () => {
       {isHome && (
         <div className="absolute inset-0 z-0 pointer-events-none">
           <div 
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: 'url("/Video-Llanos-34.jpg.webp")' }}
-          />
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 ease-in-out"
+            style={{ backgroundImage: 'url("./Video-Llanos-34.jpg.webp")' }}
+          ></div>
           <div className="absolute inset-0 bg-black/60 pointer-events-none" />
         </div>
       )}
