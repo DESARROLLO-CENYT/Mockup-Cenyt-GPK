@@ -1,9 +1,8 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { Zap, Truck, TrendingUp, Shield, AlertTriangle, ChevronLeft, ChevronRight, Wrench } from 'lucide-react';
+import { Zap, Truck, TrendingUp, Shield, AlertTriangle, Wrench } from 'lucide-react';
 
 const Inicio = () => {
-  const scrollContainerRef = useRef(null);
 
   const cards = [
     {
@@ -61,13 +60,11 @@ const Inicio = () => {
     <div className="flex flex-col gap-10 items-center justify-center min-h-[calc(100vh-160px)] py-8 w-full">
       
       {/* Logo Principal GeoPark */}
-      <div className="w-full max-w-lg px-6 flex justify-center mb-2 relative">
-        {/* Resplandor blanco difuminado para que el logo negro puro resalte sobre el fondo oscuro */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-white/40 blur-[40px] rounded-full pointer-events-none"></div>
+      <div className="w-full max-w-xl px-6 flex justify-center mb-4 relative group">
         <img 
           src="./Logo GEOPARK_2400.png" 
           alt="Logo GeoPark Principal" 
-          className="relative z-10 w-full h-auto max-h-[140px] object-contain transition-all drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)] contrast-150"
+          className="relative z-10 w-full h-auto max-h-[110px] object-contain transition-all duration-700 drop-shadow-[0_12px_24px_rgba(0,0,0,0.4)] brightness-0 invert group-hover:-translate-y-1"
           onError={(e) => {
             e.target.style.display = 'none';
             e.target.nextSibling.style.display = 'block';
@@ -78,60 +75,41 @@ const Inicio = () => {
         </div>
       </div>
 
-      <div className="text-center mb-4 px-4">
-        <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight mb-3 drop-shadow-md">
+      <div className="text-center mb-8 px-4 z-10 relative">
+        <h2 className="text-3xl md:text-4xl font-bold text-white tracking-tight mb-3 drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)]">
           Gestión de Energía Inteligente
         </h2>
-        <p className="text-gray-200 max-w-2xl mx-auto text-sm md:text-base drop-shadow">
-          Desliza para ver los módulos disponibles y accede al panel interactivo de métricas y datos en tiempo real.
+        <p className="text-gray-100 max-w-2xl mx-auto text-sm md:text-base drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+          Accede al panel interactivo de métricas y explora los datos del centro de control operacional en tiempo real.
         </p>
       </div>
       
-      {/* Carrusel de Tarjetas */}
-      <div className="relative w-full max-w-5xl px-4 md:px-12">
-        
-        {/* Botón Izquierdo */}
-        <button 
-          onClick={() => scroll('left')}
-          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 p-2 bg-[var(--card)] border border-[var(--border)] rounded-full shadow-lg hover:bg-[var(--secondary)] transition-colors hidden md:flex items-center justify-center text-[var(--foreground)]"
-        >
-          <ChevronLeft size={24} />
-        </button>
-        
-        {/* Contenedor con Scroll Snap */}
-        <div 
-          ref={scrollContainerRef}
-          className="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-8 pt-4 px-2 scroll-smooth hide-scrollbar"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-        >
+      {/* Cuadrícula de Tarjetas (Reemplaza el Carrusel) */}
+      <div className="w-full max-w-6xl px-4 md:px-8 relative z-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
           {cards.map((card, idx) => (
             <Link
               key={idx}
               to={card.path}
-              className={`flex-none w-[85%] sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] snap-center flex flex-col gap-4 p-8 rounded-xl bg-[var(--card)]/95 backdrop-blur-md border border-[var(--border)] transition-all duration-300 ${card.color} hover:bg-[var(--card)] hover:-translate-y-1 hover:shadow-xl group cursor-pointer`}
+              className={`flex flex-col gap-4 p-8 rounded-2xl bg-[var(--card)]/95 backdrop-blur-md border border-[var(--border)] transition-all duration-300 ${card.color} hover:bg-[var(--card)] hover:-translate-y-2 hover:shadow-2xl group cursor-pointer`}
             >
               <div className="p-4 rounded-full bg-[var(--background)] w-16 h-16 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm border border-[var(--border)]">
                 {card.icon}
               </div>
-              <div>
-                <h3 className="text-xl font-semibold text-[var(--foreground)] mb-2 group-hover:text-[var(--primary)] transition-colors">
+              <div className="flex flex-col flex-1">
+                <h3 className="text-xl font-semibold text-[var(--foreground)] mb-3 group-hover:text-[var(--primary)] transition-colors">
                   {card.title}
                 </h3>
-                <p className="text-[14px] text-[var(--muted-foreground)] leading-relaxed">
+                <p className="text-[14px] text-[var(--foreground)] opacity-80 leading-relaxed mb-6 font-medium">
                   {card.description}
                 </p>
+                <div className="mt-auto inline-flex items-center text-sm font-bold text-[var(--primary)] opacity-80 group-hover:opacity-100 group-hover:translate-x-1 transition-all">
+                  Ir al módulo <span className="ml-2">➔</span>
+                </div>
               </div>
             </Link>
           ))}
         </div>
-
-        {/* Botón Derecho */}
-        <button 
-          onClick={() => scroll('right')}
-          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 p-2 bg-[var(--card)] border border-[var(--border)] rounded-full shadow-lg hover:bg-[var(--secondary)] transition-colors hidden md:flex items-center justify-center text-[var(--foreground)]"
-        >
-          <ChevronRight size={24} />
-        </button>
       </div>
 
     </div>
