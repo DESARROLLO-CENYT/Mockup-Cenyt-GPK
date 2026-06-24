@@ -24,7 +24,7 @@ const KPICard = ({ label, value, unit, trend, trendValue, subtext, accent }) => 
           {label}
         </span>
         {trendValue && (
-          <div className={`flex items-center gap-0.5 text-[12px] font-mono ${trendColor}`}>
+          <div className={`flex items-center gap-0.5 text-[12px] ${trendColor}`}>
             <TrendIcon size={13} />
             <span>{trendValue}</span>
           </div>
@@ -32,7 +32,7 @@ const KPICard = ({ label, value, unit, trend, trendValue, subtext, accent }) => 
       </div>
       
       <div className="flex items-baseline gap-1">
-        <span className="text-[30px] font-semibold font-mono text-[var(--foreground)] leading-none">
+        <span className="text-[30px] font-semibold text-[var(--foreground)] leading-none">
           {value}
         </span>
         {unit && (

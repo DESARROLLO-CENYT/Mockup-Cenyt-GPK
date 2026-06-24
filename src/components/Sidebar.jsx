@@ -104,7 +104,7 @@ const Sidebar = () => {
               {isDark ? 'Modo claro' : 'Modo oscuro'}
             </span>
           </button>
-          <div className={`text-[10px] font-mono text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap overflow-hidden h-0 group-hover:h-auto ${isHome ? 'text-gray-400' : 'text-[var(--muted-foreground)]'}`}>
+          <div className={`text-[10px] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap overflow-hidden h-0 group-hover:h-auto ${isHome ? 'text-gray-400' : 'text-[var(--muted-foreground)]'}`}>
             v2.4.1 Oct2024
           </div>
         </div>

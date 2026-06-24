@@ -1,76 +1,150 @@
-import React from 'react';
+import React, { useState } from 'react';
 import KPICard from '../components/KPICard';
-import { PieChart, Pie, Cell, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import { PieChart as PieChartIcon, Activity } from 'lucide-react';
+import { PieChart, Pie, Cell, AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { ChevronRight, ChevronDown, Activity, Zap, PieChart as PieChartIcon } from 'lucide-react';
 
-const dataMix = [
-  { name: 'PEL', value: 55081, color: '#C41230' },
-  { name: 'Gas Sur Energy', value: 11982, color: '#B56D24' },
-  { name: 'Gas Propio', value: 777, color: '#107C41' },
+const dataCampos = [
+  { name: 'Interconectados', value: 70, color: '#C41230' },
+  { name: 'Menores', value: 5, color: '#4A9EE0' },
 ];
 
-const dataCurva = [
-  { hora: '00h', pel: 48000, gasSur: 10000, gasPropio: 500 },
-  { hora: '02h', pel: 48500, gasSur: 10200, gasPropio: 500 },
-  { hora: '04h', pel: 51000, gasSur: 13000, gasPropio: 600 },
-  { hora: '06h', pel: 54000, gasSur: 12500, gasPropio: 700 },
-  { hora: '08h', pel: 58000, gasSur: 10000, gasPropio: 777 },
-  { hora: '10h', pel: 61000, gasSur: 10500, gasPropio: 777 },
-  { hora: '12h', pel: 62000, gasSur: 11000, gasPropio: 777 },
-  { hora: '14h', pel: 61000, gasSur: 11500, gasPropio: 777 },
-  { hora: '16h', pel: 58000, gasSur: 11982, gasPropio: 777 },
-  { hora: '18h', pel: 55081, gasSur: 11982, gasPropio: 777 },
-  { hora: '20h', pel: 52000, gasSur: 12000, gasPropio: 700 },
-  { hora: '22h', pel: 49000, gasSur: 11000, gasPropio: 600 },
+const dataFuentes = [
+  { name: 'PEL', value: 55, color: '#C41230' },
+  { name: 'Sur Energy', value: 14, color: '#B56D24' },
+  { name: 'Gen. Gas', value: 1, color: '#107C41' },
+  { name: 'Diésel', value: 0, color: '#4A9EE0' },
+  { name: 'Solar', value: 0, color: '#E8A838' },
 ];
 
-const Badge = ({ type, text }) => {
-  let colors = '';
-  switch (type) {
-    case 'ACT':
-      colors = 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400';
-      break;
-    case 'S/BY':
-      colors = 'bg-orange-100 text-orange-700 dark:bg-orange-500/20 dark:text-orange-400';
-      break;
-    case 'FUT':
-      colors = 'bg-purple-100 text-purple-700 dark:bg-purple-500/20 dark:text-purple-400';
-      break;
-    case 'FUERA':
-      colors = 'bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-400';
-      break;
-    default:
-      colors = 'bg-gray-100 text-gray-700 dark:bg-gray-500/20 dark:text-gray-400';
+const dataSemanal = [
+  { semana: 28, mes: 'Jul', pel: 53.0, sur: 13.0, gas: 0.8 },
+  { semana: 29, mes: 'Jul', pel: 54.2, sur: 13.5, gas: 0.9 },
+  { semana: 30, mes: 'Jul', pel: 54.5, sur: 13.8, gas: 1.0 },
+  { semana: 31, mes: 'Ago', pel: 54.8, sur: 13.9, gas: 1.0 },
+  { semana: 32, mes: 'Ago', pel: 55.0, sur: 14.0, gas: 1.0 },
+];
+
+const tableData = [
+  {
+    id: 'pel', fuente: 'PEL', sem1: 54.2, sem2: 54.5, sem3: 54.8, sem4: 55.0,
+    subrows: [
+      { id: 'pel_j1', fuente: 'PEL JAC 1', sem1: 15.0, sem2: 15.0, sem3: 15.0, sem4: 15.0 },
+      { id: 'pel_j2', fuente: 'PEL JAC 2', sem1: 15.0, sem2: 15.0, sem3: 15.0, sem4: 15.0 },
+      { id: 'pel_t1', fuente: 'PEL TIG 1', sem1: 12.2, sem2: 12.5, sem3: 12.8, sem4: 13.0 },
+      { id: 'pel_t2', fuente: 'PEL TIG 2', sem1: 12.0, sem2: 12.0, sem3: 12.0, sem4: 12.0 },
+    ]
+  },
+  {
+    id: 'sur', fuente: 'Sur Energy', sem1: 13.5, sem2: 13.8, sem3: 13.9, sem4: 14.0,
+    subrows: [
+      { id: 'sur_1', fuente: 'Sur Gen 1', sem1: 6.5, sem2: 6.8, sem3: 6.9, sem4: 7.0 },
+      { id: 'sur_2', fuente: 'Sur Gen 2', sem1: 7.0, sem2: 7.0, sem3: 7.0, sem4: 7.0 },
+    ]
+  },
+  {
+    id: 'gas', fuente: 'Generación Gas', sem1: 0.9, sem2: 1.0, sem3: 1.0, sem4: 1.0,
+    subrows: [
+      { id: 'gas_1', fuente: 'Gas TUA', sem1: 0.9, sem2: 1.0, sem3: 1.0, sem4: 1.0 },
+    ]
+  },
+  {
+    id: 'dsl', fuente: 'Generación Diésel', sem1: 0.0, sem2: 0.0, sem3: 0.0, sem4: 0.0,
+    subrows: []
+  },
+  {
+    id: 'sol', fuente: 'Klarzen Granja Solar', sem1: 0.0, sem2: 0.0, sem3: 0.0, sem4: 0.0,
+    subrows: []
   }
+];
+
+const CustomXAxisTick = ({ x, y, payload, index, data }) => {
+  const isFirstOfMo = index === 0 || data[index].mes !== data[index - 1].mes;
   return (
-    <span className={`px-2.5 py-0.5 rounded text-[10px] font-bold tracking-wider ${colors}`}>
-      {text || type}
-    </span>
+    <g transform={`translate(${x},${y})`}>
+      <text x={0} y={15} dy={0} textAnchor="middle" fill="var(--muted-foreground)" fontSize={11} fontWeight={500}>
+        {payload.value}
+      </text>
+      {isFirstOfMo && (
+        <>
+          <line x1={-15} y1={20} x2={-15} y2={35} stroke="var(--border)" strokeWidth={1} />
+          <text x={0} y={32} textAnchor="middle" fill="var(--foreground)" fontSize={11} fontWeight={600}>
+            {data[index].mes}
+          </text>
+        </>
+      )}
+    </g>
+  );
+};
+
+const ExpandableRow = ({ row }) => {
+  const [expanded, setExpanded] = useState(false);
+  const total = (row.sem1 + row.sem2 + row.sem3 + row.sem4).toFixed(1);
+
+  return (
+    <>
+      <tr 
+        className={`border-b border-[var(--border)]/50 transition-colors ${row.subrows && row.subrows.length > 0 ? 'cursor-pointer hover:bg-[var(--secondary)]/50' : ''}`}
+        onClick={() => row.subrows && row.subrows.length > 0 && setExpanded(!expanded)}
+      >
+        <td className="px-5 py-3.5">
+          <div className="flex items-center gap-2">
+            <div className="w-4 flex justify-center">
+              {row.subrows && row.subrows.length > 0 && (
+                expanded ? <ChevronDown size={14} className="text-[var(--muted-foreground)]" /> : <ChevronRight size={14} className="text-[var(--muted-foreground)]" />
+              )}
+            </div>
+            <span className="font-medium text-[var(--foreground)]">{row.fuente}</span>
+          </div>
+        </td>
+        <td className="px-5 py-3.5 text-right">{row.sem1.toFixed(1)}</td>
+        <td className="px-5 py-3.5 text-right">{row.sem2.toFixed(1)}</td>
+        <td className="px-5 py-3.5 text-right">{row.sem3.toFixed(1)}</td>
+        <td className="px-5 py-3.5 text-right font-medium">{row.sem4.toFixed(1)}</td>
+        <td className="px-5 py-3.5 text-right font-semibold text-[var(--foreground)]">{total}</td>
+      </tr>
+      {expanded && row.subrows.map((sub, i) => {
+        const subTotal = (sub.sem1 + sub.sem2 + sub.sem3 + sub.sem4).toFixed(1);
+        return (
+          <tr key={sub.id} className="border-b border-[var(--border)]/30 bg-[var(--background)]">
+            <td className="px-5 py-2.5 pl-12">
+              <span className="text-[12.5px] text-[var(--muted-foreground)] font-medium">{sub.fuente}</span>
+            </td>
+            <td className="px-5 py-2.5 text-right text-[12.5px] text-[var(--muted-foreground)]">{sub.sem1.toFixed(1)}</td>
+            <td className="px-5 py-2.5 text-right text-[12.5px] text-[var(--muted-foreground)]">{sub.sem2.toFixed(1)}</td>
+            <td className="px-5 py-2.5 text-right text-[12.5px] text-[var(--muted-foreground)]">{sub.sem3.toFixed(1)}</td>
+            <td className="px-5 py-2.5 text-right text-[12.5px] text-[var(--muted-foreground)] font-medium">{sub.sem4.toFixed(1)}</td>
+            <td className="px-5 py-2.5 text-right text-[12.5px] text-[var(--muted-foreground)] font-semibold">{subTotal}</td>
+          </tr>
+        );
+      })}
+    </>
   );
 };
 
 const Despacho = () => {
   return (
     <div className="flex flex-col gap-6 animate-fade-in">
+      {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <KPICard label="Generación Total" value="67,840" unit="kW" trend={1} trendValue="+0.0%" subtext="vs programado" accent />
-        <KPICard label="Fuente Principal (PEL)" value="81.2" unit="%" trend={0} trendValue="=" subtext="Participación" />
-        <KPICard label="Costo Promedio" value="604.0" unit="COP/kWh" trend={-1} trendValue="↓2.1%" subtext="vs semana anterior" />
-        <KPICard label="Plantas Activas" value="3" unit="/ 8" trend={0} trendValue="-" subtext="Fuentes despachando" />
+        <KPICard label="Despacho Total Llanos 34" value="75.0" unit="MW" trend={1} trendValue="↑0.5%" subtext="Interconectados + Menores" accent />
+        <KPICard label="Capacidad Disponible" value="82.5" unit="MW" trend={0} trendValue="=" subtext="Parque de generación" />
+        <KPICard label="Reserva Rodante" value="7.5" unit="MW" trend={-1} trendValue="↓1.2%" subtext="Margen de seguridad" />
+        <KPICard label="Costo Despacho Prom." value="604.0" unit="COP/kWh" trend={-1} trendValue="↓2.1%" subtext="Eficiencia económica" />
       </div>
 
+      {/* Row 1: Pie Chart & Bar Chart */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg shadow-sm">
           <div className="px-6 py-4 border-b border-[var(--border)]">
             <h3 className="text-[12px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest flex items-center gap-2">
-              <PieChartIcon size={14} /> MIX ENERGÉTICO ACTUAL
+              <PieChartIcon size={14} /> Demanda por Campos (MW)
             </h3>
           </div>
           <div className="h-[250px] p-4 flex flex-col items-center justify-center">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
-                  data={dataMix}
+                  data={dataCampos}
                   cx="50%"
                   cy="50%"
                   innerRadius={60}
@@ -79,13 +153,14 @@ const Despacho = () => {
                   dataKey="value"
                   stroke="none"
                 >
-                  {dataMix.map((entry, index) => (
+                  {dataCampos.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Pie>
                 <Tooltip 
-                  formatter={(value) => `${value.toLocaleString()} kW`}
-                  contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "var(--foreground)" }}
+                  formatter={(value) => `${value} MW`}
+                  contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "var(--foreground)", fontSize: "12px" }}
+                  itemStyle={{ fontSize: "13px" }}
                 />
                 <Legend 
                   iconType="square" 
@@ -96,111 +171,99 @@ const Despacho = () => {
           </div>
         </div>
 
-        <div className="lg:col-span-2 bg-[var(--card)] border border-[var(--border)] rounded-lg shadow-sm flex flex-col">
-          <div className="px-6 py-4 border-b border-[var(--border)] flex flex-wrap gap-4 justify-between items-center">
+        <div className="lg:col-span-2 bg-[var(--card)] border border-[var(--border)] rounded-lg shadow-sm">
+          <div className="px-6 py-4 border-b border-[var(--border)] flex justify-between items-center">
             <h3 className="text-[12px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest flex items-center gap-2">
-              <Activity size={14} /> CURVA DE DEMANDA — HORARIA (KW)
+              <Zap size={14} /> Generación por Fuente (MW)
             </h3>
-            <div className="flex border border-[var(--border)] rounded overflow-hidden text-[11px] font-medium">
-              <button className="px-3 py-1 bg-[var(--background)] text-[var(--muted-foreground)] hover:bg-[var(--secondary)] transition-colors">AÑO</button>
-              <button className="px-3 py-1 bg-[var(--background)] text-[var(--muted-foreground)] border-l border-[var(--border)] hover:bg-[var(--secondary)] transition-colors">MES</button>
-              <button className="px-3 py-1 bg-[var(--background)] text-[var(--muted-foreground)] border-l border-[var(--border)] hover:bg-[var(--secondary)] transition-colors">SEM</button>
-              <button className="px-3 py-1 bg-[var(--background)] text-[var(--muted-foreground)] border-l border-[var(--border)] hover:bg-[var(--secondary)] transition-colors">DÍA</button>
-              <button className="px-3 py-1 bg-[#C41230] text-white border-l border-[#C41230]">HORA</button>
-            </div>
           </div>
-          <div className="h-[250px] p-4 flex-1">
+          <div className="h-[250px] p-5 pb-8">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={dataCurva} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+              <BarChart data={dataFuentes} margin={{ top: 10, right: 10, left: -20, bottom: 0 }} layout="horizontal">
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(128,128,128,0.15)" />
-                <XAxis dataKey="hora" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} dy={10} />
-                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} dx={-10} domain={[45000, 75000]} />
-                <Tooltip contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "var(--foreground)" }} />
-                <Area type="monotone" dataKey="pel" name="PEL" stackId="1" stroke="#C41230" fill="#C41230" fillOpacity={0.15} strokeWidth={2} />
-                <Area type="monotone" dataKey="gasSur" name="Gas Sur Energy" stackId="1" stroke="#B56D24" fill="#B56D24" fillOpacity={0.8} strokeWidth={2} />
-                <Area type="monotone" dataKey="gasPropio" name="Gas Propio" stackId="1" stroke="#107C41" fill="#107C41" fillOpacity={0.8} strokeWidth={2} />
-              </AreaChart>
+                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} dy={10} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} dx={-10} />
+                <Tooltip 
+                  cursor={{ fill: 'rgba(128,128,128,0.05)' }}
+                  formatter={(value) => [`${value} MW`, 'Generación']}
+                  contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "var(--foreground)", fontSize: "12px" }}
+                />
+                <Bar dataKey="value" radius={[4, 4, 0, 0]}>
+                  {dataFuentes.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Bar>
+              </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
       </div>
 
+      {/* Row 2: Area Chart */}
+      <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg shadow-sm flex flex-col">
+        <div className="px-6 py-4 border-b border-[var(--border)] flex flex-wrap gap-4 justify-between items-center">
+          <h3 className="text-[12px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest flex items-center gap-2">
+            <Activity size={14} /> Comportamiento Semanal de Fuentes (MW)
+          </h3>
+          <div className="flex border border-[var(--border)] rounded text-[11px] font-medium overflow-hidden">
+            <button className="px-3 py-1 bg-[#C41230] text-white">SEM</button>
+            <button className="px-3 py-1 bg-[var(--background)] text-[var(--muted-foreground)] hover:bg-[var(--secondary)] transition-colors border-l border-[var(--border)]">MES</button>
+            <button className="px-3 py-1 bg-[var(--background)] text-[var(--muted-foreground)] hover:bg-[var(--secondary)] transition-colors border-l border-[var(--border)]">AÑO</button>
+          </div>
+        </div>
+        <div className="h-[280px] p-4 flex-1 pb-10">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={dataSemanal} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(128,128,128,0.15)" />
+              <XAxis dataKey="semana" axisLine={false} tickLine={false} tick={(props) => <CustomXAxisTick {...props} data={dataSemanal} />} interval={0} />
+              <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} dx={-10} />
+              <Tooltip contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "var(--foreground)", fontSize: "12px" }} />
+              <Area type="monotone" dataKey="pel" name="PEL" stackId="1" stroke="#C41230" fill="#C41230" fillOpacity={0.8} strokeWidth={1} />
+              <Area type="monotone" dataKey="sur" name="Sur Energy" stackId="1" stroke="#B56D24" fill="#B56D24" fillOpacity={0.8} strokeWidth={1} />
+              <Area type="monotone" dataKey="gas" name="Gen. Gas" stackId="1" stroke="#107C41" fill="#107C41" fillOpacity={0.8} strokeWidth={1} />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      {/* Row 3: Hierarchical Table */}
       <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg overflow-hidden shadow-sm">
         <div className="px-6 py-4 border-b border-[var(--border)] flex justify-between items-center">
           <h3 className="text-[12px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest flex items-center gap-3">
-            <span className="grid grid-cols-2 gap-[2px]">
-              <div className="w-1.5 h-1.5 border border-current"></div>
-              <div className="w-1.5 h-1.5 border border-current"></div>
-              <div className="w-1.5 h-1.5 border border-current"></div>
-              <div className="w-1.5 h-1.5 border border-current"></div>
-            </span>
-            Real vs Programado — Semana 06 · 2026
+            Consolidado Semanal de Despacho (MW)
           </h3>
         </div>
-        
-        {/* Progress Bar Header */}
-        <div className="px-6 pt-6 pb-4">
-          <div className="h-2.5 w-full rounded-full overflow-hidden flex mb-3">
-            <div className="bg-[#C41230] h-full" style={{width: '81.2%'}}></div>
-            <div className="bg-[#B56D24] h-full" style={{width: '17.6%'}}></div>
-            <div className="bg-[#107C41] h-full" style={{width: '1.2%'}}></div>
-          </div>
-          <div className="flex gap-5 text-[12px] font-medium text-[var(--muted-foreground)]">
-            <div className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-[#C41230]"></span> PEL 81.2%</div>
-            <div className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-[#B56D24]"></span> Gas S.E. 17.6%</div>
-            <div className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-[#107C41]"></span> Gas Propio 1.2%</div>
-          </div>
-        </div>
-
-        <div className="w-full overflow-x-auto mt-2">
+        <div className="w-full overflow-x-auto">
           <table className="w-full text-[14px]">
-            <thead className="bg-[var(--secondary)]/50 border-b border-t border-[var(--border)]">
+            <thead className="bg-[var(--secondary)]/50 border-b border-[var(--border)]">
               <tr>
-                <th className="px-6 py-3.5 text-left text-[11px] font-bold text-[var(--muted-foreground)] tracking-wider">FUENTE</th>
-                <th className="px-6 py-3.5 text-right text-[11px] font-bold text-[var(--muted-foreground)] tracking-wider">REAL (KW)</th>
-                <th className="px-6 py-3.5 text-right text-[11px] font-bold text-[var(--muted-foreground)] tracking-wider">PROG.</th>
-                <th className="px-6 py-3.5 text-right text-[11px] font-bold text-[var(--muted-foreground)] tracking-wider">DESV.</th>
-                <th className="px-6 py-3.5 text-right text-[11px] font-bold text-[var(--muted-foreground)] tracking-wider">COP/KWH</th>
-                <th className="px-6 py-3.5 text-center text-[11px] font-bold text-[var(--muted-foreground)] tracking-wider">ESTADO</th>
+                <th className="px-5 py-3 text-left text-[11px] font-bold text-[var(--muted-foreground)] tracking-wider">FUENTE / GENERADOR</th>
+                <th className="px-5 py-3 text-right text-[11px] font-bold text-[var(--muted-foreground)] tracking-wider">SEM 28</th>
+                <th className="px-5 py-3 text-right text-[11px] font-bold text-[var(--muted-foreground)] tracking-wider">SEM 29</th>
+                <th className="px-5 py-3 text-right text-[11px] font-bold text-[var(--muted-foreground)] tracking-wider">SEM 30</th>
+                <th className="px-5 py-3 text-right text-[11px] font-bold text-[var(--muted-foreground)] tracking-wider">SEM 31</th>
+                <th className="px-5 py-3 text-right text-[11px] font-bold text-[var(--foreground)] tracking-wider">TOTAL MES</th>
               </tr>
             </thead>
             <tbody>
-              {[
-                { fuente: 'PEL', real: '55,081', prog: '54,500', desv: '+1.0%', desvColor: 'text-emerald-500', cop: '627.5', estado: 'ACT' },
-                { fuente: 'Gas - Sur Energy', real: '11,982', prog: '12,500', desv: '-4.1%', desvColor: 'text-red-500', cop: '580.4', estado: 'ACT' },
-                { fuente: 'Gas Propio', real: '777', prog: '800', desv: '-2.8%', desvColor: 'text-red-500', cop: '240.1', estado: 'ACT' },
-                { fuente: 'Gas - Aggreko', real: '0', prog: '—', desv: '—', desvColor: 'text-[var(--muted-foreground)]', cop: '—', estado: 'S/BY' },
-                { fuente: 'Diesel', real: '0', prog: '—', desv: '—', desvColor: 'text-[var(--muted-foreground)]', cop: '—', estado: 'S/BY' },
-                { fuente: 'Genersa', real: '—', prog: '—', desv: '—', desvColor: 'text-[var(--muted-foreground)]', cop: '—', estado: 'FUT' },
-                { fuente: 'Biomasa', real: '—', prog: '—', desv: '—', desvColor: 'text-[var(--muted-foreground)]', cop: '—', estado: 'FUT' },
-                { fuente: 'Solar', real: '0', prog: '0', desv: '—', desvColor: 'text-[var(--muted-foreground)]', cop: '—', estado: 'FUERA' },
-              ].map((row, i) => (
-                <tr key={i} className="border-b border-[var(--border)]/50 hover:bg-[var(--secondary)]/30 transition-colors">
-                  <td className="px-6 py-4 font-medium text-[var(--foreground)]">{row.fuente}</td>
-                  <td className="px-6 py-4 text-right font-mono text-[var(--foreground)]">{row.real}</td>
-                  <td className="px-6 py-4 text-right font-mono text-[var(--muted-foreground)]">{row.prog}</td>
-                  <td className={`px-6 py-4 text-right font-mono font-medium ${row.desvColor}`}>{row.desv}</td>
-                  <td className="px-6 py-4 text-right font-mono text-[var(--foreground)]">{row.cop}</td>
-                  <td className="px-6 py-4 text-center"><Badge type={row.estado} /></td>
-                </tr>
+              {tableData.map((row) => (
+                <ExpandableRow key={row.id} row={row} />
               ))}
-              
-              {/* TOTAL ROW */}
               <tr className="bg-[var(--secondary)]/40 font-bold border-t-2 border-[var(--border)]">
-                <td className="px-6 py-4 text-[var(--foreground)]">TOTAL</td>
-                <td className="px-6 py-4 text-right font-mono text-[var(--foreground)]">67,840</td>
-                <td className="px-6 py-4 text-right font-mono text-[var(--foreground)]">67,800</td>
-                <td className="px-6 py-4 text-right font-mono text-emerald-500">+0.0%</td>
-                <td className="px-6 py-4 text-right font-mono text-[var(--foreground)]">604.0</td>
-                <td className="px-6 py-4 text-center text-[var(--muted-foreground)] font-mono">—</td>
+                <td className="px-5 py-4 text-[var(--foreground)] pl-11">TOTAL GENERAL</td>
+                <td className="px-5 py-4 text-right text-[var(--foreground)]">68.6</td>
+                <td className="px-5 py-4 text-right text-[var(--foreground)]">69.3</td>
+                <td className="px-5 py-4 text-right text-[var(--foreground)]">69.7</td>
+                <td className="px-5 py-4 text-right text-[var(--foreground)]">70.0</td>
+                <td className="px-5 py-4 text-right text-[#C41230]">277.6</td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
+
     </div>
   );
 };
 
 export default Despacho;
-

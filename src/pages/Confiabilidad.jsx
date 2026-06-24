@@ -41,9 +41,9 @@ const Confiabilidad = () => {
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(128,128,128,0.15)" vertical={false} />
-                <XAxis dataKey="mes" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)", fontFamily: "JetBrains Mono" }} dy={10} />
-                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)", fontFamily: "JetBrains Mono" }} dx={-10} domain={[90, 100]} />
-                <Tooltip contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "var(--foreground)", fontSize: "12px", fontFamily: "'JetBrains Mono', monospace" }} />
+                <XAxis dataKey="mes" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} dy={10} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} dx={-10} domain={[90, 100]} />
+                <Tooltip contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "var(--foreground)", fontSize: "12px" }} />
                 <Area type="monotone" dataKey="uptime" stroke="#1A9E70" strokeWidth={2} fill="url(#gradUptime)" />
               </AreaChart>
             </ResponsiveContainer>
@@ -57,10 +57,10 @@ const Confiabilidad = () => {
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={dataMantenimiento} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(128,128,128,0.15)" vertical={false} />
-                <XAxis dataKey="mes" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)", fontFamily: "JetBrains Mono" }} dy={10} />
-                <YAxis yAxisId="left" orientation="left" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)", fontFamily: "JetBrains Mono" }} dx={-10} />
-                <YAxis yAxisId="right" orientation="right" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)", fontFamily: "JetBrains Mono" }} dx={10} />
-                <Tooltip contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "var(--foreground)", fontSize: "12px", fontFamily: "'JetBrains Mono', monospace" }} cursor={{fill: 'rgba(128,128,128,0.1)'}} />
+                <XAxis dataKey="mes" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} dy={10} />
+                <YAxis yAxisId="left" orientation="left" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} dx={-10} />
+                <YAxis yAxisId="right" orientation="right" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} dx={10} />
+                <Tooltip contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "var(--foreground)", fontSize: "12px" }} cursor={{fill: 'rgba(128,128,128,0.1)'}} />
                 <Bar yAxisId="left" dataKey="mtbf" fill="#4A9EE0" radius={[3, 3, 0, 0]} name="MTBF" />
                 <Bar yAxisId="right" dataKey="mttr" fill="#E8A838" radius={[3, 3, 0, 0]} name="MTTR" />
               </BarChart>
@@ -94,7 +94,7 @@ const Confiabilidad = () => {
                 <tr key={i} className="border-b border-[var(--border)]/50 hover:bg-[var(--secondary)]/30 transition-colors">
                   <td className="px-5 py-3.5 font-medium text-left">{row.eq}</td>
                   <td className="px-5 py-3.5 text-left text-[var(--muted-foreground)]">{row.tipo}</td>
-                  <td className="px-5 py-3.5 text-right font-mono">{row.up}</td>
+                  <td className="px-5 py-3.5 text-right">{row.up}</td>
                   <td className="px-5 py-3.5 text-left text-[var(--muted-foreground)]">{row.alerta}</td>
                   <td className="px-5 py-3.5 text-left"><StatusBadge status={row.estado} /></td>
                 </tr>

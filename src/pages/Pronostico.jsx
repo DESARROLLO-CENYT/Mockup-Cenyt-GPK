@@ -31,9 +31,9 @@ const Pronostico = () => {
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={dataPronostico} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(128,128,128,0.15)" vertical={false} />
-                <XAxis dataKey="dia" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)", fontFamily: "JetBrains Mono" }} dy={10} />
-                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)", fontFamily: "JetBrains Mono" }} dx={-10} domain={['dataMin - 1000', 'dataMax + 1000']} />
-                <Tooltip contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "var(--foreground)", fontSize: "12px", fontFamily: "'JetBrains Mono', monospace" }} />
+                <XAxis dataKey="dia" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} dy={10} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} dx={-10} domain={['dataMin - 1000', 'dataMax + 1000']} />
+                <Tooltip contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "var(--foreground)", fontSize: "12px" }} />
                 <Line type="monotone" dataKey="real" stroke="#C41230" strokeWidth={2} dot={{ r: 4, fill: "#C41230" }} />
                 <Line type="monotone" dataKey="forecast" stroke="#4A9EE0" strokeWidth={1.5} strokeDasharray="5 3" dot={{ r: 3 }} connectNulls={false} />
               </LineChart>
@@ -54,7 +54,7 @@ const Pronostico = () => {
               <div key={i} className="flex flex-col gap-2">
                 <div className="flex justify-between items-end">
                   <span className="text-[12px] font-medium text-[var(--foreground)]">{item.label}</span>
-                  <span className="text-[12px] font-mono text-[var(--muted-foreground)]">{item.val} bbl</span>
+                  <span className="text-[12px] text-[var(--muted-foreground)]">{item.val} bbl</span>
                 </div>
                 <div className="h-1.5 w-full bg-[var(--secondary)] rounded-full overflow-hidden">
                   <div style={{ width: `${item.pct}%`, backgroundColor: item.color }} className="h-full rounded-full transition-all duration-500 ease-out" />
@@ -89,8 +89,8 @@ const Pronostico = () => {
                 <tr key={i} className="border-b border-[var(--border)]/50 hover:bg-[var(--secondary)]/30 transition-colors">
                   <td className="px-5 py-3.5 font-medium text-left">{row.cliente}</td>
                   <td className="px-5 py-3.5 text-left text-[var(--muted-foreground)]">{row.contrato}</td>
-                  <td className="px-5 py-3.5 text-right font-mono">{row.vol}</td>
-                  <td className="px-5 py-3.5 text-right font-mono text-[var(--muted-foreground)]">{row.cump}</td>
+                  <td className="px-5 py-3.5 text-right">{row.vol}</td>
+                  <td className="px-5 py-3.5 text-right text-[var(--muted-foreground)]">{row.cump}</td>
                   <td className="px-5 py-3.5 text-left"><StatusBadge status={row.estado} /></td>
                 </tr>
               ))}
