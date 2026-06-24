@@ -61,7 +61,7 @@ const Inicio = () => {
       {/* Logo Principal GeoPark */}
       <div className="w-full max-w-xl px-6 flex justify-center mb-4 relative group">
         <img 
-          src="./Logo GEOPARK_2400.png" 
+          src="./Logo-GEOPARK_2400.svg" 
           alt="Logo GeoPark Principal" 
           className="relative z-10 w-full h-auto max-h-[110px] object-contain transition-all duration-700 drop-shadow-[0_12px_24px_rgba(0,0,0,0.4)] brightness-0 invert group-hover:-translate-y-1"
           onError={(e) => {
