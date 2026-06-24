@@ -1,5 +1,28 @@
 import React from 'react';
 import KPICard from '../components/KPICard';
+import { PieChart, Pie, Cell, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { PieChart as PieChartIcon, Activity } from 'lucide-react';
+
+const dataMix = [
+  { name: 'PEL', value: 55081, color: '#C41230' },
+  { name: 'Gas Sur Energy', value: 11982, color: '#B56D24' },
+  { name: 'Gas Propio', value: 777, color: '#107C41' },
+];
+
+const dataCurva = [
+  { hora: '00h', pel: 48000, gasSur: 10000, gasPropio: 500 },
+  { hora: '02h', pel: 48500, gasSur: 10200, gasPropio: 500 },
+  { hora: '04h', pel: 51000, gasSur: 13000, gasPropio: 600 },
+  { hora: '06h', pel: 54000, gasSur: 12500, gasPropio: 700 },
+  { hora: '08h', pel: 58000, gasSur: 10000, gasPropio: 777 },
+  { hora: '10h', pel: 61000, gasSur: 10500, gasPropio: 777 },
+  { hora: '12h', pel: 62000, gasSur: 11000, gasPropio: 777 },
+  { hora: '14h', pel: 61000, gasSur: 11500, gasPropio: 777 },
+  { hora: '16h', pel: 58000, gasSur: 11982, gasPropio: 777 },
+  { hora: '18h', pel: 55081, gasSur: 11982, gasPropio: 777 },
+  { hora: '20h', pel: 52000, gasSur: 12000, gasPropio: 700 },
+  { hora: '22h', pel: 49000, gasSur: 11000, gasPropio: 600 },
+];
 
 const Badge = ({ type, text }) => {
   let colors = '';
@@ -34,6 +57,72 @@ const Despacho = () => {
         <KPICard label="Fuente Principal (PEL)" value="81.2" unit="%" trend={0} trendValue="=" subtext="Participación" />
         <KPICard label="Costo Promedio" value="604.0" unit="COP/kWh" trend={-1} trendValue="↓2.1%" subtext="vs semana anterior" />
         <KPICard label="Plantas Activas" value="3" unit="/ 8" trend={0} trendValue="-" subtext="Fuentes despachando" />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg shadow-sm">
+          <div className="px-6 py-4 border-b border-[var(--border)]">
+            <h3 className="text-[12px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest flex items-center gap-2">
+              <PieChartIcon size={14} /> MIX ENERGÉTICO ACTUAL
+            </h3>
+          </div>
+          <div className="h-[250px] p-4 flex flex-col items-center justify-center">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={dataMix}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={90}
+                  paddingAngle={2}
+                  dataKey="value"
+                  stroke="none"
+                >
+                  {dataMix.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip 
+                  formatter={(value) => `${value.toLocaleString()} kW`}
+                  contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "var(--foreground)" }}
+                />
+                <Legend 
+                  iconType="square" 
+                  wrapperStyle={{ fontSize: '12px', color: 'var(--muted-foreground)' }} 
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        <div className="lg:col-span-2 bg-[var(--card)] border border-[var(--border)] rounded-lg shadow-sm flex flex-col">
+          <div className="px-6 py-4 border-b border-[var(--border)] flex flex-wrap gap-4 justify-between items-center">
+            <h3 className="text-[12px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest flex items-center gap-2">
+              <Activity size={14} /> CURVA DE DEMANDA — HORARIA (KW)
+            </h3>
+            <div className="flex border border-[var(--border)] rounded overflow-hidden text-[11px] font-medium">
+              <button className="px-3 py-1 bg-[var(--background)] text-[var(--muted-foreground)] hover:bg-[var(--secondary)] transition-colors">AÑO</button>
+              <button className="px-3 py-1 bg-[var(--background)] text-[var(--muted-foreground)] border-l border-[var(--border)] hover:bg-[var(--secondary)] transition-colors">MES</button>
+              <button className="px-3 py-1 bg-[var(--background)] text-[var(--muted-foreground)] border-l border-[var(--border)] hover:bg-[var(--secondary)] transition-colors">SEM</button>
+              <button className="px-3 py-1 bg-[var(--background)] text-[var(--muted-foreground)] border-l border-[var(--border)] hover:bg-[var(--secondary)] transition-colors">DÍA</button>
+              <button className="px-3 py-1 bg-[#C41230] text-white border-l border-[#C41230]">HORA</button>
+            </div>
+          </div>
+          <div className="h-[250px] p-4 flex-1">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={dataCurva} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(128,128,128,0.15)" />
+                <XAxis dataKey="hora" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} dy={10} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} dx={-10} domain={[45000, 75000]} />
+                <Tooltip contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "var(--foreground)" }} />
+                <Area type="monotone" dataKey="pel" name="PEL" stackId="1" stroke="#C41230" fill="#C41230" fillOpacity={0.15} strokeWidth={2} />
+                <Area type="monotone" dataKey="gasSur" name="Gas Sur Energy" stackId="1" stroke="#B56D24" fill="#B56D24" fillOpacity={0.8} strokeWidth={2} />
+                <Area type="monotone" dataKey="gasPropio" name="Gas Propio" stackId="1" stroke="#107C41" fill="#107C41" fillOpacity={0.8} strokeWidth={2} />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
       </div>
 
       <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg overflow-hidden shadow-sm">
