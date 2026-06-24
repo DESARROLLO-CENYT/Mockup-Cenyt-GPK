@@ -7,6 +7,8 @@ const Layout = () => {
   const location = useLocation();
   const isHome = location.pathname === '/';
   
+  const showFilter = !isHome && !location.pathname.includes('/fallas') && !location.pathname.includes('/vulnerabilidades');
+
   // Dynamic title based on route
   let title = "Dashboard";
   let subtitle = "Gestión inteligente de energía";
@@ -52,7 +54,7 @@ const Layout = () => {
       <div className="relative z-10 flex w-full h-full">
         {!isHome && <Sidebar />}
         <main className="flex-1 flex flex-col min-w-0">
-          {!isHome && <Topbar title={title} subtitle={subtitle} />}
+          {!isHome && <Topbar title={title} subtitle={subtitle} showFilter={showFilter} />}
           <div className={`flex-1 overflow-y-auto ${isHome ? '' : 'p-8'}`}>
             <Outlet />
           </div>

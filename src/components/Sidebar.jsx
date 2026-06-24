@@ -41,7 +41,7 @@ const Sidebar = () => {
           <img 
             src="./Logo GEOPARK_200.png" 
             alt="GeoPark Nav" 
-            className={`w-full h-full object-contain transition-all duration-300 ease-in-out brightness-0 ${forceDarkText ? 'invert' : ''}`}
+            className="w-full h-full object-contain transition-all duration-300 ease-in-out"
             onError={(e) => {
               e.target.style.display = 'none';
               e.target.nextSibling.style.display = 'block';

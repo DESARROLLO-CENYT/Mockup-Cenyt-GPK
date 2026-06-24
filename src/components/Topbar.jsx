@@ -1,7 +1,8 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+import GlobalFilter from './GlobalFilter';
 
-const Topbar = ({ title, subtitle }) => {
+const Topbar = ({ title, subtitle, showFilter }) => {
   const location = useLocation();
   const isHome = location.pathname === '/';
 
@@ -15,6 +16,9 @@ const Topbar = ({ title, subtitle }) => {
           </span>
         )}
       </div>
+      
+      {showFilter && <GlobalFilter />}
+
       <div className="flex items-center gap-2">
         <span className={`text-[12px] font-medium ${isHome ? 'text-white drop-shadow' : 'text-[var(--foreground)]'}`}>En línea</span>
         <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]"></div>
