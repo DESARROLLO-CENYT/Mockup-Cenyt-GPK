@@ -1,103 +1,110 @@
 import React from 'react';
 import KPICard from '../components/KPICard';
-import StatusBadge from '../components/StatusBadge';
-import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
-const dataSemanal = [
-  { dia: 'Lun', prog: 45000, real: 46200 },
-  { dia: 'Mar', prog: 48000, real: 47500 },
-  { dia: 'Mié', prog: 50000, real: 51200 },
-  { dia: 'Jue', prog: 49000, real: 48800 },
-  { dia: 'Vie', prog: 52000, real: 50412 },
-];
-
-const dataMensual = [
-  { mes: 'Jul', real: 1.2 },
-  { mes: 'Ago', real: 1.4 },
-  { mes: 'Sep', real: 1.35 },
-  { mes: 'Oct', real: 1.5 },
-];
+const Badge = ({ type, text }) => {
+  let colors = '';
+  switch (type) {
+    case 'ACT':
+      colors = 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400';
+      break;
+    case 'S/BY':
+      colors = 'bg-orange-100 text-orange-700 dark:bg-orange-500/20 dark:text-orange-400';
+      break;
+    case 'FUT':
+      colors = 'bg-purple-100 text-purple-700 dark:bg-purple-500/20 dark:text-purple-400';
+      break;
+    case 'FUERA':
+      colors = 'bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-400';
+      break;
+    default:
+      colors = 'bg-gray-100 text-gray-700 dark:bg-gray-500/20 dark:text-gray-400';
+  }
+  return (
+    <span className={`px-2.5 py-0.5 rounded text-[10px] font-bold tracking-wider ${colors}`}>
+      {text || type}
+    </span>
+  );
+};
 
 const Despacho = () => {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 animate-fade-in">
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <KPICard label="Despacho Hoy" value="50,412" unit="bbl" trend={1} trendValue="↑1.2%" subtext="vs. programado" accent />
-        <KPICard label="En Tránsito" value="12,500" unit="bbl" trend={0} trendValue="=" subtext="5 convoyes activos" />
-        <KPICard label="Cumplimiento" value="98.2" unit="%" trend={1} trendValue="↑0.5%" subtext="Mensual acumulado" />
-        <KPICard label="Alertas Logística" value="2" unit="" trend={-1} trendValue="⚠" subtext="Retraso en ruta 3" />
+        <KPICard label="Generación Total" value="67,840" unit="kW" trend={1} trendValue="+0.0%" subtext="vs programado" accent />
+        <KPICard label="Fuente Principal (PEL)" value="81.2" unit="%" trend={0} trendValue="=" subtext="Participación" />
+        <KPICard label="Costo Promedio" value="604.0" unit="COP/kWh" trend={-1} trendValue="↓2.1%" subtext="vs semana anterior" />
+        <KPICard label="Plantas Activas" value="3" unit="/ 8" trend={0} trendValue="-" subtext="Fuentes despachando" />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-[var(--card)] border border-[var(--border)] rounded-lg p-5">
-          <h3 className="text-[14px] font-medium text-[var(--foreground)]">Despacho semanal prog. vs. real</h3>
-          <p className="text-[12px] text-[var(--muted-foreground)] mb-4">Volumen en bbl</p>
-          <div className="h-[220px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={dataSemanal} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(128,128,128,0.15)" vertical={false} />
-                <XAxis dataKey="dia" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)", fontFamily: "JetBrains Mono" }} dy={10} />
-                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)", fontFamily: "JetBrains Mono" }} dx={-10} />
-                <Tooltip contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "var(--foreground)", fontSize: "12px", fontFamily: "'JetBrains Mono', monospace" }} cursor={{fill: 'rgba(128,128,128,0.1)'}} />
-                <Bar dataKey="prog" fill="rgba(74,158,224,0.25)" radius={[3, 3, 0, 0]} />
-                <Bar dataKey="real" fill="#C41230" radius={[3, 3, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
+      <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg overflow-hidden shadow-sm">
+        <div className="px-6 py-4 border-b border-[var(--border)] flex justify-between items-center">
+          <h3 className="text-[12px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest flex items-center gap-3">
+            <span className="grid grid-cols-2 gap-[2px]">
+              <div className="w-1.5 h-1.5 border border-current"></div>
+              <div className="w-1.5 h-1.5 border border-current"></div>
+              <div className="w-1.5 h-1.5 border border-current"></div>
+              <div className="w-1.5 h-1.5 border border-current"></div>
+            </span>
+            Real vs Programado — Semana 06 · 2026
+          </h3>
+        </div>
+        
+        {/* Progress Bar Header */}
+        <div className="px-6 pt-6 pb-4">
+          <div className="h-2.5 w-full rounded-full overflow-hidden flex mb-3">
+            <div className="bg-[#C41230] h-full" style={{width: '81.2%'}}></div>
+            <div className="bg-[#B56D24] h-full" style={{width: '17.6%'}}></div>
+            <div className="bg-[#107C41] h-full" style={{width: '1.2%'}}></div>
+          </div>
+          <div className="flex gap-5 text-[12px] font-medium text-[var(--muted-foreground)]">
+            <div className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-[#C41230]"></span> PEL 81.2%</div>
+            <div className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-[#B56D24]"></span> Gas S.E. 17.6%</div>
+            <div className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-[#107C41]"></span> Gas Propio 1.2%</div>
           </div>
         </div>
 
-        <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg p-5">
-          <h3 className="text-[14px] font-medium text-[var(--foreground)]">Tendencia mensual</h3>
-          <p className="text-[12px] text-[var(--muted-foreground)] mb-4">Millones bbl</p>
-          <div className="h-[220px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={dataMensual} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-                <defs>
-                  <linearGradient id="gradTrend" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#C41230" stopOpacity={0.25} />
-                    <stop offset="95%" stopColor="#C41230" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(128,128,128,0.15)" vertical={false} />
-                <XAxis dataKey="mes" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)", fontFamily: "JetBrains Mono" }} dy={10} />
-                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)", fontFamily: "JetBrains Mono" }} dx={-10} domain={['dataMin - 0.2', 'dataMax + 0.2']} />
-                <Tooltip contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "var(--foreground)", fontSize: "12px", fontFamily: "'JetBrains Mono', monospace" }} />
-                <Area type="monotone" dataKey="real" stroke="#C41230" strokeWidth={2} fill="url(#gradTrend)" />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      </div>
-
-      <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg overflow-hidden">
-        <div className="px-5 py-4 border-b border-[var(--border)]">
-          <h3 className="text-[14px] font-medium text-[var(--foreground)]">Logística de Despacho</h3>
-        </div>
-        <div className="w-full overflow-x-auto">
+        <div className="w-full overflow-x-auto mt-2">
           <table className="w-full text-[14px]">
-            <thead className="border-b border-[var(--border)]">
+            <thead className="bg-[var(--secondary)]/50 border-b border-t border-[var(--border)]">
               <tr>
-                <th className="px-5 py-3 text-left text-[10px] uppercase tracking-wider font-medium text-[var(--muted-foreground)]">Destino</th>
-                <th className="px-5 py-3 text-right text-[10px] uppercase tracking-wider font-medium text-[var(--muted-foreground)]">Volumen</th>
-                <th className="px-5 py-3 text-left text-[10px] uppercase tracking-wider font-medium text-[var(--muted-foreground)]">Estado</th>
-                <th className="px-5 py-3 text-right text-[10px] uppercase tracking-wider font-medium text-[var(--muted-foreground)]">Hora</th>
-                <th className="px-5 py-3 text-right text-[10px] uppercase tracking-wider font-medium text-[var(--muted-foreground)]">Variación</th>
+                <th className="px-6 py-3.5 text-left text-[11px] font-bold text-[var(--muted-foreground)] tracking-wider">FUENTE</th>
+                <th className="px-6 py-3.5 text-right text-[11px] font-bold text-[var(--muted-foreground)] tracking-wider">REAL (KW)</th>
+                <th className="px-6 py-3.5 text-right text-[11px] font-bold text-[var(--muted-foreground)] tracking-wider">PROG.</th>
+                <th className="px-6 py-3.5 text-right text-[11px] font-bold text-[var(--muted-foreground)] tracking-wider">DESV.</th>
+                <th className="px-6 py-3.5 text-right text-[11px] font-bold text-[var(--muted-foreground)] tracking-wider">COP/KWH</th>
+                <th className="px-6 py-3.5 text-center text-[11px] font-bold text-[var(--muted-foreground)] tracking-wider">ESTADO</th>
               </tr>
             </thead>
             <tbody>
               {[
-                { dest: 'Refinería A', vol: '12,000', estado: 'Completado', hora: '08:30 AM', var: '+200', varColor: 'text-emerald-400' },
-                { dest: 'Puerto Marítimo', vol: '25,412', estado: 'En tránsito', hora: '14:15 PM', var: '—', varColor: 'text-[var(--muted-foreground)]' },
-                { dest: 'Planta C', vol: '13,000', estado: 'Programado', hora: '18:00 PM', var: '-150', varColor: 'text-red-400' },
+                { fuente: 'PEL', real: '55,081', prog: '54,500', desv: '+1.0%', desvColor: 'text-emerald-500', cop: '627.5', estado: 'ACT' },
+                { fuente: 'Gas - Sur Energy', real: '11,982', prog: '12,500', desv: '-4.1%', desvColor: 'text-red-500', cop: '580.4', estado: 'ACT' },
+                { fuente: 'Gas Propio', real: '777', prog: '800', desv: '-2.8%', desvColor: 'text-red-500', cop: '240.1', estado: 'ACT' },
+                { fuente: 'Gas - Aggreko', real: '0', prog: '—', desv: '—', desvColor: 'text-[var(--muted-foreground)]', cop: '—', estado: 'S/BY' },
+                { fuente: 'Diesel', real: '0', prog: '—', desv: '—', desvColor: 'text-[var(--muted-foreground)]', cop: '—', estado: 'S/BY' },
+                { fuente: 'Genersa', real: '—', prog: '—', desv: '—', desvColor: 'text-[var(--muted-foreground)]', cop: '—', estado: 'FUT' },
+                { fuente: 'Biomasa', real: '—', prog: '—', desv: '—', desvColor: 'text-[var(--muted-foreground)]', cop: '—', estado: 'FUT' },
+                { fuente: 'Solar', real: '0', prog: '0', desv: '—', desvColor: 'text-[var(--muted-foreground)]', cop: '—', estado: 'FUERA' },
               ].map((row, i) => (
                 <tr key={i} className="border-b border-[var(--border)]/50 hover:bg-[var(--secondary)]/30 transition-colors">
-                  <td className="px-5 py-3.5 font-medium text-left">{row.dest}</td>
-                  <td className="px-5 py-3.5 text-right font-mono">{row.vol}</td>
-                  <td className="px-5 py-3.5 text-left"><StatusBadge status={row.estado} /></td>
-                  <td className="px-5 py-3.5 text-right font-mono text-[var(--muted-foreground)]">{row.hora}</td>
-                  <td className={`px-5 py-3.5 text-right font-mono ${row.varColor}`}>{row.var}</td>
+                  <td className="px-6 py-4 font-medium text-[var(--foreground)]">{row.fuente}</td>
+                  <td className="px-6 py-4 text-right font-mono text-[var(--foreground)]">{row.real}</td>
+                  <td className="px-6 py-4 text-right font-mono text-[var(--muted-foreground)]">{row.prog}</td>
+                  <td className={`px-6 py-4 text-right font-mono font-medium ${row.desvColor}`}>{row.desv}</td>
+                  <td className="px-6 py-4 text-right font-mono text-[var(--foreground)]">{row.cop}</td>
+                  <td className="px-6 py-4 text-center"><Badge type={row.estado} /></td>
                 </tr>
               ))}
+              
+              {/* TOTAL ROW */}
+              <tr className="bg-[var(--secondary)]/40 font-bold border-t-2 border-[var(--border)]">
+                <td className="px-6 py-4 text-[var(--foreground)]">TOTAL</td>
+                <td className="px-6 py-4 text-right font-mono text-[var(--foreground)]">67,840</td>
+                <td className="px-6 py-4 text-right font-mono text-[var(--foreground)]">67,800</td>
+                <td className="px-6 py-4 text-right font-mono text-emerald-500">+0.0%</td>
+                <td className="px-6 py-4 text-right font-mono text-[var(--foreground)]">604.0</td>
+                <td className="px-6 py-4 text-center text-[var(--muted-foreground)] font-mono">—</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -107,3 +114,4 @@ const Despacho = () => {
 };
 
 export default Despacho;
+

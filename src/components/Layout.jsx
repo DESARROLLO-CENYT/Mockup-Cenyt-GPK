@@ -18,8 +18,8 @@ const Layout = () => {
     title = "Eficiencia Operacional";
     subtitle = "Métricas de eficiencia global mensual";
   } else if (location.pathname.includes('/despacho')) {
-    title = "Despacho de Producción";
-    subtitle = "Control de logística y transporte en tiempo real";
+    title = "Despacho Energético";
+    subtitle = "Balance de fuentes de generación y distribución";
   } else if (location.pathname.includes('/pronostico')) {
     title = "Pronóstico y Demanda";
     subtitle = "Predicción de comportamiento y mercado";

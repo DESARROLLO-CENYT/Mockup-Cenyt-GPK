@@ -1,6 +1,5 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
-import { Zap, Truck, TrendingUp, Shield, AlertTriangle, Wrench } from 'lucide-react';
+import { Zap, Truck, TrendingUp, Shield, AlertTriangle, Wrench, Activity } from 'lucide-react';
 
 const Inicio = () => {
 
@@ -13,9 +12,9 @@ const Inicio = () => {
       color: 'hover:border-[#C41230]/50'
     },
     {
-      title: 'Despacho y Logística',
-      description: 'Control de volumen, programación, y estado del transporte en tiempo real.',
-      icon: <Truck size={32} className="text-sky-500" />,
+      title: 'Despacho Energético',
+      description: 'Asignación de energía a campos, estado de fuentes de generación y balance real vs programado.',
+      icon: <Activity size={32} className="text-sky-500" />,
       path: '/despacho',
       color: 'hover:border-sky-500/50'
     },

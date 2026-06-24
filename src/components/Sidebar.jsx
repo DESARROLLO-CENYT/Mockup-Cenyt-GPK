@@ -23,7 +23,7 @@ const Sidebar = () => {
 
   const navItems = [
     { id: 'eficiencia', label: 'Eficiencia', icon: <Zap size={22} className="shrink-0" />, path: '/eficiencia' },
-    { id: 'despacho', label: 'Despacho', icon: <Truck size={22} className="shrink-0" />, path: '/despacho' },
+    { id: 'despacho', label: 'Despacho', icon: <Activity size={22} className="shrink-0" />, path: '/despacho' },
     { id: 'pronostico', label: 'Pronóstico', icon: <TrendingUp size={22} className="shrink-0" />, path: '/pronostico' },
     { id: 'confiabilidad', label: 'Confiabilidad', icon: <Shield size={22} className="shrink-0" />, path: '/confiabilidad' },
     { id: 'fallas', label: 'Fallas', icon: <AlertTriangle size={22} className="shrink-0" />, path: '/fallas' },
