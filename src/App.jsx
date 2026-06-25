@@ -28,10 +28,10 @@ function App() {
         <Route 
           path="/" 
           element={
-            isAuthenticated ? <Layout /> : <Navigate to="/login" replace />
+            isAuthenticated ? <Layout onLogout={() => setIsAuthenticated(false)} /> : <Navigate to="/login" replace />
           }
         >
-          <Route index element={<Inicio />} />
+          <Route index element={<Inicio onLogout={() => setIsAuthenticated(false)} />} />
           <Route path="eficiencia" element={<Eficiencia />} />
           <Route path="despacho" element={<Despacho />} />
           <Route path="pronostico" element={<Pronostico />} />

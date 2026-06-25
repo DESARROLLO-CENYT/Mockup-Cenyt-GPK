@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import { Zap, Truck, TrendingUp, Shield, AlertTriangle, Wrench, Activity } from 'lucide-react';
+import { Zap, Truck, TrendingUp, Shield, AlertTriangle, Wrench, Activity, LogOut } from 'lucide-react';
 
-const Inicio = () => {
+const Inicio = ({ onLogout }) => {
 
   const cards = [
     {
@@ -56,8 +56,18 @@ const Inicio = () => {
   };
 
   return (
-    <div className="flex flex-col gap-10 items-center justify-center min-h-[calc(100vh-160px)] py-8 w-full">
+    <div className="flex flex-col gap-10 items-center justify-center min-h-[calc(100vh-160px)] py-8 w-full relative">
       
+      {/* Botón orgánico para salir en Inicio */}
+      <div className="absolute top-6 right-8 z-50">
+        <button 
+          onClick={onLogout}
+          className="flex items-center gap-2 px-4 py-2 bg-black/20 hover:bg-[#C41230]/80 border border-white/10 hover:border-transparent text-white/80 hover:text-white rounded-full transition-all backdrop-blur-sm shadow-sm cursor-pointer"
+        >
+          <LogOut size={16} />
+          <span className="text-sm font-medium">Cerrar Sesión</span>
+        </button>
+      </div>
       {/* Logo Principal GeoPark */}
       <div className="w-full max-w-xl px-6 flex justify-center mb-4 relative group">
         <img 

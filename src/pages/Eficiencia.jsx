@@ -49,7 +49,7 @@ const CustomXAxisTick = ({ x, y, payload, index }) => {
   const data = dataSemanas[index];
   const prevData = index > 0 ? dataSemanas[index - 1] : null;
   const isFirstOfMonth = !prevData || prevData.mes !== data.mes;
-  
+
   return (
     <g transform={`translate(${x},${y})`}>
       {/* Separator line for months */}
@@ -82,7 +82,7 @@ const ExpandableRow = ({ row }) => {
 
   return (
     <>
-      <tr 
+      <tr
         className={`border-b border-[var(--border)]/50 transition-colors ${hasChildren ? 'cursor-pointer hover:bg-[var(--secondary)]/30' : ''}`}
         onClick={() => hasChildren && setIsOpen(!isOpen)}
       >
@@ -119,32 +119,32 @@ const Eficiencia = () => {
     <div className="flex flex-col gap-6">
       {/* KPIs - 5 columnas */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
-        <KPICard 
-          label="Eficiencia Semanal" 
-          value="2.3" 
-          unit="kW/Bo" 
-          trend={1} 
-          trendValue="↓0.1 kW/Bo" 
-          subtext="vs. semana anterior" 
-          accent 
+        <KPICard
+          label="Eficiencia Semanal"
+          value="2.3"
+          unit="kW/Bo"
+          trend={1}
+          trendValue="↓0.1 kW/Bo"
+          subtext="vs. semana anterior"
+          accent
         />
-        <KPICard 
-          label="Consumo Energía Semanal" 
-          value="45,210" 
-          unit="kW" 
-          trend={-1} 
-          trendValue="↑1.2%" 
-          subtext="vs. semana anterior" 
+        <KPICard
+          label="Consumo Energía Semanal"
+          value="45,210"
+          unit="kW"
+          trend={-1}
+          trendValue="↑1.2%"
+          subtext="vs. semana anterior"
         />
-        <KPICard 
-          label="Producción Semanal" 
-          value="19,650" 
-          unit="Bo" 
-          trend={1} 
-          trendValue="↑4.5%" 
-          subtext="vs. semana anterior" 
+        <KPICard
+          label="Producción Semanal"
+          value="19,650"
+          unit="Bo"
+          trend={1}
+          trendValue="↑4.5%"
+          subtext="vs. semana anterior"
         />
-        
+
         {/* Tarjeta Doble CO2 */}
         <div className="lg:col-span-2 bg-[var(--card)] border border-[var(--border)] rounded-xl p-5 shadow-sm relative overflow-hidden flex flex-col justify-between">
           <div className="flex items-center gap-2 mb-3">
@@ -181,7 +181,7 @@ const Eficiencia = () => {
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(128,128,128,0.15)" vertical={false} />
                 <XAxis dataKey="num" axisLine={false} tickLine={false} tick={<CustomXAxisTick />} />
                 <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} dx={-10} domain={[0, 20]} />
-                <Tooltip 
+                <Tooltip
                   contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "var(--foreground)", fontSize: "12px" }}
                 />
                 <Area type="monotone" dataKey="meta" name="Esperada" stroke="#4A9EE0" strokeWidth={1.5} strokeDasharray="4 3" fill="none" />
@@ -193,14 +193,14 @@ const Eficiencia = () => {
 
         <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg p-5">
           <h3 className="text-[14px] font-medium text-[var(--foreground)]">Eficiencia por campo</h3>
-          <p className="text-[12px] text-[var(--muted-foreground)] mb-4">kW/Bo (Menor es mejor)</p>
+          <p className="text-[12px] text-[var(--muted-foreground)] mb-4">kW/Bo </p>
           <div className="h-[220px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={dataCampos} layout="vertical" margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(128,128,128,0.15)" horizontal={false} />
                 <XAxis type="number" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} />
                 <YAxis dataKey="campo" type="category" width={70} axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} />
-                <Tooltip contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "var(--foreground)", fontSize: "12px" }} cursor={{fill: 'rgba(128,128,128,0.1)'}} />
+                <Tooltip contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "var(--foreground)", fontSize: "12px" }} cursor={{ fill: 'rgba(128,128,128,0.1)' }} />
                 <Bar dataKey="valor" radius={[0, 2, 2, 0]} barSize={20}>
                   {dataCampos.map((entry, index) => {
                     const isBest = entry.valor === Math.min(...dataCampos.map(d => d.valor));

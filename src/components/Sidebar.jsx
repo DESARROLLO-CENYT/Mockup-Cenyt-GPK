@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Zap, Truck, TrendingUp, Shield, Sun, Moon, AlertTriangle, Activity, Wrench } from 'lucide-react';
+import { Zap, Truck, TrendingUp, Shield, Sun, Moon, AlertTriangle, Activity, Wrench, LogOut } from 'lucide-react';
 
-const Sidebar = () => {
+const Sidebar = ({ onLogout }) => {
   const location = useLocation();
   const [isDark, setIsDark] = useState(false);
   
@@ -41,7 +41,7 @@ const Sidebar = () => {
           <img 
             src="./Logo-GEOPARK_200.svg" 
             alt="GeoPark Nav" 
-            className="w-full h-full object-contain transition-all duration-300 ease-in-out"
+            className={`w-full h-full object-contain transition-all duration-300 ease-in-out ${forceDarkText ? 'invert brightness-0' : ''}`}
             onError={(e) => {
               e.target.style.display = 'none';
               e.target.nextSibling.style.display = 'block';
@@ -89,19 +89,30 @@ const Sidebar = () => {
         </div>
 
         {/* Footer / Theme Toggle */}
-        <div className={`p-4 shrink-0 border-t flex flex-col gap-4 items-center group-hover:items-stretch ${isHome ? 'border-transparent' : 'border-[var(--sidebar-border)]'}`}>
+        <div className={`p-4 shrink-0 border-t flex flex-col gap-2 items-center group-hover:items-stretch ${isHome ? 'border-transparent' : 'border-[var(--sidebar-border)]'}`}>
           <button 
             onClick={toggleTheme}
-            className={`flex items-center justify-center p-3 group-hover:py-2 border border-transparent rounded-xl text-sm transition-all cursor-pointer ${
+            className={`flex items-center justify-center p-2 group-hover:py-1.5 border border-transparent rounded-xl text-xs transition-all cursor-pointer ${
               isHome 
                 ? 'text-white hover:bg-white/10 group-hover:border-white/20' 
                 : 'text-[var(--foreground)] hover:bg-[var(--sidebar-accent)] group-hover:border-[var(--border)]'
             }`}
             title={isDark ? 'Modo claro' : 'Modo oscuro'}
           >
-            {isDark ? <Sun size={22} className="shrink-0" /> : <Moon size={22} className="shrink-0" />}
-            <span className="ml-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap w-0 group-hover:w-auto">
+            {isDark ? <Sun size={16} className="shrink-0" /> : <Moon size={16} className="shrink-0" />}
+            <span className="ml-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap w-0 group-hover:w-auto">
               {isDark ? 'Modo claro' : 'Modo oscuro'}
+            </span>
+          </button>
+          
+          <button 
+            onClick={onLogout}
+            className={`flex items-center justify-center p-2 group-hover:py-1.5 border border-transparent rounded-xl text-xs transition-all cursor-pointer text-[#C41230] hover:bg-[#C41230]/10 hover:border-[#C41230]/20 w-full`}
+            title="Cerrar sesión"
+          >
+            <LogOut size={16} className="shrink-0" />
+            <span className="ml-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap w-0 group-hover:w-auto font-medium">
+              Cerrar sesión
             </span>
           </button>
           <div className={`text-[10px] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap overflow-hidden h-0 group-hover:h-auto ${isHome ? 'text-gray-400' : 'text-[var(--muted-foreground)]'}`}>

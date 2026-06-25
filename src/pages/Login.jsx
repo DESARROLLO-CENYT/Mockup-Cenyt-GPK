@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { User, Lock } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Login = ({ onLogin }) => {
+  const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
@@ -16,6 +18,7 @@ const Login = ({ onLogin }) => {
     setTimeout(() => {
       if (username === 'admin' && password === 'admin') {
         onLogin();
+        navigate('/');
       } else {
         setError(true);
         setLoading(false);

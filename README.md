@@ -8,41 +8,48 @@ Este es el repositorio de la aplicación de **Gestión de Energía Inteligente**
 
 🔗 **Enlace de acceso a la maqueta interactiva:** [https://desarrollo-cenyt.github.io/Mockup-Cenyt-GPK/#/](https://desarrollo-cenyt.github.io/Mockup-Cenyt-GPK/#/)
 
+> **Credenciales de Acceso (Mockup):**
+> - **Usuario:** `admin`
+> - **Contraseña:** `admin`
+
 ---
 
 ## 📂 Páginas del Proyecto
 
 El sistema está organizado en una barra lateral de navegación interactiva y cuenta con las siguientes vistas principales:
 
-### 1. [Inicio.jsx](file:///c:/Users/ingju/OneDrive%20-%20Cenyt%20ingenieros/Desktop/APP_Gestion_Energia/src/pages/Inicio.jsx)
-La página de bienvenida de la aplicación. Presenta un fondo fotográfico dinámico (Llanos 34) con una capa oscura que asegura un alto contraste de lectura. Cuenta con un carrusel interactivo y responsivo de tarjetas de accesos rápidos a los módulos operativos, cada uno con hover dinámico y micro-animaciones personalizadas.
+### 1. [Login.jsx](file:///c:/Users/ingju/OneDrive%20-%20Cenyt%20ingenieros/Desktop/APP_Gestion_Energia/src/pages/Login.jsx)
+Pantalla de inicio de sesión con estética *Glassmorphism* sobre el fondo fotográfico de los Llanos 34. Protege el acceso al dashboard validando credenciales de prueba.
 
-### 2. [Eficiencia.jsx](file:///c:/Users/ingju/OneDrive%20-%20Cenyt%20ingenieros/Desktop/APP_Gestion_Energia/src/pages/Eficiencia.jsx)
+### 2. [Inicio.jsx](file:///c:/Users/ingju/OneDrive%20-%20Cenyt%20ingenieros/Desktop/APP_Gestion_Energia/src/pages/Inicio.jsx)
+La página de bienvenida de la aplicación. Presenta un carrusel interactivo y responsivo de tarjetas de accesos rápidos a los módulos operativos, cada uno con hover dinámico y micro-animaciones personalizadas.
+
+### 3. [Eficiencia.jsx](file:///c:/Users/ingju/OneDrive%20-%20Cenyt%20ingenieros/Desktop/APP_Gestion_Energia/src/pages/Eficiencia.jsx)
 Módulo enfocado en la **Eficiencia Operacional**.
 * **KPIs Clave:** Eficiencia Global, Consumo Total, Pozos Activos y Meta de Ahorro.
 * **Visualizaciones:** Gráfico de Área que muestra la eficiencia mensual real frente a la meta establecida y un Gráfico de Barras Horizontal detallando la eficiencia por tipo de energía y campo.
 * **Tablas de Monitoreo:** Estatus operacional de cada campo en tiempo real.
 
-### 3. [Despacho.jsx](file:///c:/Users/ingju/OneDrive%20-%20Cenyt%20ingenieros/Desktop/APP_Gestion_Energia/src/pages/Despacho.jsx)
+### 4. [Despacho.jsx](file:///c:/Users/ingju/OneDrive%20-%20Cenyt%20ingenieros/Desktop/APP_Gestion_Energia/src/pages/Despacho.jsx)
 Módulo enfocado en el **Despacho Energético** (hacia qué campos y pozos se está dirigiendo la energía generada).
 * **KPIs Clave:** Energía Despachada (MW), Generación Autónoma (%), Eficiencia de Distribución y Pérdidas del Sistema.
 * **Visualizaciones:** Gráfico de Donut interactivo para la distribución por campo en porcentaje y un Gráfico de Área Apilada que proyecta la tendencia mensual acumulada por campo de la energía despachada.
 * **Tabla de Asignación:** Balance detallado de energía programada versus real por campo.
 
-### 4. [Pronostico.jsx](file:///c:/Users/ingju/OneDrive%20-%20Cenyt%20ingenieros/Desktop/APP_Gestion_Energia/src/pages/Pronostico.jsx)
+### 5. [Pronostico.jsx](file:///c:/Users/ingju/OneDrive%20-%20Cenyt%20ingenieros/Desktop/APP_Gestion_Energia/src/pages/Pronostico.jsx)
 Modulo de **Pronóstico y Demanda** de carga energética.
 * **KPIs Clave:** Pronóstico Semanal, Demanda Máxima Esperada, Factor de Carga y Precisión del Modelo.
 * **Visualizaciones:** Gráfico de Líneas con proyección a futuro mediante Machine Learning (mostrando datos reales y la curva del forecast), junto con barras de progreso estilizadas de la distribución por mercado (Regulado vs. No Regulado).
 
-### 5. [Confiabilidad.jsx](file:///c:/Users/ingju/OneDrive%20-%20Cenyt%20ingenieros/Desktop/APP_Gestion_Energia/src/pages/Confiabilidad.jsx)
+### 6. [Confiabilidad.jsx](file:///c:/Users/ingju/OneDrive%20-%20Cenyt%20ingenieros/Desktop/APP_Gestion_Energia/src/pages/Confiabilidad.jsx)
 Módulo para el análisis de **Confiabilidad del Sistema**.
 * **KPIs Clave:** Uptime General, MTBF (Tiempo Medio Entre Fallas), MTTR (Tiempo Medio de Reparación) y Equipos Críticos bajo monitoreo.
 * **Visualizaciones:** Gráfico de Área para el histórico de Uptime y un Gráfico de Barras Dobles que compara directamente MTBF vs. MTTR mes a mes.
 
-### 6. [Fallas.jsx](file:///c:/Users/ingju/OneDrive%20-%20Cenyt%20ingenieros/Desktop/APP_Gestion_Energia/src/pages/Fallas.jsx)
+### 7. [Fallas.jsx](file:///c:/Users/ingju/OneDrive%20-%20Cenyt%20ingenieros/Desktop/APP_Gestion_Energia/src/pages/Fallas.jsx)
 Módulo de **Reporte de Fallas** que integra visualizaciones interactivas de PowerBI mediante incrustaciones responsivas.
 
-### 7. [Vulnerabilidades.jsx](file:///c:/Users/ingju/OneDrive%20-%20Cenyt%20ingenieros/Desktop/APP_Gestion_Energia/src/pages/Vulnerabilidades.jsx)
+### 8. [Vulnerabilidades.jsx](file:///c:/Users/ingju/OneDrive%20-%20Cenyt%20ingenieros/Desktop/APP_Gestion_Energia/src/pages/Vulnerabilidades.jsx)
 Módulo de **Mantenimiento y Vulnerabilidades** del sistema para el seguimiento detallado de activos críticos, también soportado mediante integraciones interactivas de PowerBI.
 
 ---
