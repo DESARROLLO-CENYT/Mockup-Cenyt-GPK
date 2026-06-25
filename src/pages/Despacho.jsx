@@ -16,13 +16,21 @@ const dataFuentes = [
   { name: 'Solar', value: 0, color: '#E8A838' },
 ];
 
-const dataSemanal = [
-  { semana: 28, mes: 'Jul', pel: 53.0, sur: 13.0, gas: 0.8 },
-  { semana: 29, mes: 'Jul', pel: 54.2, sur: 13.5, gas: 0.9 },
-  { semana: 30, mes: 'Jul', pel: 54.5, sur: 13.8, gas: 1.0 },
-  { semana: 31, mes: 'Ago', pel: 54.8, sur: 13.9, gas: 1.0 },
-  { semana: 32, mes: 'Ago', pel: 55.0, sur: 14.0, gas: 1.0 },
-];
+const dataSemanal = (() => {
+  const data = [];
+  const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+  for (let i = 1; i <= 24; i++) {
+    const mesIndex = Math.floor((i - 1) / 4.33) % 12;
+    data.push({
+      semana: i,
+      mes: meses[mesIndex],
+      pel: parseFloat((50 + Math.sin(i / 2) * 5 + Math.cos(i / 4) * 2).toFixed(1)),
+      sur: parseFloat((12 + Math.cos(i / 3) * 2).toFixed(1)),
+      gas: parseFloat((1 + Math.sin(i) * 0.5).toFixed(1)),
+    });
+  }
+  return data;
+})();
 
 const tableData = [
   {
@@ -57,18 +65,26 @@ const tableData = [
   }
 ];
 
-const CustomXAxisTick = ({ x, y, payload, index, data }) => {
-  const isFirstOfMo = index === 0 || data[index].mes !== data[index - 1].mes;
+const CustomXAxisTick = ({ x, y, payload, data }) => {
+  const weekNum = payload.value;
+  const itemIndex = data.findIndex(d => d.semana === weekNum);
+  if (itemIndex === -1) return null;
+  
+  const isFirstOfMo = itemIndex === 0 || data[itemIndex].mes !== data[itemIndex - 1].mes;
+  const showWeek = itemIndex % 2 === 0;
+
   return (
     <g transform={`translate(${x},${y})`}>
-      <text x={0} y={15} dy={0} textAnchor="middle" fill="var(--muted-foreground)" fontSize={11} fontWeight={500}>
-        {payload.value}
-      </text>
+      {showWeek && (
+        <text x={0} y={15} dy={0} textAnchor="middle" fill="var(--muted-foreground)" fontSize={11} fontWeight={500}>
+          S{weekNum}
+        </text>
+      )}
       {isFirstOfMo && (
         <>
-          <line x1={-15} y1={20} x2={-15} y2={35} stroke="var(--border)" strokeWidth={1} />
+          <line x1={0} y1={20} x2={0} y2={35} stroke="var(--border)" strokeWidth={1} />
           <text x={0} y={32} textAnchor="middle" fill="var(--foreground)" fontSize={11} fontWeight={600}>
-            {data[index].mes}
+            {data[itemIndex].mes}
           </text>
         </>
       )}
@@ -121,6 +137,44 @@ const ExpandableRow = ({ row }) => {
   );
 };
 
+const renderCustomPieLabel = ({ cx, cy, midAngle, outerRadius, percent }) => {
+  const RADIAN = Math.PI / 180;
+  const radius = outerRadius + 20;
+  const x = cx + radius * Math.cos(-midAngle * RADIAN);
+  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+  
+  const text = `${(percent * 100).toFixed(1)}%`;
+  const textWidth = text.length * 7 + 16;
+  const height = 24;
+  
+  return (
+    <g>
+      <rect x={x - textWidth / 2} y={y - height / 2} width={textWidth} height={height} rx={6} fill="var(--card)" stroke="var(--border)" strokeWidth={1} style={{ filter: 'drop-shadow(0px 2px 4px rgba(0,0,0,0.08))' }} />
+      <text x={x} y={y} fill="var(--foreground)" textAnchor="middle" dominantBaseline="central" fontSize={11} fontWeight={600}>
+        {text}
+      </text>
+    </g>
+  );
+};
+
+const renderCustomBarLabel = (props) => {
+  const { x, y, width, value } = props;
+  if (!value || value === 0) return null;
+  
+  const text = `${value}`;
+  const rectWidth = text.length * 7 + 16;
+  const rectHeight = 22;
+  
+  return (
+    <g>
+      <rect x={x + width / 2 - rectWidth / 2} y={y - rectHeight - 6} width={rectWidth} height={rectHeight} rx={6} fill="var(--card)" stroke="var(--border)" strokeWidth={1} style={{ filter: 'drop-shadow(0px 2px 4px rgba(0,0,0,0.08))' }} />
+      <text x={x + width / 2} y={y - rectHeight / 2 - 6} fill="var(--foreground)" textAnchor="middle" dominantBaseline="central" fontSize={11} fontWeight={600}>
+        {text}
+      </text>
+    </g>
+  );
+};
+
 const Despacho = () => {
   return (
     <div className="flex flex-col gap-6 animate-fade-in">
@@ -147,11 +201,12 @@ const Despacho = () => {
                   data={dataCampos}
                   cx="50%"
                   cy="50%"
-                  innerRadius={60}
-                  outerRadius={90}
+                  innerRadius={50}
+                  outerRadius={75}
                   paddingAngle={2}
                   dataKey="value"
                   stroke="none"
+                  label={renderCustomPieLabel}
                 >
                   {dataCampos.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
@@ -188,7 +243,11 @@ const Despacho = () => {
                   formatter={(value) => [`${value} MW`, 'Generación']}
                   contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "var(--foreground)", fontSize: "12px" }}
                 />
-                <Bar dataKey="value" radius={[4, 4, 0, 0]}>
+                <Bar 
+                  dataKey="value" 
+                  radius={[4, 4, 0, 0]}
+                  label={renderCustomBarLabel}
+                >
                   {dataFuentes.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
@@ -211,16 +270,30 @@ const Despacho = () => {
             <button className="px-3 py-1 bg-[var(--background)] text-[var(--muted-foreground)] hover:bg-[var(--secondary)] transition-colors border-l border-[var(--border)]">AÑO</button>
           </div>
         </div>
-        <div className="h-[280px] p-4 flex-1 pb-10">
+        <div style={{ width: '100%', height: 320 }} className="p-4 pb-10">
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={dataSemanal} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+            <AreaChart data={dataSemanal} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
+              <defs>
+                <linearGradient id="colorPel" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#C41230" stopOpacity={0.3}/>
+                  <stop offset="95%" stopColor="#C41230" stopOpacity={0}/>
+                </linearGradient>
+                <linearGradient id="colorSur" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#B56D24" stopOpacity={0.3}/>
+                  <stop offset="95%" stopColor="#B56D24" stopOpacity={0}/>
+                </linearGradient>
+                <linearGradient id="colorGas" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#107C41" stopOpacity={0.3}/>
+                  <stop offset="95%" stopColor="#107C41" stopOpacity={0}/>
+                </linearGradient>
+              </defs>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(128,128,128,0.15)" />
               <XAxis dataKey="semana" axisLine={false} tickLine={false} tick={(props) => <CustomXAxisTick {...props} data={dataSemanal} />} interval={0} />
-              <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} dx={-10} />
+              <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} dx={-10} tickFormatter={(value) => `${value} MW`} />
               <Tooltip contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "var(--foreground)", fontSize: "12px" }} />
-              <Area type="monotone" dataKey="pel" name="PEL" stackId="1" stroke="#C41230" fill="#C41230" fillOpacity={0.8} strokeWidth={1} />
-              <Area type="monotone" dataKey="sur" name="Sur Energy" stackId="1" stroke="#B56D24" fill="#B56D24" fillOpacity={0.8} strokeWidth={1} />
-              <Area type="monotone" dataKey="gas" name="Gen. Gas" stackId="1" stroke="#107C41" fill="#107C41" fillOpacity={0.8} strokeWidth={1} />
+              <Area type="monotone" dataKey="pel" name="PEL" stackId="1" stroke="#C41230" fill="url(#colorPel)" strokeWidth={2} activeDot={{ r: 6, fill: "#C41230" }} />
+              <Area type="monotone" dataKey="sur" name="Sur Energy" stackId="1" stroke="#B56D24" fill="url(#colorSur)" strokeWidth={2} activeDot={{ r: 6, fill: "#B56D24" }} />
+              <Area type="monotone" dataKey="gas" name="Gen. Gas" stackId="1" stroke="#107C41" fill="url(#colorGas)" strokeWidth={2} activeDot={{ r: 6, fill: "#107C41" }} />
             </AreaChart>
           </ResponsiveContainer>
         </div>
