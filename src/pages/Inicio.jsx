@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Zap, Truck, TrendingUp, Shield, AlertTriangle, Wrench, Activity, LogOut } from 'lucide-react';
+import { Zap, UtilityPole, TrendingUp, Shield, AlertTriangle, Wrench, Activity, LogOut } from 'lucide-react';
 
 const Inicio = ({ onLogout }) => {
 
@@ -38,6 +38,14 @@ const Inicio = ({ onLogout }) => {
       icon: <Wrench size={24} className="text-indigo-400" />,
       path: '/vulnerabilidades',
       color: 'hover:border-indigo-500/50'
+    },
+    {
+      title: 'Parex',
+      description: 'Seguimiento y gestión inteligente de energía para aliados.',
+      icon: <UtilityPole size={24} className="text-stone-500" />,
+      path: '#',
+      color: 'hover:border-stone-500/50',
+      disabled: true
     },
     {
       title: 'Pronóstico y Demanda',
@@ -96,28 +104,56 @@ const Inicio = ({ onLogout }) => {
       {/* Cuadrícula de Tarjetas (Reemplaza el Carrusel) */}
       <div className="w-full max-w-6xl px-4 md:px-8 relative z-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
-          {cards.map((card, idx) => (
-            <Link
-              key={idx}
-              to={card.path}
-              className={`flex flex-col gap-3 p-6 rounded-2xl bg-[var(--card)]/95 backdrop-blur-md border border-[var(--border)] transition-all duration-300 ${card.color} hover:bg-[var(--card)] hover:-translate-y-2 hover:shadow-2xl group cursor-pointer`}
-            >
-              <div className="p-3 rounded-full bg-[var(--background)] w-12 h-12 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm border border-[var(--border)]">
-                {card.icon}
-              </div>
-              <div className="flex flex-col flex-1">
-                <h3 className="text-lg font-semibold text-[var(--foreground)] mb-2 group-hover:text-[var(--primary)] transition-colors">
-                  {card.title}
-                </h3>
-                <p className="text-xs text-[var(--foreground)] opacity-80 leading-relaxed mb-4 font-medium">
-                  {card.description}
-                </p>
-                <div className="mt-auto inline-flex items-center text-xs font-bold text-[var(--primary)] opacity-80 group-hover:opacity-100 group-hover:translate-x-1 transition-all">
-                  Ir al módulo <span className="ml-2">➔</span>
+          {cards.map((card, idx) => {
+            if (card.disabled) {
+              return (
+                <div
+                  key={idx}
+                  className="flex flex-col gap-3 p-6 rounded-2xl bg-[var(--card)]/85 backdrop-blur-md border border-[var(--border)] transition-all duration-300 opacity-90 cursor-not-allowed"
+                >
+                  <div className="flex justify-between items-start">
+                    <div className="p-3 rounded-full bg-[var(--background)] w-12 h-12 flex items-center justify-center shadow-sm border border-[var(--border)] grayscale">
+                      {card.icon}
+                    </div>
+                    <span className="text-[10px] bg-[var(--border)] text-[var(--foreground)] px-2 py-1 rounded uppercase tracking-wider font-bold">
+                      Pronto
+                    </span>
+                  </div>
+                  <div className="flex flex-col flex-1 mt-2">
+                    <h3 className="text-lg font-semibold text-[var(--foreground)] opacity-90 mb-2">
+                      {card.title}
+                    </h3>
+                    <p className="text-xs text-[var(--foreground)] opacity-70 leading-relaxed flex-1 font-medium">
+                      {card.description}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </Link>
-          ))}
+              );
+            }
+
+            return (
+              <Link
+                key={idx}
+                to={card.path}
+                className={`flex flex-col gap-3 p-6 rounded-2xl bg-[var(--card)]/95 backdrop-blur-md border border-[var(--border)] transition-all duration-300 ${card.color} hover:bg-[var(--card)] hover:-translate-y-2 hover:shadow-2xl group cursor-pointer`}
+              >
+                <div className="p-3 rounded-full bg-[var(--background)] w-12 h-12 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm border border-[var(--border)]">
+                  {card.icon}
+                </div>
+                <div className="flex flex-col flex-1 mt-2">
+                  <h3 className="text-lg font-semibold text-[var(--foreground)] mb-2 group-hover:text-[var(--primary)] transition-colors">
+                    {card.title}
+                  </h3>
+                  <p className="text-xs text-[var(--muted-foreground)] leading-relaxed flex-1">
+                    {card.description}
+                  </p>
+                  <div className="mt-auto inline-flex items-center text-xs font-bold text-[var(--primary)] opacity-80 group-hover:opacity-100 group-hover:translate-x-1 transition-all">
+                    Ir al módulo <span className="ml-2">➔</span>
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </div>
 

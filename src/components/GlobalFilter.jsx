@@ -5,6 +5,8 @@ import MultiSelect from './MultiSelect';
 const GlobalFilter = () => {
 
   const yearOptions = [
+    { value: '2026', label: '2026' },
+    { value: '2025', label: '2025' },
     { value: '2024', label: '2024' },
     { value: '2023', label: '2023' },
     { value: '2022', label: '2022' }
@@ -27,7 +29,7 @@ const GlobalFilter = () => {
 
   const dayOptions = Array.from({ length: 31 }, (_, i) => ({
     value: String(i + 1),
-    label: `Día ${i + 1}`
+    label: String(i + 1)
   }));
 
   const campoOptions = [
@@ -38,9 +40,18 @@ const GlobalFilter = () => {
   ];
 
   const clusterOptions = [
-    { value: 'cluster1', label: 'Cluster 1' },
-    { value: 'cluster2', label: 'Cluster 2' },
-    { value: 'cluster3', label: 'Cluster 3' }
+    { value: 'jacana1', label: 'Jacana 1' },
+    { value: 'jacana2', label: 'Jacana 2' },
+    { value: 'jacana3', label: 'Jacana 3' },
+    { value: 'tigana1', label: 'Tigana 1' },
+    { value: 'tigana2', label: 'Tigana 2' },
+    { value: 'tigana3', label: 'Tigana 3' },
+    { value: 'tua1', label: 'Tua 1' },
+    { value: 'tua2', label: 'Tua 2' },
+    { value: 'tua3', label: 'Tua 3' },
+    { value: 'menores1', label: 'Menores 1' },
+    { value: 'menores2', label: 'Menores 2' },
+    { value: 'menores3', label: 'Menores 3' }
   ];
 
   const pozoOptions = [

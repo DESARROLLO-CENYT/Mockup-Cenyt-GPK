@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Zap, Truck, TrendingUp, Shield, Sun, Moon, AlertTriangle, Activity, Wrench, LogOut } from 'lucide-react';
+import { Zap, UtilityPole, TrendingUp, Shield, Sun, Moon, AlertTriangle, Activity, Wrench, LogOut } from 'lucide-react';
 
 const Sidebar = ({ onLogout }) => {
   const location = useLocation();
@@ -24,10 +24,11 @@ const Sidebar = ({ onLogout }) => {
   const navItems = [
     { id: 'eficiencia', label: 'Eficiencia', icon: <Zap size={22} className="shrink-0" />, path: '/eficiencia' },
     { id: 'despacho', label: 'Despacho', icon: <Activity size={22} className="shrink-0" />, path: '/despacho' },
-    { id: 'pronostico', label: 'Pronóstico', icon: <TrendingUp size={22} className="shrink-0" />, path: '/pronostico' },
     { id: 'confiabilidad', label: 'Confiabilidad', icon: <Shield size={22} className="shrink-0" />, path: '/confiabilidad' },
     { id: 'fallas', label: 'Fallas', icon: <AlertTriangle size={22} className="shrink-0" />, path: '/fallas' },
     { id: 'vulnerabilidades', label: 'Mantenimiento', icon: <Wrench size={22} className="shrink-0" />, path: '/vulnerabilidades' },
+    { id: 'parex', label: 'Parex', icon: <UtilityPole size={22} className="shrink-0" />, path: '#', disabled: true },
+    { id: 'pronostico', label: 'Pronóstico', icon: <TrendingUp size={22} className="shrink-0" />, path: '/pronostico' },
   ];
 
   const asideBg = isHome 
@@ -59,6 +60,23 @@ const Sidebar = ({ onLogout }) => {
             Procesos
           </div>
           {navItems.map((item) => {
+            if (item.disabled) {
+              return (
+                <div
+                  key={item.id}
+                  className={`flex items-center mx-4 px-3 py-3 rounded-xl text-sm transition-colors relative opacity-50 cursor-not-allowed ${
+                    isHome ? 'text-gray-300' : 'text-[var(--muted-foreground)]'
+                  }`}
+                  title={`${item.label} (Próximamente)`}
+                >
+                  {item.icon}
+                  <span className="ml-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+                    {item.label} <span className="text-[9px] bg-[var(--border)] text-[var(--foreground)] px-1.5 py-0.5 rounded ml-2 uppercase tracking-wider font-bold">Pronto</span>
+                  </span>
+                </div>
+              );
+            }
+
             const isActive = item.path === '/' 
               ? location.pathname === '/' 
               : location.pathname.includes(item.path);
