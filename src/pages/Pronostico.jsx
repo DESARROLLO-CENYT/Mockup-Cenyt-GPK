@@ -1,7 +1,19 @@
 import React from 'react';
 import KPICard from '../components/KPICard';
 import StatusBadge from '../components/StatusBadge';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+
+const dataDiarioCostos = [
+  { hora: '12:00 a.m.', total: 600, solar: 0, gas: 240, diesel: 0, interconectada: 400, presupuesto: 600, fijoEnel: 300 },
+  { hora: '03:00 a.m.', total: 550, solar: 0, gas: 240, diesel: 0, interconectada: 300, presupuesto: 600, fijoEnel: 300 },
+  { hora: '06:00 a.m.', total: 550, solar: 0, gas: 240, diesel: 0, interconectada: 300, presupuesto: 600, fijoEnel: 300 },
+  { hora: '09:00 a.m.', total: 500, solar: 100, gas: 240, diesel: 0, interconectada: 250, presupuesto: 600, fijoEnel: 300 },
+  { hora: '12:00 p.m.', total: 500, solar: 100, gas: 240, diesel: 0, interconectada: 250, presupuesto: 600, fijoEnel: 300 },
+  { hora: '03:00 p.m.', total: 520, solar: 80, gas: 240, diesel: 0, interconectada: 280, presupuesto: 600, fijoEnel: 300 },
+  { hora: '06:00 p.m.', total: 650, solar: 0, gas: 240, diesel: 0, interconectada: 450, presupuesto: 600, fijoEnel: 300 },
+  { hora: '09:00 p.m.', total: 800, solar: 0, gas: 240, diesel: 100, interconectada: 700, presupuesto: 600, fijoEnel: 300 },
+  { hora: '11:59 p.m.', total: 600, solar: 0, gas: 240, diesel: 0, interconectada: 400, presupuesto: 600, fijoEnel: 300 },
+];
 
 const dataPronostico = [
   { dia: '10', real: 51000, forecast: 51200 },
@@ -94,6 +106,103 @@ const Pronostico = () => {
                   <td className="px-5 py-3.5 text-left"><StatusBadge status={row.estado} /></td>
                 </tr>
               ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Gráfico de Costos Diario (Movido desde Despacho) */}
+      <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg shadow-sm flex flex-col mt-6">
+        <div className="px-6 py-4 border-b border-[var(--border)]">
+          <h3 className="text-[14px] font-medium text-[var(--foreground)] uppercase tracking-widest text-center">
+            Costos de Energía por Fuentes de Generación
+          </h3>
+        </div>
+        <div style={{ width: '100%', height: 300 }} className="p-4 pb-10">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={dataDiarioCostos} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(128,128,128,0.15)" />
+              <XAxis dataKey="hora" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: "var(--muted-foreground)" }} dy={10} interval="preserveStartEnd" />
+              <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} tickFormatter={(val) => `$${val}`} />
+              <Tooltip contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "var(--foreground)", fontSize: "12px" }} />
+              <Legend iconType="circle" wrapperStyle={{ fontSize: '10px', paddingTop: '20px' }} />
+              <Line type="monotone" dataKey="total" name="TOTAL" stroke="#900020" strokeWidth={2} dot={false} activeDot={{ r: 4 }} />
+              <Line type="monotone" dataKey="solar" name="SOLAR" stroke="#EAB308" strokeWidth={2} dot={false} />
+              <Line type="monotone" dataKey="gas" name="GAS" stroke="#16A34A" strokeWidth={2} dot={false} />
+              <Line type="monotone" dataKey="diesel" name="DIESEL" stroke="#737373" strokeWidth={2} dot={false} />
+              <Line type="monotone" dataKey="interconectada" name="INTERCONECTADA" stroke="#38BDF8" strokeWidth={2} dot={false} />
+              <Line type="stepAfter" dataKey="presupuesto" name="PRESUPUESTO" stroke="#8B5CF6" strokeWidth={2} dot={false} />
+              <Line type="monotone" dataKey="fijoEnel" name="FIJO ENEL" stroke="#F97316" strokeWidth={2} dot={false} />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      {/* Tabla Comparativa Diaria (Movida desde Despacho) */}
+      <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg overflow-hidden shadow-sm mt-6">
+        <div className="w-full overflow-x-auto">
+          <table className="w-full text-[13.5px] text-left">
+            <thead className="border-b border-[var(--border)]">
+              <tr>
+                <th className="px-6 py-4 bg-[var(--background)]"></th>
+                <th className="px-6 py-4 font-bold text-[12px] text-[#C41230] text-center tracking-wider bg-[var(--background)] border-b-2 border-transparent">
+                  <div className="flex flex-col items-center">
+                    <span>Despacho Energía</span>
+                    <span>Día Siguiente</span>
+                  </div>
+                </th>
+                <th className="px-6 py-4 font-bold text-[12px] text-[#C41230] text-center tracking-wider bg-[var(--background)] border-b-2 border-transparent">
+                  <div className="flex flex-col items-center">
+                    <span>Despacho Energía</span>
+                    <span>Día Anterior</span>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-[var(--border)]/50">
+                <td className="px-6 py-3.5 font-bold text-[var(--foreground)]">Costo Total (COP kWh)</td>
+                <td className="px-6 py-3.5 text-center text-[var(--foreground)]">710,6</td>
+                <td className="px-6 py-3.5 text-center text-[var(--foreground)]">640,2</td>
+              </tr>
+              <tr className="border-b border-[var(--border)]/50">
+                <td className="px-6 py-3.5 font-bold text-[var(--foreground)]">Gen. Total Ll34 (kW)</td>
+                <td className="px-6 py-3.5 text-center text-[var(--foreground)]">68.774</td>
+                <td className="px-6 py-3.5 text-center text-[var(--foreground)]">69.455</td>
+              </tr>
+              <tr className="border-b border-[var(--border)]/50">
+                <td className="px-6 py-3.5 font-bold text-[var(--foreground)]">Gen. Interconectada (kW)</td>
+                <td className="px-6 py-3.5 text-center text-[var(--foreground)]">50.894</td>
+                <td className="px-6 py-3.5 text-center text-[var(--foreground)]">51.995</td>
+              </tr>
+              <tr className="border-b border-[var(--border)]/50">
+                <td className="px-6 py-3.5 font-bold text-[var(--foreground)]">
+                  Gen. Interconectada (kW)<br/>
+                  <span className="text-[11px] font-normal text-[var(--muted-foreground)]">Precio Fijo</span>
+                </td>
+                <td className="px-6 py-3.5 text-center text-[var(--foreground)]">2.500</td>
+                <td className="px-6 py-3.5 text-center text-[var(--foreground)]">2.500</td>
+              </tr>
+              <tr className="border-b border-[var(--border)]/50">
+                <td className="px-6 py-3.5 font-bold text-[var(--foreground)]">Gen. Gas (kW)</td>
+                <td className="px-6 py-3.5 text-center text-[var(--foreground)]">14.521</td>
+                <td className="px-6 py-3.5 text-center text-[var(--foreground)]">14.192</td>
+              </tr>
+              <tr className="border-b border-[var(--border)]/50">
+                <td className="px-6 py-3.5 font-bold text-[var(--foreground)]">Gen. Gas Propio (kW)</td>
+                <td className="px-6 py-3.5 text-center text-[var(--foreground)]">859</td>
+                <td className="px-6 py-3.5 text-center text-[var(--foreground)]">759</td>
+              </tr>
+              <tr className="border-b border-[var(--border)]/50">
+                <td className="px-6 py-3.5 font-bold text-[var(--foreground)]">Gen. Solar (kW)</td>
+                <td className="px-6 py-3.5 text-center text-[var(--foreground)]">0</td>
+                <td className="px-6 py-3.5 text-center text-[var(--foreground)]">0</td>
+              </tr>
+              <tr>
+                <td className="px-6 py-3.5 font-bold text-[var(--foreground)]">Gen. Diesel (kW)</td>
+                <td className="px-6 py-3.5 text-center text-[var(--foreground)]">0</td>
+                <td className="px-6 py-3.5 text-center text-[var(--foreground)]">9</td>
+              </tr>
             </tbody>
           </table>
         </div>
