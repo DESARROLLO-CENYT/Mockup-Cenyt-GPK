@@ -402,84 +402,86 @@ const Vulnerabilidades = () => {
       </div>
 
       {/* Planes de Acción Unificados */}
-      <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm p-6 mt-6">
-        <h3 className="text-md font-bold text-[var(--foreground)] uppercase tracking-wider mb-6">PLANES DE ACCIÓN: PEL & CABRESTERO</h3>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {!isKeraunos && (
+        <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm p-6 mt-6">
+          <h3 className="text-md font-bold text-[var(--foreground)] uppercase tracking-wider mb-6">PLANES DE ACCIÓN: PEL & CABRESTERO</h3>
           
-          {/* Columna PEL */}
-          <div className="flex flex-col gap-6">
-            <h4 className="text-sm font-bold text-[var(--foreground)] border-b border-[var(--border)] pb-2">PLAN ACCIÓN PEL</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             
-            <div>
-              <h5 className="text-xs font-bold text-[var(--foreground)] uppercase mb-3">Líneas de transmisión corto plazo</h5>
-              <ul className="flex flex-col gap-2">
-                {listCortoPlazo.map((item, idx) => (
-                  <li key={idx} className="bg-[var(--background)] px-4 py-2 rounded text-sm text-[var(--muted-foreground)] border border-[var(--border)]">{item}</li>
-                ))}
-              </ul>
-            </div>
+            {/* Columna PEL */}
+            <div className="flex flex-col gap-6">
+              <h4 className="text-sm font-bold text-[var(--foreground)] border-b border-[var(--border)] pb-2">PLAN ACCIÓN PEL</h4>
+              
+              <div>
+                <h5 className="text-xs font-bold text-[var(--foreground)] uppercase mb-3">Líneas de transmisión corto plazo</h5>
+                <ul className="flex flex-col gap-2">
+                  {listCortoPlazo.map((item, idx) => (
+                    <li key={idx} className="bg-[var(--background)] px-4 py-2 rounded text-sm text-[var(--muted-foreground)] border border-[var(--border)]">{item}</li>
+                  ))}
+                </ul>
+              </div>
 
-            <div>
-              <h5 className="text-xs font-bold text-[var(--foreground)] uppercase mb-3">Subestaciones mantenimiento anual</h5>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div className="bg-[var(--background)] p-3 rounded border border-[var(--border)]">
-                  <h6 className="font-bold text-sm text-[var(--foreground)]">Transformadores</h6>
-                  <p className="text-xs text-[var(--muted-foreground)] mt-1">DGA, Factor de potencia (tan δ), Furanos.</p>
-                </div>
-                <div className="bg-[var(--background)] p-3 rounded border border-[var(--border)]">
-                  <h6 className="font-bold text-sm text-[var(--foreground)]">Interruptores</h6>
-                  <p className="text-xs text-[var(--muted-foreground)] mt-1">Resistencia de contactos, Tiempos.</p>
-                </div>
-                <div className="bg-[var(--background)] p-3 rounded border border-[var(--border)]">
-                  <h6 className="font-bold text-sm text-[var(--foreground)]">Protecciones</h6>
-                  <p className="text-xs text-[var(--muted-foreground)] mt-1">Pruebas secundarias, Ajustes Estudio IEB.</p>
-                </div>
-                <div className="bg-[var(--background)] p-3 rounded border border-[var(--border)]">
-                  <h6 className="font-bold text-sm text-[var(--foreground)]">Puesta a Tierra</h6>
-                  <p className="text-xs text-[var(--muted-foreground)] mt-1">Medición de resistencia.</p>
+              <div>
+                <h5 className="text-xs font-bold text-[var(--foreground)] uppercase mb-3">Subestaciones mantenimiento anual</h5>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="bg-[var(--background)] p-3 rounded border border-[var(--border)]">
+                    <h6 className="font-bold text-sm text-[var(--foreground)]">Transformadores</h6>
+                    <p className="text-xs text-[var(--muted-foreground)] mt-1">DGA, Factor de potencia (tan δ), Furanos.</p>
+                  </div>
+                  <div className="bg-[var(--background)] p-3 rounded border border-[var(--border)]">
+                    <h6 className="font-bold text-sm text-[var(--foreground)]">Interruptores</h6>
+                    <p className="text-xs text-[var(--muted-foreground)] mt-1">Resistencia de contactos, Tiempos.</p>
+                  </div>
+                  <div className="bg-[var(--background)] p-3 rounded border border-[var(--border)]">
+                    <h6 className="font-bold text-sm text-[var(--foreground)]">Protecciones</h6>
+                    <p className="text-xs text-[var(--muted-foreground)] mt-1">Pruebas secundarias, Ajustes Estudio IEB.</p>
+                  </div>
+                  <div className="bg-[var(--background)] p-3 rounded border border-[var(--border)]">
+                    <h6 className="font-bold text-sm text-[var(--foreground)]">Puesta a Tierra</h6>
+                    <p className="text-xs text-[var(--muted-foreground)] mt-1">Medición de resistencia.</p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Columna CABRESTERO */}
-          <div className="flex flex-col gap-6">
-            <h4 className="text-sm font-bold text-[var(--foreground)] border-b border-[var(--border)] pb-2 flex justify-between items-center">
-              <span>PLAN ACCIÓN CABRESTERO</span>
-              <span className="text-xs font-normal text-[var(--muted-foreground)] normal-case">Causas: Fauna y Descargas</span>
-            </h4>
-            
-            <div>
-              <h5 className="text-xs font-bold text-[var(--foreground)] uppercase mb-3">Rutinas preventivas/predictivas</h5>
-              <ul className="flex flex-col gap-2">
-                {listRutinas.map((item, idx) => (
-                  <li key={idx} className="bg-[var(--background)] px-4 py-3 rounded text-sm text-[var(--muted-foreground)] border border-[var(--border)] leading-tight">{item}</li>
-                ))}
-              </ul>
-            </div>
+            {/* Columna CABRESTERO */}
+            <div className="flex flex-col gap-6">
+              <h4 className="text-sm font-bold text-[var(--foreground)] border-b border-[var(--border)] pb-2 flex justify-between items-center">
+                <span>PLAN ACCIÓN CABRESTERO</span>
+                <span className="text-xs font-normal text-[var(--muted-foreground)] normal-case">Causas: Fauna y Descargas</span>
+              </h4>
+              
+              <div>
+                <h5 className="text-xs font-bold text-[var(--foreground)] uppercase mb-3">Rutinas preventivas/predictivas</h5>
+                <ul className="flex flex-col gap-2">
+                  {listRutinas.map((item, idx) => (
+                    <li key={idx} className="bg-[var(--background)] px-4 py-3 rounded text-sm text-[var(--muted-foreground)] border border-[var(--border)] leading-tight">{item}</li>
+                  ))}
+                </ul>
+              </div>
 
-            <div>
-              <h5 className="text-xs font-bold text-[var(--foreground)] uppercase mb-3">Basado en confiabilidad</h5>
-              <div className="flex flex-col gap-3">
-                <div className="bg-[var(--background)] p-3 rounded border border-[var(--border)] flex justify-between items-center">
-                  <h6 className="font-bold text-sm text-[var(--foreground)]">Redes M.T.</h6>
-                  <p className="text-xs text-[var(--muted-foreground)] text-right">Ampliación distancias en redes.</p>
-                </div>
-                <div className="bg-[var(--background)] p-3 rounded border border-[var(--border)] flex justify-between items-center">
-                  <h6 className="font-bold text-sm text-[var(--foreground)]">Pórtico M.T.</h6>
-                  <p className="text-xs text-[var(--muted-foreground)] text-right">Tecnologías en reconectadores.</p>
-                </div>
-                <div className="bg-[var(--background)] p-3 rounded border border-[var(--border)] flex justify-between items-center">
-                  <h6 className="font-bold text-sm text-[var(--foreground)]">Coordinación</h6>
-                  <p className="text-xs text-[var(--muted-foreground)] text-right">Coordinación de protecciones actualizada.</p>
+              <div>
+                <h5 className="text-xs font-bold text-[var(--foreground)] uppercase mb-3">Basado en confiabilidad</h5>
+                <div className="flex flex-col gap-3">
+                  <div className="bg-[var(--background)] p-3 rounded border border-[var(--border)] flex justify-between items-center">
+                    <h6 className="font-bold text-sm text-[var(--foreground)]">Redes M.T.</h6>
+                    <p className="text-xs text-[var(--muted-foreground)] text-right">Ampliación distancias en redes.</p>
+                  </div>
+                  <div className="bg-[var(--background)] p-3 rounded border border-[var(--border)] flex justify-between items-center">
+                    <h6 className="font-bold text-sm text-[var(--foreground)]">Pórtico M.T.</h6>
+                    <p className="text-xs text-[var(--muted-foreground)] text-right">Tecnologías en reconectadores.</p>
+                  </div>
+                  <div className="bg-[var(--background)] p-3 rounded border border-[var(--border)] flex justify-between items-center">
+                    <h6 className="font-bold text-sm text-[var(--foreground)]">Coordinación</h6>
+                    <p className="text-xs text-[var(--muted-foreground)] text-right">Coordinación de protecciones actualizada.</p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

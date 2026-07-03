@@ -40,19 +40,18 @@ const Inicio = ({ onLogout }) => {
       color: 'hover:border-indigo-500/50'
     },
     {
-      title: 'Parex',
-      description: 'Seguimiento y gestión inteligente de energía para aliados.',
-      icon: <UtilityPole size={24} className="text-stone-500" />,
-      path: '#',
-      color: 'hover:border-stone-500/50',
-      disabled: true
-    },
-    {
       title: 'Pronóstico y Demanda',
       description: 'Predicción de comportamiento, proyecciones ML y distribución por mercado.',
       icon: <TrendingUp size={24} className="text-amber-500" />,
       path: '/pronostico',
       color: 'hover:border-amber-500/50'
+    },
+    {
+      title: 'Parex',
+      description: 'Seguimiento y gestión inteligente de energía para aliados.',
+      icon: <UtilityPole size={24} className="text-green-500" />,
+      path: '/parex',
+      color: 'hover:border-green-500/50'
     }
   ];
 

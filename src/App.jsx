@@ -8,6 +8,7 @@ import Pronostico from './pages/Pronostico';
 import Confiabilidad from './pages/Confiabilidad';
 import Fallas from './pages/Fallas';
 import Vulnerabilidades from './pages/Vulnerabilidades';
+import Parex from './pages/Parex';
 import Login from './pages/Login';
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
           <Route path="confiabilidad" element={<Confiabilidad />} />
           <Route path="fallas" element={<Fallas />} />
           <Route path="vulnerabilidades" element={<Vulnerabilidades />} />
+          <Route path="parex" element={<Parex />} />
         </Route>
       </Routes>
     </HashRouter>

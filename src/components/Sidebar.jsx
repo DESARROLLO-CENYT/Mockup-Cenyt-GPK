@@ -26,9 +26,8 @@ const Sidebar = ({ onLogout }) => {
     { id: 'despacho', label: 'Despacho', icon: <Activity size={22} className="shrink-0" />, path: '/despacho' },
     { id: 'confiabilidad', label: 'Confiabilidad', icon: <Shield size={22} className="shrink-0" />, path: '/confiabilidad' },
     { id: 'fallas', label: 'Fallas', icon: <AlertTriangle size={22} className="shrink-0" />, path: '/fallas' },
-    { id: 'vulnerabilidades', label: 'Mantenimiento', icon: <Wrench size={22} className="shrink-0" />, path: '/vulnerabilidades' },
-    { id: 'parex', label: 'Parex', icon: <UtilityPole size={22} className="shrink-0" />, path: '#', disabled: true },
     { id: 'pronostico', label: 'Pronóstico', icon: <TrendingUp size={22} className="shrink-0" />, path: '/pronostico' },
+    { id: 'parex', label: 'Parex', icon: <UtilityPole size={22} className="shrink-0" />, path: '/parex' },
   ];
 
   const asideBg = isHome 
@@ -86,13 +85,17 @@ const Sidebar = ({ onLogout }) => {
               ? 'text-gray-300 hover:bg-white/10 hover:text-white'
               : 'text-[var(--muted-foreground)] hover:bg-[var(--sidebar-accent)] hover:text-[var(--foreground)]';
 
+            const activeClass = item.id === 'parex'
+              ? 'bg-green-500/20 text-green-600 dark:bg-green-500/30 dark:text-green-400 font-medium shadow-md shadow-green-500/20'
+              : 'bg-[var(--primary)] text-[var(--primary-foreground)] font-medium shadow-md shadow-[var(--primary)]/20';
+
             return (
               <Link
                 key={item.id}
                 to={item.path}
                 className={`flex items-center mx-4 px-3 py-3 rounded-xl text-sm transition-colors relative ${
                   isActive 
-                    ? 'bg-[var(--primary)] text-[var(--primary-foreground)] font-medium shadow-md shadow-[var(--primary)]/20' 
+                    ? activeClass
                     : inactiveLinkColor
                 }`}
                 title={item.label}
