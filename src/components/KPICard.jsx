@@ -15,9 +15,11 @@ const KPICard = ({ label, value, unit, trend, trendValue, subtext, accent }) => 
 
   return (
     <div className={`p-5 rounded-lg border transition-colors flex flex-col gap-3 ${
-      accent 
-        ? 'bg-[var(--primary)]/10 border-[rgba(196,18,48,0.3)]' 
-        : 'bg-[var(--card)] border-[var(--border)] hover:border-white/10'
+      accent === 'blue' 
+        ? 'bg-blue-500/10 border-blue-500/30'
+        : accent 
+          ? 'bg-[var(--primary)]/10 border-[rgba(196,18,48,0.3)]' 
+          : 'bg-[var(--card)] border-[var(--border)] hover:border-white/10'
     }`}>
       <div className="flex justify-between items-start">
         <span className="text-[10px] uppercase tracking-widest font-medium text-[var(--muted-foreground)]">

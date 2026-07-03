@@ -14,43 +14,49 @@ Este es el repositorio de la aplicación de **Gestión de Energía Inteligente**
 
 ---
 
-## 📂 Páginas del Proyecto
+## 📂 Páginas y Módulos del Proyecto
 
-El sistema está organizado en una barra lateral de navegación interactiva y cuenta con las siguientes vistas principales:
+El sistema está organizado en una barra lateral de navegación interactiva y cuenta con las siguientes vistas principales actualizadas a su última versión:
 
-### 1. [Login.jsx](file:///c:/Users/ingju/OneDrive%20-%20Cenyt%20ingenieros/Desktop/APP_Gestion_Energia/src/pages/Login.jsx)
+### 1. Login.jsx
 Pantalla de inicio de sesión con estética *Glassmorphism* sobre el fondo fotográfico de los Llanos 34. Protege el acceso al dashboard validando credenciales de prueba.
 
-### 2. [Inicio.jsx](file:///c:/Users/ingju/OneDrive%20-%20Cenyt%20ingenieros/Desktop/APP_Gestion_Energia/src/pages/Inicio.jsx)
-La página de bienvenida de la aplicación. Presenta un carrusel interactivo y responsivo de tarjetas de accesos rápidos a los módulos operativos, cada uno con hover dinámico y micro-animaciones personalizadas.
+### 2. Inicio.jsx
+La página de bienvenida de la aplicación. Presenta una cuadrícula interactiva de tarjetas de accesos rápidos a los módulos operativos, incluyendo indicadores de módulos "Próximamente" (como Parex), cada uno con hover dinámico y micro-animaciones personalizadas.
 
-### 3. [Eficiencia.jsx](file:///c:/Users/ingju/OneDrive%20-%20Cenyt%20ingenieros/Desktop/APP_Gestion_Energia/src/pages/Eficiencia.jsx)
+### 3. Eficiencia.jsx
 Módulo enfocado en la **Eficiencia Operacional**.
 * **KPIs Clave:** Eficiencia Global, Consumo Total, Pozos Activos y Meta de Ahorro.
 * **Visualizaciones:** Gráfico de Área que muestra la eficiencia mensual real frente a la meta establecida y un Gráfico de Barras Horizontal detallando la eficiencia por tipo de energía y campo.
-* **Tablas de Monitoreo:** Estatus operacional de cada campo en tiempo real.
 
-### 4. [Despacho.jsx](file:///c:/Users/ingju/OneDrive%20-%20Cenyt%20ingenieros/Desktop/APP_Gestion_Energia/src/pages/Despacho.jsx)
-Módulo enfocado en el **Despacho Energético** (hacia qué campos y pozos se está dirigiendo la energía generada).
-* **KPIs Clave:** Energía Despachada (MW), Generación Autónoma (%), Eficiencia de Distribución y Pérdidas del Sistema.
-* **Visualizaciones:** Gráfico de Donut interactivo para la distribución por campo en porcentaje y un Gráfico de Área Apilada que proyecta la tendencia mensual acumulada por campo de la energía despachada.
-* **Tabla de Asignación:** Balance detallado de energía programada versus real por campo.
+### 4. Despacho.jsx
+Módulo enfocado en el **Despacho Energético y Generación**.
+* **Visualizaciones Principales:** Gráfico de Donut (Demanda por Campos), Gráfico de Barras (Generación por Fuente), y Gráfico de Área (Comportamiento Semanal).
+* **Tablas de Balance:** Tabla detallada de Real vs Programado por semana.
+* **Análisis Diario:** Sección inferior enfocada en la variación diaria con gráficos interactivos de costos horarios y tablas de comparación frente al día anterior.
 
-### 5. [Pronostico.jsx](file:///c:/Users/ingju/OneDrive%20-%20Cenyt%20ingenieros/Desktop/APP_Gestion_Energia/src/pages/Pronostico.jsx)
+### 5. Confiabilidad.jsx
+Módulo centrado en la **Operatividad de los Pozos** y las pérdidas de producción.
+* **KPIs Clave:** Bbls Diferidos, Pozos Afectados, Disponibilidad de Pozos y MTBF Promedio.
+* **Visualizaciones:** Gráfico de Área Dinámico con selector de métricas (SAIFI, MTTR, MTBF, Diferidas, etc.) y selector temporal (Semanal / Mensual).
+* **Tabla de Asignación:** Resumen detallado del Estado de Pozos con sus respectivas pérdidas diferidas.
+
+### 6. Fallas.jsx
+Dashboard nativo y robusto de **Análisis de Fallas** (reemplazando el antiguo iFrame).
+* **Estructura en Pestañas:** 
+  * *Análisis General:* KPIs de eventos y diferidas acumuladas, gráficos de clasificación por ubicación y causa, diferida por fuente y distribuciones.
+  * *Comparativo Red:* Panel específico para el análisis de redes, con gráficos comparativos interanuales (2024, 2025, 2026) y tabla de tendencias.
+* Opción de acceder al reporte en PowerBI mediante enlace directo externo.
+
+### 7. Vulnerabilidades.jsx
+Módulo de **Mantenimiento y Vulnerabilidades** del sistema para el seguimiento detallado de activos críticos, soportado mediante integraciones interactivas de PowerBI.
+
+### 8. Parex (Próximamente)
+Módulo en desarrollo para seguimiento y gestión inteligente de energía para aliados. Actualmente visualizado de manera inactiva en el menú e inicio.
+
+### 9. Pronostico.jsx
 Modulo de **Pronóstico y Demanda** de carga energética.
-* **KPIs Clave:** Pronóstico Semanal, Demanda Máxima Esperada, Factor de Carga y Precisión del Modelo.
-* **Visualizaciones:** Gráfico de Líneas con proyección a futuro mediante Machine Learning (mostrando datos reales y la curva del forecast), junto con barras de progreso estilizadas de la distribución por mercado (Regulado vs. No Regulado).
-
-### 6. [Confiabilidad.jsx](file:///c:/Users/ingju/OneDrive%20-%20Cenyt%20ingenieros/Desktop/APP_Gestion_Energia/src/pages/Confiabilidad.jsx)
-Módulo para el análisis de **Confiabilidad del Sistema**.
-* **KPIs Clave:** Uptime General, MTBF (Tiempo Medio Entre Fallas), MTTR (Tiempo Medio de Reparación) y Equipos Críticos bajo monitoreo.
-* **Visualizaciones:** Gráfico de Área para el histórico de Uptime y un Gráfico de Barras Dobles que compara directamente MTBF vs. MTTR mes a mes.
-
-### 7. [Fallas.jsx](file:///c:/Users/ingju/OneDrive%20-%20Cenyt%20ingenieros/Desktop/APP_Gestion_Energia/src/pages/Fallas.jsx)
-Módulo de **Reporte de Fallas** que integra visualizaciones interactivas de PowerBI mediante incrustaciones responsivas.
-
-### 8. [Vulnerabilidades.jsx](file:///c:/Users/ingju/OneDrive%20-%20Cenyt%20ingenieros/Desktop/APP_Gestion_Energia/src/pages/Vulnerabilidades.jsx)
-Módulo de **Mantenimiento y Vulnerabilidades** del sistema para el seguimiento detallado de activos críticos, también soportado mediante integraciones interactivas de PowerBI.
+* **Visualizaciones:** Gráfico de Líneas con proyección a futuro mediante Machine Learning (mostrando datos reales y la curva del forecast).
 
 ---
 
@@ -59,7 +65,7 @@ Módulo de **Mantenimiento y Vulnerabilidades** del sistema para el seguimiento 
 * **React 18** (JavaScript)
 * **Vite** (Build Tool ultrarrápido)
 * **Tailwind CSS v4** (Estilos y variables de diseño responsivos)
-* **Recharts** (Gráficos interactivos adaptados al tema de la aplicación)
+* **Recharts** (Gráficos interactivos nativos adaptados al tema de la aplicación)
 * **Lucide React** (Paquete de iconos consistente y moderno)
 * **GitHub Actions** (CI/CD para automatización de despliegue)
 
@@ -89,4 +95,4 @@ npm run build
 
 ## 🌐 Integración Continua y Despliegue (CI/CD)
 
-El repositorio está configurado con **GitHub Actions**. El flujo de trabajo en [.github/workflows/deploy.yml](file:///c:/Users/ingju/OneDrive%20-%20Cenyt%20ingenieros/Desktop/APP_Gestion_Energia/.github/workflows/deploy.yml) realiza automáticamente el build y despliegue a la rama `gh-pages` cada vez que se hace un `push` a la rama `main`, actualizando la maqueta web en vivo.
+El repositorio está configurado con **GitHub Actions**. El flujo de trabajo realiza automáticamente el build y despliegue a la rama `gh-pages` cada vez que se hace un `push` a la rama `main`, actualizando la maqueta web en vivo.
