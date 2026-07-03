@@ -26,6 +26,7 @@ const Sidebar = ({ onLogout }) => {
     { id: 'despacho', label: 'Despacho', icon: <Activity size={22} className="shrink-0" />, path: '/despacho' },
     { id: 'confiabilidad', label: 'Confiabilidad', icon: <Shield size={22} className="shrink-0" />, path: '/confiabilidad' },
     { id: 'fallas', label: 'Fallas', icon: <AlertTriangle size={22} className="shrink-0" />, path: '/fallas' },
+    { id: 'vulnerabilidades', label: 'Mantenimiento', icon: <Wrench size={22} className="shrink-0" />, path: '/vulnerabilidades' },
     { id: 'pronostico', label: 'Pronóstico', icon: <TrendingUp size={22} className="shrink-0" />, path: '/pronostico' },
     { id: 'parex', label: 'Parex', icon: <UtilityPole size={22} className="shrink-0" />, path: '/parex' },
   ];
