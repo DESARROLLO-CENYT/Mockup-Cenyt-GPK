@@ -4,6 +4,7 @@ import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Legend,
   BarChart, Bar, Cell, PieChart, Pie
 } from 'recharts';
+import { HelpCircle } from 'lucide-react';
 
 const Parex = () => {
   // --- MOCK DATA ---
@@ -22,14 +23,13 @@ const Parex = () => {
   ].sort((a, b) => b.value - a.value);
 
   // Colores para la gráfica de fuentes
+  const palette = ['#963133', '#ae4247', '#cb5c62', '#dc7d82', '#efb2b6'];
   const getColor = (entry, index, total) => {
     if (entry.name.includes('Gas')) {
-      return '#475569'; // Slate/gris oscuro para diferenciar Gas
+      return '#475569'; // Mantenemos gris oscuro para diferenciar Gas, o puedes cambiarlo. Asumo mantenerlo para mantener consistencia funcional.
     }
-    const minLightness = 25; // Oscuro
-    const maxLightness = 75; // Claro
-    const lightness = minLightness + (index / Math.max(1, total - 1)) * (maxLightness - minLightness);
-    return `hsl(350, 85%, ${lightness}%)`; // Rojo Geopark para PEL
+    // Asignar color de la paleta según índice (saltando el gas si es necesario para mantener 4 colores para PEL)
+    return palette[index % palette.length];
   };
 
   const CustomTooltip = ({ active, payload, label }) => {
@@ -49,6 +49,21 @@ const Parex = () => {
     }
     return null;
   };
+
+  const dataCamposMenores = [
+    { name: 'TILO', value: 0.886, color: '#963133', text: '#ffffff' },
+    { name: 'CHIRICOCA', value: 0.522, color: '#ae4247', text: '#ffffff' },
+    { name: 'MAX', value: 0.462, color: '#cb5c62', text: '#ffffff' },
+    { name: 'JACAMAR', value: 0.266, color: '#dc7d82', text: '#ffffff' },
+    { name: 'GUACO', value: 0.0, color: '#efb2b6', text: '#475569' },
+  ];
+  const maxCampoValue = 0.886;
+  const totalMenoresMW = "2,136";
+
+  const dataAggreko = [
+    { name: 'Generado', value: 13.60, color: '#C41230' },
+    { name: 'Disponible', value: 2.40, color: '#f3f4f6' }
+  ];
 
   return (
     <div className="flex flex-col gap-6 animate-fade-in pb-10">
@@ -70,10 +85,18 @@ const Parex = () => {
         <KPICard label="Demanda Total Parex" value="17.0" unit="MW" subtext="Estimado ~16.6 MW" />
         {/* Gráfico de Anillo: Distribución Demanda Parex */}
         <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg p-5 flex items-center lg:col-span-2">
-          <div className="flex-1">
-            <span className="text-[10px] uppercase tracking-widest font-medium text-[var(--muted-foreground)] mb-1 block">
-              Distribución Demanda Parex
-            </span>
+          <div className="flex-1 relative">
+            <div className="flex justify-between items-start">
+              <span className="text-[10px] uppercase tracking-widest font-medium text-[var(--muted-foreground)] mb-1 block">
+                Distribución Demanda Parex
+              </span>
+              <div className="relative group">
+                <HelpCircle size={14} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
+                <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case">
+                  Desglose porcentual de la demanda total de Parex entre Gas Natural y PEL.
+                </div>
+              </div>
+            </div>
             <div className="flex flex-col mt-2 gap-2">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-[#16a34a]"></div>
@@ -128,9 +151,17 @@ const Parex = () => {
         
         {/* Gráfico 1: Comportamiento Semanal Parex */}
         <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm p-6 flex flex-col h-full">
-          <div className="mb-6">
-            <h3 className="text-sm font-bold text-[var(--foreground)] uppercase tracking-wider">Comportamiento Semanal Demanda Parex</h3>
-            <p className="text-xs text-[var(--muted-foreground)] mt-1">Distribución entre PEL Parex y GN Parex</p>
+          <div className="mb-6 flex justify-between items-start">
+            <div>
+              <h3 className="text-sm font-bold text-[var(--foreground)] uppercase tracking-wider">Comportamiento Semanal Demanda Parex</h3>
+              <p className="text-xs text-[var(--muted-foreground)] mt-1">Distribución entre PEL Parex y GN Parex</p>
+            </div>
+            <div className="relative group">
+              <HelpCircle size={14} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
+              <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case">
+                Histórico semanal del consumo de energía desglosado por fuente (Gas vs Interconectado).
+              </div>
+            </div>
           </div>
           <div className="h-[350px] w-full">
             <ResponsiveContainer width="100%" height="100%">
@@ -159,9 +190,17 @@ const Parex = () => {
 
         {/* Gráfico 2: Distribución de Fuentes */}
         <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm p-6 flex flex-col h-full">
-          <div className="mb-6">
-            <h3 className="text-sm font-bold text-[var(--foreground)] uppercase tracking-wider">Distribución de Fuentes (Llanos 34)</h3>
-            <p className="text-xs text-[var(--muted-foreground)] mt-1">Generación por fuente (Total: 68.07 MW)</p>
+          <div className="mb-6 flex justify-between items-start">
+            <div>
+              <h3 className="text-sm font-bold text-[var(--foreground)] uppercase tracking-wider">Distribución de Fuentes (Llanos 34)</h3>
+              <p className="text-xs text-[var(--muted-foreground)] mt-1">Generación por fuente (Total: 68.07 MW)</p>
+            </div>
+            <div className="relative group">
+              <HelpCircle size={14} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
+              <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case text-left">
+                Aporte detallado en MW de cada una de las fuentes de generación disponibles en Llanos 34.
+              </div>
+            </div>
           </div>
           <div className="h-[350px] w-full">
             <ResponsiveContainer width="100%" height="100%">
@@ -177,6 +216,126 @@ const Parex = () => {
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Gráfico 3: Campos Menores */}
+        <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm p-6 flex flex-col h-full lg:col-span-1">
+          <div className="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div className="flex justify-between items-start w-full sm:w-auto flex-1">
+              <div>
+                <h3 className="text-sm font-bold text-[var(--foreground)] uppercase tracking-wider">Campos Menores</h3>
+                <p className="text-xs text-[var(--muted-foreground)] mt-1">Distribución de demanda por campo menor</p>
+              </div>
+              <div className="relative group sm:hidden">
+                <HelpCircle size={14} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
+                <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case">
+                  Consumo energético individualizado para los campos menores de producción.
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="relative group hidden sm:block">
+                <HelpCircle size={14} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
+                <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case text-left">
+                  Consumo energético individualizado para los campos menores de producción.
+                </div>
+              </div>
+              <div className="bg-[#991b1b] text-white px-5 py-3 rounded-lg shadow-md text-center flex flex-col items-center justify-center min-w-[160px]">
+                <div className="text-[11px] font-bold tracking-widest uppercase opacity-90 mb-0.5">Total Menores</div>
+                <div className="text-xl font-black">{totalMenoresMW} MW</div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="flex flex-col gap-3 items-center w-full py-4 overflow-x-auto">
+            <div className="min-w-[400px] w-full max-w-2xl flex flex-col gap-3">
+              {dataCamposMenores.map((campo) => {
+                const isZero = campo.value === 0;
+                const widthPercent = isZero ? 15 : (campo.value / maxCampoValue) * 80 + 10;
+                
+                return (
+                  <div key={campo.name} className="flex items-center w-full group">
+                    {/* Label */}
+                    <div className="w-28 shrink-0 text-right pr-6 text-xs font-bold text-[var(--muted-foreground)] group-hover:text-[var(--foreground)] transition-colors">
+                      {campo.name}
+                    </div>
+                    {/* Bar Area */}
+                    <div className="flex-1 flex justify-center py-1 border-x border-[var(--border)]/30 relative">
+                      {/* Línea central sutil */}
+                      <div className="absolute left-1/2 top-0 bottom-0 w-px bg-[var(--border)]/30 -translate-x-1/2"></div>
+                      <div 
+                        className="py-2 px-4 flex items-center justify-center text-xs font-bold rounded shadow-sm hover:brightness-110 hover:shadow-md transition-all relative z-10"
+                        style={{ 
+                          width: `${widthPercent}%`, 
+                          backgroundColor: campo.color,
+                          color: campo.text,
+                        }}
+                      >
+                        {campo.value.toFixed(3).replace('.', ',')} MW
+                      </div>
+                    </div>
+                    {/* Spacer para simetría */}
+                    <div className="w-28 shrink-0"></div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Gráfico 4: Generación Gas Aggreko */}
+        <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm p-6 flex flex-col h-full lg:col-span-1 justify-center items-center relative overflow-hidden">
+          <div className="text-center mb-8 flex flex-col items-center relative w-full">
+            <div className="absolute right-0 top-0">
+              <div className="relative group">
+                <HelpCircle size={14} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
+                <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case text-left">
+                  Relación entre la capacidad generada y la disponible en la unidad Aggreko.
+                </div>
+              </div>
+            </div>
+            <h3 className="text-sm font-bold text-[var(--muted-foreground)] uppercase tracking-wider">GENERACIÓN GAS</h3>
+            <h3 className="text-sm font-bold text-[var(--muted-foreground)] uppercase tracking-wider">AGGREKO</h3>
+          </div>
+          
+          <div className="relative w-full max-w-[280px] flex justify-center">
+            <div className="h-[140px] w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={dataAggreko}
+                    cx="50%"
+                    cy="100%"
+                    startAngle={180}
+                    endAngle={0}
+                    innerRadius={90}
+                    outerRadius={130}
+                    paddingAngle={0}
+                    dataKey="value"
+                    stroke="none"
+                    isAnimationActive={false}
+                  >
+                    {dataAggreko.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+            
+            {/* Center Text */}
+            <div className="absolute bottom-2 left-0 right-0 flex flex-col items-center justify-end">
+              <span className="text-xl font-medium text-[var(--muted-foreground)]">13,60 MW</span>
+            </div>
+            
+            {/* Min / Max Labels */}
+            <div className="absolute bottom-[-24px] left-2 text-sm font-bold text-[var(--muted-foreground)]">0,00 MW</div>
+            <div className="absolute bottom-[-24px] right-2 text-sm font-bold text-[var(--muted-foreground)]">16,00 MW</div>
+          </div>
+          
+          <div className="mt-12 mb-2">
+            <span className="text-3xl font-black text-orange-500 tracking-tighter lowercase">aggreko</span>
           </div>
         </div>
 

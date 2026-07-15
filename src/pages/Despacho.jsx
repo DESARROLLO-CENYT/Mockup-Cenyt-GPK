@@ -1,49 +1,67 @@
 import React, { useState } from 'react';
 import KPICard from '../components/KPICard';
 import { PieChart, Pie, Cell, AreaChart, Area, BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import { ChevronRight, ChevronDown, Activity, Zap, PieChart as PieChartIcon } from 'lucide-react';
+import { ChevronRight, ChevronDown, Activity, Zap, PieChart as PieChartIcon, HelpCircle } from 'lucide-react';
 
 const dataCampos = [
-  { name: 'Interconectados', value: 70, color: '#C41230' },
-  { name: 'Menores', value: 5, color: '#4A9EE0' },
+  { name: 'Interconectados', value: 70, color: '#963133' },
+  { name: 'Menores', value: 5, color: '#cb5c62' },
 ];
 
 const dataFuentes = [
-  { name: 'PEL', value: 55.08, color: '#C41230' },
-  { name: 'Gas - Sur Energy', value: 11.98, color: '#B56D24' },
-  { name: 'Gas Propio', value: 0.77, color: '#107C41' },
-  { name: 'Gas - Aggreko', value: 0, color: '#F59E0B' },
-  { name: 'Diesel', value: 0, color: '#4A9EE0' },
+  { name: 'PEL', value: 55.08, color: '#963133' },
+  { name: 'Gas - Sur Energy', value: 11.98, color: '#ae4247' },
+  { name: 'Gas Propio', value: 0.77, color: '#cb5c62' },
+  { name: 'Gas - Aggreko', value: 0, color: '#dc7d82' },
+  { name: 'Diesel', value: 0, color: '#efb2b6' },
   { name: 'Genersa', value: 0, color: '#8B5CF6' },
   { name: 'Biomasa', value: 0, color: '#10B981' },
   { name: 'Solar', value: 0, color: '#E8A838' },
 ];
 
-const dataSemanal = (() => {
-  const data = [];
-  const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-  for (let i = 1; i <= 24; i++) {
-    const mesIndex = Math.floor((i - 1) / 4.33) % 12;
-    data.push({
-      semana: i,
-      mes: meses[mesIndex],
-      pel: parseFloat((50 + Math.sin(i / 2) * 5 + Math.cos(i / 4) * 2).toFixed(1)),
-      sur: parseFloat((12 + Math.cos(i / 3) * 2).toFixed(1)),
-      gas: parseFloat((1 + Math.sin(i) * 0.5).toFixed(1)),
-    });
-  }
-  return data;
-})();
+const semanasBase = [
+  { num: 9, mes: 'marzo' },
+  { num: 10, mes: 'marzo' },
+  { num: 11, mes: 'marzo' },
+  { num: 12, mes: 'marzo' },
+  { num: 13, mes: 'marzo' },
+  { num: 14, mes: 'marzo' },
+  { num: 14, mes: 'abril' },
+  { num: 15, mes: 'abril' },
+  { num: 16, mes: 'abril' },
+  { num: 17, mes: 'abril' },
+  { num: 18, mes: 'abril' },
+  { num: 18, mes: 'mayo' },
+  { num: 19, mes: 'mayo' },
+  { num: 20, mes: 'mayo' },
+  { num: 21, mes: 'mayo' },
+  { num: 22, mes: 'mayo' },
+  { num: 23, mes: 'mayo' },
+  { num: 24, mes: 'mayo' },
+  { num: 24, mes: 'junio' },
+  { num: 25, mes: 'junio' },
+];
+
+const dataSemanal = semanasBase.map((s) => {
+  const i = s.num;
+  return {
+    semana: s.num,
+    mes: s.mes,
+    pel: parseFloat((50 + Math.sin(i / 2) * 5 + Math.cos(i / 4) * 2).toFixed(1)),
+    sur: parseFloat((12 + Math.cos(i / 3) * 2).toFixed(1)),
+    gas: parseFloat((1 + Math.sin(i) * 0.5).toFixed(1)),
+  };
+});
 
 const tableDataNew = [
   { id: 'pel', fuente: 'PEL', real: '55,081', prog: '54,500', desv: '+1.0%', cop: '627.5', estado: 'ACT', desvColor: 'text-emerald-600 dark:text-emerald-400 font-bold', badgeClass: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400' },
-  { id: 'sur', fuente: 'Gas - Sur Energy', real: '11,982', prog: '12,500', desv: '-4.1%', cop: '580.4', estado: 'ACT', desvColor: 'text-[#C41230] dark:text-red-400 font-bold', badgeClass: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400' },
-  { id: 'propio', fuente: 'Gas Propio', real: '777', prog: '800', desv: '-2.8%', cop: '240.1', estado: 'ACT', desvColor: 'text-[#C41230] dark:text-red-400 font-bold', badgeClass: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400' },
+  { id: 'sur', fuente: 'Gas - Sur Energy', real: '11,982', prog: '12,500', desv: '-4.1%', cop: '580.4', estado: 'ACT', desvColor: 'text-[#963133] dark:text-red-400 font-bold', badgeClass: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400' },
+  { id: 'propio', fuente: 'Gas Propio', real: '777', prog: '800', desv: '-2.8%', cop: '240.1', estado: 'ACT', desvColor: 'text-[#963133] dark:text-red-400 font-bold', badgeClass: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400' },
   { id: 'agg', fuente: 'Gas - Aggreko', real: '0', prog: '—', desv: '—', cop: '—', estado: 'S/BY', desvColor: 'text-[var(--muted-foreground)]', badgeClass: 'bg-orange-100 text-orange-700 dark:bg-orange-500/20 dark:text-orange-400' },
   { id: 'dsl', fuente: 'Diesel', real: '0', prog: '—', desv: '—', cop: '—', estado: 'S/BY', desvColor: 'text-[var(--muted-foreground)]', badgeClass: 'bg-orange-100 text-orange-700 dark:bg-orange-500/20 dark:text-orange-400' },
   { id: 'gen', fuente: 'Genersa', real: '—', prog: '—', desv: '—', cop: '—', estado: 'FUT', desvColor: 'text-[var(--muted-foreground)]', badgeClass: 'bg-purple-100 text-purple-700 dark:bg-purple-500/20 dark:text-purple-400' },
   { id: 'bio', fuente: 'Biomasa', real: '—', prog: '—', desv: '—', cop: '—', estado: 'FUT', desvColor: 'text-[var(--muted-foreground)]', badgeClass: 'bg-purple-100 text-purple-700 dark:bg-purple-500/20 dark:text-purple-400' },
-  { id: 'sol', fuente: 'Solar', real: '0', prog: '0', desv: '—', cop: '—', estado: 'FUERA', desvColor: 'text-[var(--muted-foreground)]', badgeClass: 'bg-red-100 text-[#C41230] dark:bg-red-500/20 dark:text-red-400' },
+  { id: 'sol', fuente: 'Solar', real: '0', prog: '0', desv: '—', cop: '—', estado: 'FUERA', desvColor: 'text-[var(--muted-foreground)]', badgeClass: 'bg-red-100 text-[#963133] dark:bg-red-500/20 dark:text-red-400' },
 ];
 
 
@@ -59,28 +77,37 @@ const dataDiarioPotencia = [
   { hora: '11:59 p.m.', pel: 52, sur: 12, gas: 1, sol: 0 },
 ];
 
-const CustomXAxisTick = ({ x, y, payload, data }) => {
-  const weekNum = payload.value;
-  const itemIndex = data.findIndex(d => d.semana === weekNum);
-  if (itemIndex === -1) return null;
-  
-  const isFirstOfMo = itemIndex === 0 || data[itemIndex].mes !== data[itemIndex - 1].mes;
-  const showWeek = itemIndex % 2 === 0;
+const CustomXAxisTick = ({ x, y, payload, index }) => {
+  const data = dataSemanal[index];
+  const prevData = index > 0 ? dataSemanal[index - 1] : null;
+  const isFirstOfMonth = !prevData || prevData.mes !== data.mes;
+
+  // Find the middle index of the current month block to center the text
+  let monthStartIndex = index;
+  while (monthStartIndex > 0 && dataSemanal[monthStartIndex - 1].mes === data.mes) {
+    monthStartIndex--;
+  }
+  let monthEndIndex = index;
+  while (monthEndIndex < dataSemanal.length - 1 && dataSemanal[monthEndIndex + 1].mes === data.mes) {
+    monthEndIndex++;
+  }
+  const isMiddleOfMonth = index === Math.floor((monthStartIndex + monthEndIndex) / 2);
 
   return (
     <g transform={`translate(${x},${y})`}>
-      {showWeek && (
-        <text x={0} y={15} dy={0} textAnchor="middle" fill="var(--muted-foreground)" fontSize={11} fontWeight={500}>
-          S{weekNum}
-        </text>
+      {/* Separator line for months */}
+      {isFirstOfMonth && index !== 0 && (
+        <line x1={-20} y1={0} x2={-20} y2={30} stroke="var(--border)" strokeDasharray="2 2" />
       )}
-      {isFirstOfMo && (
-        <>
-          <line x1={0} y1={20} x2={0} y2={35} stroke="var(--border)" strokeWidth={1} />
-          <text x={0} y={32} textAnchor="middle" fill="var(--foreground)" fontSize={11} fontWeight={600}>
-            {data[itemIndex].mes}
-          </text>
-        </>
+      {/* Week Number */}
+      <text x={0} y={0} dy={12} textAnchor="middle" fill="var(--muted-foreground)" fontSize={11}>
+        {data.semana}
+      </text>
+      {/* Month Name */}
+      {isMiddleOfMonth && (
+        <text x={0} y={0} dy={26} textAnchor="middle" fill="var(--muted-foreground)" fontSize={11} className="capitalize">
+          {data.mes}
+        </text>
       )}
     </g>
   );
@@ -139,10 +166,16 @@ const Despacho = () => {
       {/* Row 1: Pie Chart & Bar Chart */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg shadow-sm">
-          <div className="px-6 py-4 border-b border-[var(--border)]">
+          <div className="px-6 py-4 border-b border-[var(--border)] flex justify-between items-start">
             <h3 className="text-[12px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest flex items-center gap-2">
               <PieChartIcon size={14} /> Demanda por Campos (MW)
             </h3>
+            <div className="relative group">
+              <HelpCircle size={14} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
+              <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case">
+                Distribución porcentual de la demanda energética entre campos interconectados y menores.
+              </div>
+            </div>
           </div>
           <div className="h-[250px] p-4 flex flex-col items-center justify-center">
             <ResponsiveContainer width="100%" height="100%">
@@ -164,12 +197,14 @@ const Despacho = () => {
                 </Pie>
                 <Tooltip 
                   formatter={(value) => `${value} MW`}
-                  contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "var(--foreground)", fontSize: "12px" }}
-                  itemStyle={{ fontSize: "13px" }}
+                  contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "black", fontSize: "12px" }}
+                  itemStyle={{ fontSize: "13px", color: "black" }}
+                  labelStyle={{ color: "black" }}
                 />
                 <Legend 
                   iconType="square" 
-                  wrapperStyle={{ fontSize: '12px', color: 'var(--muted-foreground)' }} 
+                  wrapperStyle={{ fontSize: '12px', color: 'black' }}
+                  formatter={(value) => <span style={{ color: 'black' }}>{value}</span>}
                 />
               </PieChart>
             </ResponsiveContainer>
@@ -177,10 +212,16 @@ const Despacho = () => {
         </div>
 
         <div className="lg:col-span-2 bg-[var(--card)] border border-[var(--border)] rounded-lg shadow-sm">
-          <div className="px-6 py-4 border-b border-[var(--border)] flex justify-between items-center">
+          <div className="px-6 py-4 border-b border-[var(--border)] flex justify-between items-start">
             <h3 className="text-[12px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest flex items-center gap-2">
               <Zap size={14} /> Generación por Fuente (MW)
             </h3>
+            <div className="relative group">
+              <HelpCircle size={14} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
+              <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case">
+                Capacidad de generación eléctrica aportada por cada tipo de fuente.
+              </div>
+            </div>
           </div>
           <div className="h-[250px] p-5 pb-8">
             <ResponsiveContainer width="100%" height="100%">
@@ -214,15 +255,23 @@ const Despacho = () => {
           <h3 className="text-[12px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest flex items-center gap-2">
             <Activity size={14} /> Comportamiento Semanal de Fuentes (MW)
           </h3>
-          <div className="flex border border-[var(--border)] rounded text-[11px] font-medium overflow-hidden">
-            <button className="px-3 py-1 bg-[#C41230] text-white">SEM</button>
-            <button className="px-3 py-1 bg-[var(--background)] text-[var(--muted-foreground)] hover:bg-[var(--secondary)] transition-colors border-l border-[var(--border)]">MES</button>
-            <button className="px-3 py-1 bg-[var(--background)] text-[var(--muted-foreground)] hover:bg-[var(--secondary)] transition-colors border-l border-[var(--border)]">AÑO</button>
+          <div className="flex items-center gap-4">
+            <div className="flex border border-[var(--border)] rounded text-[11px] font-medium overflow-hidden">
+              <button className="px-3 py-1 bg-[#C41230] text-white">SEM</button>
+              <button className="px-3 py-1 bg-[var(--background)] text-[var(--muted-foreground)] hover:bg-[var(--secondary)] transition-colors border-l border-[var(--border)]">MES</button>
+              <button className="px-3 py-1 bg-[var(--background)] text-[var(--muted-foreground)] hover:bg-[var(--secondary)] transition-colors border-l border-[var(--border)]">AÑO</button>
+            </div>
+            <div className="relative group">
+              <HelpCircle size={14} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
+              <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case">
+                Evolución histórica de la generación agrupada por tipo de fuente a nivel semanal/mensual.
+              </div>
+            </div>
           </div>
         </div>
         <div style={{ width: '100%', height: 320 }} className="p-4 pb-10">
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={dataSemanal} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
+            <AreaChart data={dataSemanal} margin={{ top: 10, right: 10, left: 10, bottom: 20 }}>
               <defs>
                 <linearGradient id="colorPel" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#C41230" stopOpacity={0.3}/>
@@ -238,12 +287,17 @@ const Despacho = () => {
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(128,128,128,0.15)" />
-              <XAxis dataKey="semana" axisLine={false} tickLine={false} tick={(props) => <CustomXAxisTick {...props} data={dataSemanal} />} interval={0} />
+              <XAxis dataKey="semana" axisLine={false} tickLine={false} tick={<CustomXAxisTick />} interval={0} />
               <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} dx={-10} tickFormatter={(value) => `${value} MW`} />
-              <Tooltip contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "var(--foreground)", fontSize: "12px" }} />
-              <Area type="monotone" dataKey="pel" name="PEL" stackId="1" stroke="#C41230" fill="url(#colorPel)" strokeWidth={2} activeDot={{ r: 6, fill: "#C41230" }} />
-              <Area type="monotone" dataKey="sur" name="Gas - Sur Energy" stackId="1" stroke="#B56D24" fill="url(#colorSur)" strokeWidth={2} activeDot={{ r: 6, fill: "#B56D24" }} />
-              <Area type="monotone" dataKey="gas" name="Gas Propio" stackId="1" stroke="#107C41" fill="url(#colorGas)" strokeWidth={2} activeDot={{ r: 6, fill: "#107C41" }} />
+              <Tooltip 
+                contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "black", fontSize: "12px" }}
+                itemStyle={{ color: "black", fontSize: "13px" }}
+                labelStyle={{ color: "black" }}
+              />
+              <Legend iconType="circle" wrapperStyle={{ fontSize: '10px', paddingTop: '20px', color: 'black' }} formatter={(value) => <span style={{ color: 'black' }}>{value}</span>} />
+              <Area type="monotone" dataKey="pel" name="PEL" stackId="1" stroke="#963133" fill="url(#colorPel)" strokeWidth={2} activeDot={{ r: 6, fill: "#963133" }} />
+              <Area type="monotone" dataKey="sur" name="Gas - Sur Energy" stackId="1" stroke="#ae4247" fill="url(#colorSur)" strokeWidth={2} activeDot={{ r: 6, fill: "#ae4247" }} />
+              <Area type="monotone" dataKey="gas" name="Gas Propio" stackId="1" stroke="#cb5c62" fill="url(#colorGas)" strokeWidth={2} activeDot={{ r: 6, fill: "#cb5c62" }} />
             </AreaChart>
           </ResponsiveContainer>
         </div>
@@ -252,11 +306,19 @@ const Despacho = () => {
       {/* Row 3: Table Real vs Programado */}
       <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg overflow-hidden shadow-sm">
         <div className="px-6 py-5 flex flex-col gap-4">
-          <div className="flex items-center gap-2">
-            <Activity size={14} className="text-[var(--muted-foreground)]" />
-            <h3 className="text-[12px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest">
-              REAL VS PROGRAMADO — SEMANA 06 · 2026
-            </h3>
+          <div className="flex justify-between items-start">
+            <div className="flex items-center gap-2">
+              <Activity size={14} className="text-[var(--muted-foreground)]" />
+              <h3 className="text-[12px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest">
+                REAL VS PROGRAMADO — SEMANA 06 · 2026
+              </h3>
+            </div>
+            <div className="relative group">
+              <HelpCircle size={14} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
+              <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case">
+                Comparativa detallada de la generación real frente al valor programado, incluyendo desviaciones y costos.
+              </div>
+            </div>
           </div>
           
           {/* Progress Bar */}
@@ -319,10 +381,16 @@ const Despacho = () => {
 
         {/* Gráfico de Potencia Diario */}
         <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg shadow-sm flex flex-col">
-          <div className="px-6 py-4 border-b border-[var(--border)]">
-            <h3 className="text-[12px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest text-center">
-              Potencia Generada por Fuentes (Diario)
+          <div className="px-6 py-4 border-b border-[var(--border)] flex justify-between items-start">
+            <h3 className="text-[12px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest flex items-center gap-2">
+              <Activity size={14} /> Potencia Generada por Fuentes (Diario)
             </h3>
+            <div className="relative group">
+              <HelpCircle size={14} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
+              <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case">
+                Perfil de carga diario que muestra la potencia generada hora a hora por cada fuente.
+              </div>
+            </div>
           </div>
           <div style={{ width: '100%', height: 300 }} className="p-4 pb-10">
             <ResponsiveContainer width="100%" height="100%">
@@ -348,12 +416,16 @@ const Despacho = () => {
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(128,128,128,0.15)" />
                 <XAxis dataKey="hora" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: "var(--muted-foreground)" }} dy={10} interval="preserveStartEnd" />
                 <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} tickFormatter={(value) => `${value} MW`} />
-                <Tooltip contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "var(--foreground)", fontSize: "12px" }} />
-                <Legend iconType="circle" wrapperStyle={{ fontSize: '10px', paddingTop: '20px' }} />
-                <Area type="monotone" dataKey="pel" name="PEL" stackId="1" stroke="#C41230" fill="url(#colorPelDiario)" strokeWidth={2} />
-                <Area type="monotone" dataKey="sur" name="Gas - Sur Energy" stackId="1" stroke="#B56D24" fill="url(#colorSurDiario)" strokeWidth={2} />
-                <Area type="monotone" dataKey="gas" name="Gas Propio" stackId="1" stroke="#107C41" fill="url(#colorGasDiario)" strokeWidth={2} />
-                <Area type="monotone" dataKey="sol" name="Solar" stackId="1" stroke="#EAB308" fill="url(#colorSolDiario)" strokeWidth={2} />
+                <Tooltip 
+                  contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "black", fontSize: "12px" }}
+                  itemStyle={{ color: "black", fontSize: "13px" }}
+                  labelStyle={{ color: "black" }}
+                />
+                <Legend iconType="circle" wrapperStyle={{ fontSize: '10px', paddingTop: '20px', color: 'black' }} formatter={(value) => <span style={{ color: 'black' }}>{value}</span>} />
+                <Area type="monotone" dataKey="pel" name="PEL" stackId="1" stroke="#963133" fill="url(#colorPelDiario)" strokeWidth={2} />
+                <Area type="monotone" dataKey="sur" name="Gas - Sur Energy" stackId="1" stroke="#ae4247" fill="url(#colorSurDiario)" strokeWidth={2} />
+                <Area type="monotone" dataKey="gas" name="Gas Propio" stackId="1" stroke="#cb5c62" fill="url(#colorGasDiario)" strokeWidth={2} />
+                <Area type="monotone" dataKey="sol" name="Solar" stackId="1" stroke="#efb2b6" fill="url(#colorSolDiario)" strokeWidth={2} />
               </AreaChart>
             </ResponsiveContainer>
           </div>

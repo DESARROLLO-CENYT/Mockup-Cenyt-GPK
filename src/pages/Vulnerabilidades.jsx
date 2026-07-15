@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import KPICard from '../components/KPICard';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, HelpCircle } from 'lucide-react';
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
   PieChart, Pie, Cell, AreaChart, Area, Legend
 } from 'recharts';
 
+const palette = ['#963133', '#ae4247', '#cb5c62', '#dc7d82', '#efb2b6'];
 const getColorByRank = (index, total, isKeraunos) => {
   if (isKeraunos) {
     const minLightness = 30; // Oscuro
@@ -13,10 +14,7 @@ const getColorByRank = (index, total, isKeraunos) => {
     const lightness = minLightness + (index / Math.max(1, total - 1)) * (maxLightness - minLightness);
     return `hsl(217, 91%, ${lightness}%)`; // Azul
   }
-  const minLightness = 25; // Oscuro
-  const maxLightness = 75; // Claro
-  const lightness = minLightness + (index / Math.max(1, total - 1)) * (maxLightness - minLightness);
-  return `hsl(350, 85%, ${lightness}%)`; // Rojo
+  return palette[index % palette.length];
 };
 
 // --- DATOS VULNERABILIDADES ---
@@ -173,7 +171,7 @@ const CustomAreaLabel = (props) => {
 const Vulnerabilidades = () => {
   const [activeTab, setActiveTab] = useState('vulnerabilidades');
   const isKeraunos = activeTab === 'keraunos';
-  const themeColor = isKeraunos ? '#1d4ed8' : '#C41230'; // blue-700 / geopark red
+  const themeColor = isKeraunos ? '#1d4ed8' : '#963133'; // blue-700 / geopark red
 
   const currentAccionesTotales = isKeraunos ? 467 : 1043;
   const currentAccionesCerradas = isKeraunos ? 70 : 261;
@@ -218,7 +216,7 @@ const Vulnerabilidades = () => {
           onClick={() => setActiveTab('vulnerabilidades')}
           className={`px-4 py-2.5 text-sm font-semibold whitespace-nowrap border-b-2 transition-colors ${
             !isKeraunos
-              ? 'border-[#C41230] text-[#C41230] dark:text-red-400 dark:border-red-400'
+              ? 'border-[#963133] text-[#963133] dark:text-red-400 dark:border-red-400'
               : 'border-transparent text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:border-[var(--border)]'
           }`}
         >
@@ -287,8 +285,14 @@ const Vulnerabilidades = () => {
         
         {/* Gráfico 1: Avance semanal */}
         <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm p-5 flex flex-col">
-          <div className="flex justify-between items-center mb-4">
+          <div className="flex justify-between items-start mb-4">
             <h3 className="text-sm font-bold text-[var(--foreground)] uppercase tracking-wider">Avance semanal</h3>
+            <div className="relative group">
+              <HelpCircle size={14} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
+              <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case">
+                Evolución del porcentaje de avance a lo largo de las semanas para el plan seleccionado.
+              </div>
+            </div>
           </div>
           <div className="h-[250px] w-full">
             <ResponsiveContainer width="100%" height="100%">
@@ -311,8 +315,14 @@ const Vulnerabilidades = () => {
 
         {/* Gráfico 2: Circuitos */}
         <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm p-5 flex flex-col">
-          <div className="flex justify-center items-center mb-4">
-            <h3 className="text-sm font-bold text-[var(--foreground)] uppercase tracking-wider">Circuitos</h3>
+          <div className="flex justify-between items-start mb-4">
+            <h3 className="text-sm font-bold text-[var(--foreground)] uppercase tracking-wider text-center flex-1">Circuitos</h3>
+            <div className="relative group">
+              <HelpCircle size={14} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
+              <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case text-left">
+                Nivel de vulnerabilidad o impacto asociado a cada circuito de transmisión.
+              </div>
+            </div>
           </div>
           <div className="h-[250px] w-full">
             <ResponsiveContainer width="100%" height="100%">
@@ -340,7 +350,15 @@ const Vulnerabilidades = () => {
           
           {/* Card: Avance Actividades 2026 */}
           <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm p-6 overflow-hidden">
-            <h3 className="text-sm font-bold text-[var(--foreground)] uppercase tracking-wider mb-6">AVANCE ACTIVIDADES 2026</h3>
+            <div className="flex justify-between items-start mb-6">
+              <h3 className="text-sm font-bold text-[var(--foreground)] uppercase tracking-wider">AVANCE ACTIVIDADES 2026</h3>
+              <div className="relative group">
+                <HelpCircle size={14} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
+                <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case">
+                  Progreso detallado (% de ejecución) para cada una de las actividades programadas en el plan.
+                </div>
+              </div>
+            </div>
             <div className="h-[450px] ml-[-20px] sm:ml-0">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={currentDataAvance} layout="vertical" margin={{ top: 0, right: 30, left: 0, bottom: 0 }}>
@@ -366,7 +384,15 @@ const Vulnerabilidades = () => {
         {/* Lado Derecho: Gráfico Presupuesto vs Ejecución */}
         <div className="lg:col-span-5 flex flex-col gap-6">
           <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm p-6 flex flex-col h-full">
-            <h3 className="text-sm font-bold text-[var(--foreground)] uppercase tracking-wider mb-6">PRESUPUESTO VS EJECUCIÓN</h3>
+            <div className="flex justify-between items-start mb-6">
+              <h3 className="text-sm font-bold text-[var(--foreground)] uppercase tracking-wider">PRESUPUESTO VS EJECUCIÓN</h3>
+              <div className="relative group">
+                <HelpCircle size={14} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
+                <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case">
+                  Comparativa multianual entre el presupuesto asignado y el valor realmente ejecutado (en millones).
+                </div>
+              </div>
+            </div>
             <div className="h-[450px] w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={currentDataPresupuesto} margin={{ top: 20, right: 10, left: -20, bottom: 0 }}>

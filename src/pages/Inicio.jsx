@@ -7,51 +7,51 @@ const Inicio = ({ onLogout }) => {
     {
       title: 'Eficiencia Operacional',
       description: 'Monitoreo de eficiencia global, estatus de pozos, energía y metas mensuales.',
-      icon: <Zap size={24} className="text-[#C41230]" />,
+      icon: <Zap size={24} className="text-[#963133]" />,
       path: '/eficiencia',
-      color: 'hover:border-[#C41230]/50'
+      color: 'hover:border-[#963133]/50'
     },
     {
       title: 'Despacho Energético',
       description: 'Asignación de energía a campos, estado de fuentes de generación y balance real vs programado.',
-      icon: <Activity size={24} className="text-sky-500" />,
+      icon: <Activity size={24} className="text-[#ae4247]" />,
       path: '/despacho',
-      color: 'hover:border-sky-500/50'
+      color: 'hover:border-[#ae4247]/50'
     },
     {
       title: 'Confiabilidad del Sistema',
       description: 'Análisis de Uptime, métricas de fallas (MTBF/MTTR) y estado de equipos.',
-      icon: <Shield size={24} className="text-emerald-500" />,
+      icon: <Shield size={24} className="text-[#cb5c62]" />,
       path: '/confiabilidad',
-      color: 'hover:border-emerald-500/50'
+      color: 'hover:border-[#cb5c62]/50'
     },
     {
       title: 'Reporte de Fallas',
       description: 'Análisis detallado en PowerBI',
-      icon: <AlertTriangle size={24} className="text-red-400" />,
+      icon: <AlertTriangle size={24} className="text-[#5c7aa3]" />,
       path: '/fallas',
-      color: 'hover:border-red-500/50'
+      color: 'hover:border-[#5c7aa3]/50'
     },
     {
       title: 'Vulnerabilidades y Mantenimiento',
       description: 'Seguimiento detallado en PowerBI',
-      icon: <Wrench size={24} className="text-indigo-400" />,
+      icon: <Wrench size={24} className="text-[#dc7d82]" />,
       path: '/vulnerabilidades',
-      color: 'hover:border-indigo-500/50'
+      color: 'hover:border-[#dc7d82]/50'
     },
     {
       title: 'Pronóstico y Demanda',
       description: 'Predicción de comportamiento, proyecciones ML y distribución por mercado.',
-      icon: <TrendingUp size={24} className="text-amber-500" />,
+      icon: <TrendingUp size={24} className="text-[#963133]" />,
       path: '/pronostico',
-      color: 'hover:border-amber-500/50'
+      color: 'hover:border-[#963133]/50'
     },
     {
       title: 'Parex',
       description: 'Seguimiento y gestión inteligente de energía para aliados.',
-      icon: <UtilityPole size={24} className="text-green-500" />,
+      icon: <UtilityPole size={24} className="text-[#ae4247]" />,
       path: '/parex',
-      color: 'hover:border-green-500/50'
+      color: 'hover:border-[#ae4247]/50'
     }
   ];
 

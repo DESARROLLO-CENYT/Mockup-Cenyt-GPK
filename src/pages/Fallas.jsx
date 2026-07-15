@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import KPICard from '../components/KPICard';
-import { ExternalLink, BarChart2, PieChart as PieChartIcon } from 'lucide-react';
+import { ExternalLink, BarChart2, PieChart as PieChartIcon, HelpCircle } from 'lucide-react';
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, 
   PieChart, Pie, Cell
@@ -38,7 +38,7 @@ const dataCausasPie = [
   { name: 'En Investigación', value: 1 }
 ];
 
-const COLORS = ['#7D0A1E', '#9E0A20', '#C41230', '#DE2C3B', '#EE5E61', '#F7918E', '#FDBBB8', '#FFE0DF'];
+const COLORS = ['#A4B7D7', '#5C7AA3', '#274472', '#1B3454', '#0E1A2B'];
 
 // Data Tab 2
 const dataEventosRed = [
@@ -86,6 +86,17 @@ const CustomTooltip = ({ active, payload, label }) => {
     );
   }
   return null;
+};
+
+const CustomPieLabel = ({ x, y, percent }) => {
+  return (
+    <g>
+      <rect x={x - 18} y={y - 10} width={36} height={20} fill="#374151" rx={4} />
+      <text x={x} y={y} fill="#FFFFFF" textAnchor="middle" dominantBaseline="central" fontSize="11" fontWeight="bold">
+        {`${(percent * 100).toFixed(0)}%`}
+      </text>
+    </g>
+  );
 };
 
 const Fallas = () => {
@@ -156,16 +167,26 @@ const Fallas = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             
             {/* Clasificación por Ubicación */}
-            <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm p-5">
-              <h3 className="text-xs font-bold text-[var(--muted-foreground)] uppercase tracking-wider mb-6">Clasificación por Ubicación 2026</h3>
-              <div className="h-[250px]">
+            <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm relative overflow-hidden">
+              <div className="px-5 py-4 border-b border-[var(--border)] flex justify-between items-start">
+                <h3 className="text-[12px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest flex items-center gap-2">
+                  <BarChart2 size={14} /> Clasificación por Ubicación 2026
+                </h3>
+                <div className="relative group">
+                  <HelpCircle size={14} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
+                  <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case">
+                    Frecuencia mensual de eventos clasificados por la ubicación donde ocurrieron (PEL, RED, Generación, etc.).
+                  </div>
+                </div>
+              </div>
+              <div className="h-[250px] p-5 pb-8">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={dataUbicacion} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(128,128,128,0.15)" />
                     <XAxis dataKey="mes" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }} />
                     <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }} />
                     <Tooltip content={<CustomTooltip />} />
-                    <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
+                    <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} formatter={(value) => <span style={{ color: 'black' }}>{value}</span>} />
                     <Bar dataKey="PEL" fill={COLORS[0]} radius={[2, 2, 0, 0]} />
                     <Bar dataKey="RED" fill={COLORS[1]} radius={[2, 2, 0, 0]} />
                     <Bar dataKey="GENERACION" fill={COLORS[2]} radius={[2, 2, 0, 0]} />
@@ -177,16 +198,26 @@ const Fallas = () => {
             </div>
 
             {/* Clasificación por Ubicación vs Causa */}
-            <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm p-5">
-              <h3 className="text-xs font-bold text-[var(--muted-foreground)] uppercase tracking-wider mb-6">Ubicación vs Causa</h3>
-              <div className="h-[250px]">
+            <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm relative overflow-hidden">
+              <div className="px-5 py-4 border-b border-[var(--border)] flex justify-between items-start">
+                <h3 className="text-[12px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest flex items-center gap-2">
+                  <BarChart2 size={14} /> Ubicación vs Causa
+                </h3>
+                <div className="relative group">
+                  <HelpCircle size={14} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
+                  <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case">
+                    Correlación entre la ubicación del evento y la causa raíz identificada.
+                  </div>
+                </div>
+              </div>
+              <div className="h-[250px] p-5 pb-8">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={dataUbicacionCausa} layout="vertical" margin={{ top: 0, right: 20, left: 20, bottom: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(128,128,128,0.15)" />
                     <XAxis type="number" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }} />
                     <YAxis dataKey="ubicacion" type="category" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }} width={80} />
                     <Tooltip content={<CustomTooltip />} />
-                    <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
+                    <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} formatter={(value) => <span style={{ color: 'black' }}>{value}</span>} />
                     <Bar dataKey="Descarga" stackId="a" fill={COLORS[0]} />
                     <Bar dataKey="Disparo" stackId="a" fill={COLORS[1]} />
                     <Bar dataKey="Investigacion" stackId="a" fill={COLORS[2]} />
@@ -197,16 +228,26 @@ const Fallas = () => {
             </div>
 
             {/* Diferida Anual por Fuente */}
-            <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm p-5">
-              <h3 className="text-xs font-bold text-[var(--muted-foreground)] uppercase tracking-wider mb-6">Diferida Anual (BO) por Fuente Acumulada 2026</h3>
-              <div className="h-[250px]">
+            <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm relative overflow-hidden">
+              <div className="px-5 py-4 border-b border-[var(--border)] flex justify-between items-start">
+                <h3 className="text-[12px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest flex items-center gap-2">
+                  <BarChart2 size={14} /> Diferida Anual (BO) por Fuente Acumulada 2026
+                </h3>
+                <div className="relative group">
+                  <HelpCircle size={14} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
+                  <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case">
+                    Volumen total de producción diferida agrupada por fuente del problema durante el año en curso.
+                  </div>
+                </div>
+              </div>
+              <div className="h-[250px] p-5 pb-8">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={dataDiferidaFuente} margin={{ top: 20, right: 0, left: 0, bottom: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(128,128,128,0.15)" />
                     <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }} />
                     <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }} />
                     <Tooltip content={<CustomTooltip />} cursor={{ fill: 'transparent' }} />
-                    <Bar dataKey="value" fill="#C41230" radius={[4, 4, 0, 0]} maxBarSize={50}>
+                    <Bar dataKey="value" fill="#274472" radius={[4, 4, 0, 0]} maxBarSize={50}>
                       {dataDiferidaFuente.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                       ))}
@@ -217,9 +258,19 @@ const Fallas = () => {
             </div>
 
             {/* Distribución por Causa */}
-            <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm p-5">
-              <h3 className="text-xs font-bold text-[var(--muted-foreground)] uppercase tracking-wider mb-6">Distribución por Causa - Eventos RED 2026</h3>
-              <div className="h-[250px] flex justify-center">
+            <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm relative overflow-hidden">
+              <div className="px-5 py-4 border-b border-[var(--border)] flex justify-between items-start">
+                <h3 className="text-[12px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest flex items-center gap-2">
+                  <PieChartIcon size={14} /> Distribución por Causa - Eventos RED 2026
+                </h3>
+                <div className="relative group">
+                  <HelpCircle size={14} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
+                  <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case">
+                    Proporción de causas específicas que originaron eventos en la red de distribución.
+                  </div>
+                </div>
+              </div>
+              <div className="h-[250px] p-5 pb-8 flex justify-center">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
@@ -231,7 +282,7 @@ const Fallas = () => {
                       fill="#8884d8"
                       dataKey="value"
                       paddingAngle={2}
-                      label={({ name, percent }) => `${(percent * 100).toFixed(0)}%`}
+                      label={CustomPieLabel}
                       labelLine={false}
                     >
                       {dataCausasPie.map((entry, index) => (
@@ -242,7 +293,7 @@ const Fallas = () => {
                       formatter={(value) => [`${value} Eventos`]} 
                       contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", fontSize: "12px" }}
                     />
-                    <Legend layout="vertical" verticalAlign="middle" align="right" wrapperStyle={{ fontSize: '11px' }} />
+                    <Legend layout="vertical" verticalAlign="middle" align="right" wrapperStyle={{ fontSize: '11px' }} formatter={(value) => <span style={{ color: 'black' }}>{value}</span>} />
                   </PieChart>
                 </ResponsiveContainer>
               </div>
@@ -262,9 +313,15 @@ const Fallas = () => {
             <KPICard label="# Eventos Acumulados RED - 2026" value="9" unit="Eventos" trend={-1} trendValue="↓ 8% vs 2025" />
             
             {/* Tabla Resumen */}
-            <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm overflow-hidden flex-1">
-              <div className="px-4 py-3 border-b border-[var(--border)] bg-[var(--background)]">
+            <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm overflow-hidden flex-1 relative">
+              <div className="px-4 py-3 border-b border-[var(--border)] flex justify-between items-center">
                 <h3 className="text-xs font-bold text-[var(--muted-foreground)] uppercase tracking-wider">Causas</h3>
+                <div className="relative group">
+                  <HelpCircle size={14} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
+                  <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case">
+                    Comparativa del número de eventos por causa entre 2025 y 2026, indicando la tendencia.
+                  </div>
+                </div>
               </div>
               <div className="p-0">
                 <table className="w-full text-xs">
@@ -302,16 +359,26 @@ const Fallas = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Eventos RED */}
-              <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm p-5">
-                <h3 className="text-xs font-bold text-[var(--muted-foreground)] uppercase tracking-wider mb-6">Eventos RED</h3>
-                <div className="h-[220px]">
+              <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm relative overflow-hidden">
+                <div className="px-5 py-4 border-b border-[var(--border)] flex justify-between items-start">
+                  <h3 className="text-[12px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest flex items-center gap-2">
+                    <BarChart2 size={14} /> Eventos RED
+                  </h3>
+                  <div className="relative group">
+                    <HelpCircle size={14} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
+                    <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case">
+                      Histórico mensual del número de eventos en la red, comparando los últimos 3 años.
+                    </div>
+                  </div>
+                </div>
+                <div className="h-[220px] p-5 pb-8">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={dataEventosRed} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(128,128,128,0.15)" />
                       <XAxis dataKey="mes" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }} />
                       <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }} />
                       <Tooltip content={<CustomTooltip />} />
-                      <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
+                      <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} formatter={(value) => <span style={{ color: 'black' }}>{value}</span>} />
                       <Bar dataKey="2024" fill={COLORS[0]} radius={[2, 2, 0, 0]} />
                       <Bar dataKey="2025" fill={COLORS[1]} radius={[2, 2, 0, 0]} />
                       <Bar dataKey="2026" fill={COLORS[2]} radius={[2, 2, 0, 0]} />
@@ -321,16 +388,26 @@ const Fallas = () => {
               </div>
 
               {/* Diferidas por Eventos RED */}
-              <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm p-5">
-                <h3 className="text-xs font-bold text-[var(--muted-foreground)] uppercase tracking-wider mb-6">Diferidas por Eventos RED</h3>
-                <div className="h-[220px]">
+              <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm relative overflow-hidden">
+                <div className="px-5 py-4 border-b border-[var(--border)] flex justify-between items-start">
+                  <h3 className="text-[12px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest flex items-center gap-2">
+                    <BarChart2 size={14} /> Diferidas por Eventos RED
+                  </h3>
+                  <div className="relative group">
+                    <HelpCircle size={14} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
+                    <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case">
+                      Volumen de producción diferida asociada exclusivamente a eventos en la red, comparando años.
+                    </div>
+                  </div>
+                </div>
+                <div className="h-[220px] p-5 pb-8">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={dataDiferidasEventos} margin={{ top: 0, right: 0, left: -10, bottom: 0 }}>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(128,128,128,0.15)" />
                       <XAxis dataKey="mes" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }} />
                       <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }} width={50} />
                       <Tooltip content={<CustomTooltip />} />
-                      <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
+                      <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} formatter={(value) => <span style={{ color: 'black' }}>{value}</span>} />
                       <Bar dataKey="2024" fill={COLORS[0]} radius={[2, 2, 0, 0]} />
                       <Bar dataKey="2025" fill={COLORS[1]} radius={[2, 2, 0, 0]} />
                       <Bar dataKey="2026" fill={COLORS[2]} radius={[2, 2, 0, 0]} />
@@ -341,16 +418,26 @@ const Fallas = () => {
             </div>
 
             {/* Diferidas por Causa - Eventos RED */}
-            <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm p-5">
-              <h3 className="text-xs font-bold text-[var(--muted-foreground)] uppercase tracking-wider mb-6">Diferidas por Causa - Eventos RED</h3>
-              <div className="h-[250px]">
+            <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm relative overflow-hidden">
+              <div className="px-5 py-4 border-b border-[var(--border)] flex justify-between items-start">
+                <h3 className="text-[12px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest flex items-center gap-2">
+                  <BarChart2 size={14} /> Diferidas por Causa - Eventos RED
+                </h3>
+                <div className="relative group">
+                  <HelpCircle size={14} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
+                  <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case">
+                    Producción diferida desglosada por la causa que originó los eventos en la red, comparando los últimos 3 años.
+                  </div>
+                </div>
+              </div>
+              <div className="h-[250px] p-5 pb-8">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={dataDiferidasCausa} margin={{ top: 0, right: 0, left: -10, bottom: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(128,128,128,0.15)" />
                     <XAxis dataKey="causa" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }} />
                     <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }} width={50} />
                     <Tooltip content={<CustomTooltip />} />
-                    <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
+                    <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} formatter={(value) => <span style={{ color: 'black' }}>{value}</span>} />
                     <Bar dataKey="2024" fill={COLORS[0]} radius={[2, 2, 0, 0]} />
                     <Bar dataKey="2025" fill={COLORS[1]} radius={[2, 2, 0, 0]} />
                     <Bar dataKey="2026" fill={COLORS[2]} radius={[2, 2, 0, 0]} />

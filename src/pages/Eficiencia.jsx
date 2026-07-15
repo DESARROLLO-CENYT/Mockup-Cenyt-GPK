@@ -1,28 +1,38 @@
 import React, { useState } from 'react';
 import KPICard from '../components/KPICard';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, Cell } from 'recharts';
-import { ChevronRight, ChevronDown, Cloud } from 'lucide-react';
+import { ChevronRight, ChevronDown, Cloud, HelpCircle, Activity, BarChart2, List } from 'lucide-react';
 
 const dataSemanas = [
-  { num: 3, mes: 'enero', real: 1.8, meta: 2.5 },
-  { num: 4, mes: 'enero', real: 2.1, meta: 2.5 },
-  { num: 5, mes: 'febrero', real: 3.8, meta: 2.5 },
-  { num: 6, mes: 'febrero', real: 6.0, meta: 2.5 },
-  { num: 7, mes: 'febrero', real: 8.7, meta: 2.5 },
-  { num: 8, mes: 'febrero', real: 8.8, meta: 2.5 },
-  { num: 9, mes: 'marzo', real: 11.0, meta: 2.5 },
-  { num: 10, mes: 'marzo', real: 12.1, meta: 2.5 },
-  { num: 11, mes: 'marzo', real: 12.2, meta: 2.5 },
-  { num: 12, mes: 'abril', real: 14.6, meta: 2.5 },
+  { num: 9, mes: 'marzo', real: 1.8, meta: 2.5 },
+  { num: 10, mes: 'marzo', real: 2.1, meta: 2.5 },
+  { num: 11, mes: 'marzo', real: 2.5, meta: 2.5 },
+  { num: 12, mes: 'marzo', real: 3.8, meta: 2.5 },
+  { num: 13, mes: 'marzo', real: 6.0, meta: 2.5 },
+  { num: 14, mes: 'marzo', real: 8.7, meta: 2.5 },
+  { num: 14, mes: 'abril', real: 8.7, meta: 2.5 },
+  { num: 15, mes: 'abril', real: 9.8, meta: 2.5 },
+  { num: 16, mes: 'abril', real: 11.0, meta: 2.5 },
+  { num: 17, mes: 'abril', real: 12.2, meta: 2.5 },
+  { num: 18, mes: 'abril', real: 12.2, meta: 2.5 },
+  { num: 18, mes: 'mayo', real: 12.2, meta: 2.5 },
+  { num: 19, mes: 'mayo', real: 13.5, meta: 2.5 },
+  { num: 20, mes: 'mayo', real: 14.5, meta: 2.5 },
+  { num: 21, mes: 'mayo', real: 15.6, meta: 2.5 },
+  { num: 22, mes: 'mayo', real: 15.6, meta: 2.5 },
+  { num: 23, mes: 'mayo', real: 15.6, meta: 2.5 },
+  { num: 24, mes: 'mayo', real: 16.5, meta: 2.5 },
+  { num: 24, mes: 'junio', real: 16.5, meta: 2.5 },
+  { num: 25, mes: 'junio', real: 16.9, meta: 2.5 },
 ];
 
 const dataCampos = [
-  { campo: 'Tigui', valor: 1.00 },
-  { campo: 'GL Isla', valor: 1.02 },
+  { campo: 'Tigui', valor: 1.02 },
+  { campo: 'GL Isla', valor: 1.25 },
   { campo: 'Tigana SW', valor: 1.45 },
-  { campo: 'Tigana A', valor: 2.04 },
-  { campo: 'Jacana', valor: 4.75 },
-  { campo: 'Tigana Sur', valor: 13.07 },
+  { campo: 'Tigana A', valor: 1.74 },
+  { campo: 'Jacana', valor: 2.15 },
+  { campo: 'Tigana Sur', valor: 2.50 },
 ];
 
 // Datos de la tabla jerárquica
@@ -50,19 +60,30 @@ const CustomXAxisTick = ({ x, y, payload, index }) => {
   const prevData = index > 0 ? dataSemanas[index - 1] : null;
   const isFirstOfMonth = !prevData || prevData.mes !== data.mes;
 
+  // Find the middle index of the current month block to center the text
+  let monthStartIndex = index;
+  while (monthStartIndex > 0 && dataSemanas[monthStartIndex - 1].mes === data.mes) {
+    monthStartIndex--;
+  }
+  let monthEndIndex = index;
+  while (monthEndIndex < dataSemanas.length - 1 && dataSemanas[monthEndIndex + 1].mes === data.mes) {
+    monthEndIndex++;
+  }
+  const isMiddleOfMonth = index === Math.floor((monthStartIndex + monthEndIndex) / 2);
+
   return (
     <g transform={`translate(${x},${y})`}>
       {/* Separator line for months */}
       {isFirstOfMonth && index !== 0 && (
-        <line x1={-15} y1={0} x2={-15} y2={30} stroke="var(--border)" strokeDasharray="2 2" />
+        <line x1={-20} y1={0} x2={-20} y2={30} stroke="var(--border)" strokeDasharray="2 2" />
       )}
       {/* Week Number */}
-      <text x={0} y={0} dy={12} textAnchor="middle" fill="var(--foreground)" fontSize={11}>
+      <text x={0} y={0} dy={12} textAnchor="middle" fill="var(--muted-foreground)" fontSize={11}>
         {data.num}
       </text>
       {/* Month Name */}
-      {isFirstOfMonth && (
-        <text x={5} y={0} dy={26} textAnchor="start" fill="var(--muted-foreground)" fontSize={11} className="capitalize">
+      {isMiddleOfMonth && (
+        <text x={0} y={0} dy={26} textAnchor="middle" fill="var(--muted-foreground)" fontSize={11} className="capitalize">
           {data.mes}
         </text>
       )}
@@ -111,6 +132,27 @@ const ExpandableRow = ({ row }) => {
         </tr>
       ))}
     </>
+  );
+};
+
+const renderCustomHorizontalBarLabel = (props) => {
+  const { x, y, width, height, value } = props;
+  if (value === undefined || value === null) return null;
+  
+  const minValor = Math.min(...dataCampos.map(d => d.valor));
+  if (value !== minValor) return null;
+  
+  const text = `${value.toFixed(2)}`;
+  const rectWidth = text.length * 7 + 16;
+  const rectHeight = 22;
+  
+  return (
+    <g>
+      <rect x={x + width + 6} y={y + height / 2 - rectHeight / 2} width={rectWidth} height={rectHeight} rx={6} fill="var(--card)" stroke="var(--border)" strokeWidth={1} style={{ filter: 'drop-shadow(0px 2px 4px rgba(0,0,0,0.08))' }} />
+      <text x={x + width + 6 + rectWidth / 2} y={y + height / 2} fill="var(--foreground)" textAnchor="middle" dominantBaseline="central" fontSize={11} fontWeight={600}>
+        {text}
+      </text>
+    </g>
   );
 };
 
@@ -166,46 +208,76 @@ const Eficiencia = () => {
 
       {/* Gráficos */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-[var(--card)] border border-[var(--border)] rounded-lg p-5">
-          <h3 className="text-[14px] font-medium text-[var(--foreground)]">Avance semanal</h3>
-          <p className="text-[12px] text-[var(--muted-foreground)] mb-4">Semana / Año</p>
-          <div className="h-[220px]">
+        <div className="lg:col-span-2 bg-[var(--card)] border border-[var(--border)] rounded-lg shadow-sm flex flex-col">
+          <div className="px-6 py-4 border-b border-[var(--border)] flex justify-between items-start">
+            <h3 className="text-[12px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest flex items-center gap-2">
+              <Activity size={14} /> Avance Semanal (Semana / Mes)
+            </h3>
+            <div className="relative group">
+              <HelpCircle size={14} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
+              <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case">
+                Muestra la evolución semanal de la eficiencia real comparada con la meta establecida.
+              </div>
+            </div>
+          </div>
+          <div className="h-[250px] p-5 pb-8">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={dataSemanas} margin={{ bottom: 20 }}>
                 <defs>
                   <linearGradient id="gradReal" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#C41230" stopOpacity={0.25} />
-                    <stop offset="95%" stopColor="#C41230" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#963133" stopOpacity={0.25} />
+                    <stop offset="95%" stopColor="#963133" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(128,128,128,0.15)" vertical={false} />
                 <XAxis dataKey="num" axisLine={false} tickLine={false} tick={<CustomXAxisTick />} />
                 <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} dx={-10} domain={[0, 20]} />
                 <Tooltip
-                  contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "var(--foreground)", fontSize: "12px" }}
+                  contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "black", fontSize: "12px" }}
+                  itemStyle={{ color: "black", fontSize: "13px" }}
+                  labelStyle={{ color: "black" }}
                 />
-                <Area type="monotone" dataKey="meta" name="Esperada" stroke="#4A9EE0" strokeWidth={1.5} strokeDasharray="4 3" fill="none" />
-                <Area type="monotone" dataKey="real" name="Real" stroke="#C41230" strokeWidth={2} fill="url(#gradReal)" />
+                <Area type="monotone" dataKey="meta" name="Esperada" stroke="#ae4247" strokeWidth={1.5} strokeDasharray="4 3" fill="none" />
+                <Area type="monotone" dataKey="real" name="Real" stroke="#963133" strokeWidth={2} fill="url(#gradReal)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
         </div>
 
-        <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg p-5">
-          <h3 className="text-[14px] font-medium text-[var(--foreground)]">Eficiencia por campo</h3>
-          <p className="text-[12px] text-[var(--muted-foreground)] mb-4">kW/Bo </p>
-          <div className="h-[220px]">
+        <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg shadow-sm flex flex-col">
+          <div className="px-6 py-4 border-b border-[var(--border)] flex justify-between items-start">
+            <h3 className="text-[12px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest flex items-center gap-2">
+              <BarChart2 size={14} /> Eficiencia por campo (kW/Bo)
+            </h3>
+            <div className="relative group">
+              <HelpCircle size={14} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
+              <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case">
+                Muestra la eficiencia energética (kW/Bo) de cada campo correspondiente a la semana actual.
+              </div>
+            </div>
+          </div>
+          <div className="h-[250px] p-5 pb-8">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={dataCampos} layout="vertical" margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(128,128,128,0.15)" horizontal={false} />
                 <XAxis type="number" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} />
                 <YAxis dataKey="campo" type="category" width={70} axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} />
-                <Tooltip contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "var(--foreground)", fontSize: "12px" }} cursor={{ fill: 'rgba(128,128,128,0.1)' }} />
-                <Bar dataKey="valor" radius={[0, 2, 2, 0]} barSize={20}>
-                  {dataCampos.map((entry, index) => {
-                    const isBest = entry.valor === Math.min(...dataCampos.map(d => d.valor));
-                    return <Cell key={`cell-${index}`} fill={isBest ? '#C41230' : 'rgba(196, 18, 48, 0.3)'} />;
-                  })}
+                <Tooltip 
+                  contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "black", fontSize: "12px" }} 
+                  itemStyle={{ color: "black", fontSize: "13px" }}
+                  labelStyle={{ color: "black" }}
+                  cursor={{ fill: 'rgba(128,128,128,0.1)' }} 
+                />
+                <Bar dataKey="valor" radius={[0, 2, 2, 0]} barSize={20} label={renderCustomHorizontalBarLabel}>
+                  {(() => {
+                    const sortedValues = [...dataCampos].map(d => d.valor).sort((a, b) => a - b);
+                    const palette = ['#963133', '#ae4247', '#c04e54', '#cb5c62', '#dc7d82', '#e99a9f', '#efb2b6', '#f6c7ca'];
+                    return dataCampos.map((entry, index) => {
+                      const rank = sortedValues.indexOf(entry.valor);
+                      const colorIndex = Math.floor((rank / Math.max(1, sortedValues.length - 1)) * (palette.length - 1));
+                      return <Cell key={`cell-${index}`} fill={palette[colorIndex]} />;
+                    });
+                  })()}
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
@@ -214,10 +286,20 @@ const Eficiencia = () => {
       </div>
 
       {/* Tabla Jerárquica */}
-      <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg overflow-hidden">
-        <div className="px-5 py-4 border-b border-[var(--border)] flex items-center gap-2">
-          <h3 className="text-[12px] uppercase tracking-wider font-semibold text-[var(--foreground)]">Eficiencia por facilidad</h3>
-          <span className="text-[12px] text-[var(--muted-foreground)]">— Clic en una fila para ver pozos</span>
+      <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg overflow-hidden shadow-sm relative">
+        <div className="px-6 py-4 border-b border-[var(--border)] flex justify-between items-start">
+          <div className="flex items-center gap-2">
+            <h3 className="text-[12px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest flex items-center gap-2">
+              <List size={14} /> Eficiencia por facilidad
+            </h3>
+            <span className="text-[12px] text-[var(--muted-foreground)] ml-2">— Clic en una fila para ver pozos</span>
+          </div>
+          <div className="relative group">
+            <HelpCircle size={14} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
+            <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case">
+              Tabla jerárquica con el detalle de demanda, producción y eficiencia por facilidad y pozo.
+            </div>
+          </div>
         </div>
         <div className="w-full overflow-x-auto">
           <table className="w-full text-[14px]">

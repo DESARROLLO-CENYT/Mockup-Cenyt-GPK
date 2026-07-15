@@ -2,6 +2,7 @@ import React from 'react';
 import KPICard from '../components/KPICard';
 import StatusBadge from '../components/StatusBadge';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { HelpCircle } from 'lucide-react';
 
 const dataDiarioCostos = [
   { hora: '12:00 a.m.', total: 600, solar: 0, gas: 240, diesel: 0, interconectada: 400, presupuesto: 600, fijoEnel: 300 },
@@ -36,9 +37,19 @@ const Pronostico = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-[var(--card)] border border-[var(--border)] rounded-lg p-5">
-          <h3 className="text-[14px] font-medium text-[var(--foreground)]">Demanda real vs. forecast</h3>
-          <p className="text-[12px] text-[var(--muted-foreground)] mb-4">Volumen diario bbl/d</p>
+        <div className="lg:col-span-2 bg-[var(--card)] border border-[var(--border)] rounded-lg p-5 relative">
+          <div className="flex justify-between items-start mb-4">
+            <div>
+              <h3 className="text-[14px] font-medium text-[var(--foreground)]">Demanda real vs. forecast</h3>
+              <p className="text-[12px] text-[var(--muted-foreground)]">Volumen diario bbl/d</p>
+            </div>
+            <div className="relative group">
+              <HelpCircle size={16} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
+              <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case">
+                Comparación del volumen de demanda real diaria frente a las predicciones del modelo.
+              </div>
+            </div>
+          </div>
           <div className="h-[220px]">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={dataPronostico} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
@@ -46,22 +57,32 @@ const Pronostico = () => {
                 <XAxis dataKey="dia" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} dy={10} />
                 <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} dx={-10} domain={['dataMin - 1000', 'dataMax + 1000']} />
                 <Tooltip contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "var(--foreground)", fontSize: "12px" }} />
-                <Line type="monotone" dataKey="real" stroke="#C41230" strokeWidth={2} dot={{ r: 4, fill: "#C41230" }} />
-                <Line type="monotone" dataKey="forecast" stroke="#4A9EE0" strokeWidth={1.5} strokeDasharray="5 3" dot={{ r: 3 }} connectNulls={false} />
+                <Line type="monotone" dataKey="real" stroke="#963133" strokeWidth={2} dot={{ r: 4, fill: "#963133" }} />
+                <Line type="monotone" dataKey="forecast" stroke="#ae4247" strokeWidth={1.5} strokeDasharray="5 3" dot={{ r: 3 }} connectNulls={false} />
               </LineChart>
             </ResponsiveContainer>
           </div>
         </div>
 
-        <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg p-5 flex flex-col">
-          <h3 className="text-[14px] font-medium text-[var(--foreground)]">Distribución por Mercado</h3>
-          <p className="text-[12px] text-[var(--muted-foreground)] mb-6">Demanda agregada por segmento</p>
+        <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg p-5 flex flex-col relative">
+          <div className="flex justify-between items-start mb-6">
+            <div>
+              <h3 className="text-[14px] font-medium text-[var(--foreground)]">Distribución por Mercado</h3>
+              <p className="text-[12px] text-[var(--muted-foreground)]">Demanda agregada por segmento</p>
+            </div>
+            <div className="relative group">
+              <HelpCircle size={16} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
+              <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case">
+                Desglose de la demanda agregada agrupada por segmento de mercado.
+              </div>
+            </div>
+          </div>
           
           <div className="flex flex-col gap-5 flex-1 justify-center">
             {[
-              { label: 'Mercado Interno', pct: 45, color: '#C41230', val: '23,535' },
-              { label: 'Exportación', pct: 35, color: '#4A9EE0', val: '18,305' },
-              { label: 'Industrial', pct: 20, color: '#E8A838', val: '10,460' },
+              { label: 'Mercado Interno', pct: 45, color: '#963133', val: '23,535' },
+              { label: 'Exportación', pct: 35, color: '#ae4247', val: '18,305' },
+              { label: 'Industrial', pct: 20, color: '#cb5c62', val: '10,460' },
             ].map((item, i) => (
               <div key={i} className="flex flex-col gap-2">
                 <div className="flex justify-between items-end">
@@ -77,9 +98,15 @@ const Pronostico = () => {
         </div>
       </div>
 
-      <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg overflow-hidden">
-        <div className="px-5 py-4 border-b border-[var(--border)]">
+      <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg overflow-hidden relative">
+        <div className="px-5 py-4 border-b border-[var(--border)] flex justify-between items-start">
           <h3 className="text-[14px] font-medium text-[var(--foreground)]">Contratos y Clientes Principales</h3>
+          <div className="relative group">
+            <HelpCircle size={16} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
+            <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case">
+              Estado actual de los contratos, volúmenes acordados y porcentaje de cumplimiento.
+            </div>
+          </div>
         </div>
         <div className="w-full overflow-x-auto">
           <table className="w-full text-[14px]">
@@ -111,12 +138,17 @@ const Pronostico = () => {
         </div>
       </div>
 
-      {/* Gráfico de Costos Diario (Movido desde Despacho) */}
-      <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg shadow-sm flex flex-col mt-6">
-        <div className="px-6 py-4 border-b border-[var(--border)]">
-          <h3 className="text-[14px] font-medium text-[var(--foreground)] uppercase tracking-widest text-center">
+      <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg shadow-sm flex flex-col mt-6 relative">
+        <div className="px-6 py-4 border-b border-[var(--border)] flex justify-between items-start">
+          <h3 className="text-[14px] font-medium text-[var(--foreground)] uppercase tracking-widest text-center flex-1">
             Costos de Energía por Fuentes de Generación
           </h3>
+          <div className="relative group">
+            <HelpCircle size={16} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
+            <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case">
+              Evolución horaria de los costos de energía desglosados por tecnología de generación.
+            </div>
+          </div>
         </div>
         <div style={{ width: '100%', height: 300 }} className="p-4 pb-10">
           <ResponsiveContainer width="100%" height="100%">
@@ -126,11 +158,11 @@ const Pronostico = () => {
               <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} tickFormatter={(val) => `$${val}`} />
               <Tooltip contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "var(--foreground)", fontSize: "12px" }} />
               <Legend iconType="circle" wrapperStyle={{ fontSize: '10px', paddingTop: '20px' }} />
-              <Line type="monotone" dataKey="total" name="TOTAL" stroke="#900020" strokeWidth={2} dot={false} activeDot={{ r: 4 }} />
-              <Line type="monotone" dataKey="solar" name="SOLAR" stroke="#EAB308" strokeWidth={2} dot={false} />
-              <Line type="monotone" dataKey="gas" name="GAS" stroke="#16A34A" strokeWidth={2} dot={false} />
-              <Line type="monotone" dataKey="diesel" name="DIESEL" stroke="#737373" strokeWidth={2} dot={false} />
-              <Line type="monotone" dataKey="interconectada" name="INTERCONECTADA" stroke="#38BDF8" strokeWidth={2} dot={false} />
+              <Line type="monotone" dataKey="total" name="TOTAL" stroke="#963133" strokeWidth={2} dot={false} activeDot={{ r: 4 }} />
+              <Line type="monotone" dataKey="solar" name="SOLAR" stroke="#efb2b6" strokeWidth={2} dot={false} />
+              <Line type="monotone" dataKey="gas" name="GAS" stroke="#cb5c62" strokeWidth={2} dot={false} />
+              <Line type="monotone" dataKey="diesel" name="DIESEL" stroke="#dc7d82" strokeWidth={2} dot={false} />
+              <Line type="monotone" dataKey="interconectada" name="INTERCONECTADA" stroke="#ae4247" strokeWidth={2} dot={false} />
               <Line type="stepAfter" dataKey="presupuesto" name="PRESUPUESTO" stroke="#8B5CF6" strokeWidth={2} dot={false} />
               <Line type="monotone" dataKey="fijoEnel" name="FIJO ENEL" stroke="#F97316" strokeWidth={2} dot={false} />
             </LineChart>
@@ -139,19 +171,27 @@ const Pronostico = () => {
       </div>
 
       {/* Tabla Comparativa Diaria (Movida desde Despacho) */}
-      <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg overflow-hidden shadow-sm mt-6">
+      <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg overflow-hidden shadow-sm mt-6 relative">
+        <div className="absolute top-4 right-6 z-20">
+          <div className="relative group">
+            <HelpCircle size={16} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
+            <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case">
+              Resumen comparativo del despacho y costos de energía entre el día actual y el día anterior.
+            </div>
+          </div>
+        </div>
         <div className="w-full overflow-x-auto">
           <table className="w-full text-[13.5px] text-left">
             <thead className="border-b border-[var(--border)]">
               <tr>
                 <th className="px-6 py-4 bg-[var(--background)]"></th>
-                <th className="px-6 py-4 font-bold text-[12px] text-[#C41230] text-center tracking-wider bg-[var(--background)] border-b-2 border-transparent">
+                <th className="px-6 py-4 font-bold text-[12px] text-[#963133] text-center tracking-wider bg-[var(--background)] border-b-2 border-transparent">
                   <div className="flex flex-col items-center">
                     <span>Despacho Energía</span>
                     <span>Día Siguiente</span>
                   </div>
                 </th>
-                <th className="px-6 py-4 font-bold text-[12px] text-[#C41230] text-center tracking-wider bg-[var(--background)] border-b-2 border-transparent">
+                <th className="px-6 py-4 font-bold text-[12px] text-[#963133] text-center tracking-wider bg-[var(--background)] border-b-2 border-transparent">
                   <div className="flex flex-col items-center">
                     <span>Despacho Energía</span>
                     <span>Día Anterior</span>
