@@ -218,18 +218,18 @@ const Confiabilidad = () => {
       {/* Resumen de Eventos */}
       <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg overflow-hidden shadow-sm">
         <div className="px-5 py-4 border-b border-[var(--border)] flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <h3 className="text-[13px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest">
-              Resumen de Eventos
-            </h3>
+          <h3 className="text-[13px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest">
+            Resumen de Eventos
+          </h3>
+          <div className="flex items-center gap-3">
+            <span className="text-[12px] bg-red-400/10 text-red-400 px-3 py-1 rounded-full font-bold">4 Eventos (Última semana)</span>
             <div className="relative group">
               <HelpCircle size={14} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
-              <div className="absolute left-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case">
-                Listado de los eventos más recientes, incluyendo ubicación, causa, barriles diferidos y pozos afectados.
+              <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case">
+                Listado de los eventos de la última semana, incluyendo ubicación, causa, barriles diferidos y pozos afectados.
               </div>
             </div>
           </div>
-          <span className="text-[12px] bg-red-400/10 text-red-400 px-3 py-1 rounded-full font-bold">4 Eventos recientes</span>
         </div>
         <div className="w-full overflow-x-auto">
           <table className="w-full text-[13.5px]">

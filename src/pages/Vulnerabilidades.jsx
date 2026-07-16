@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import KPICard from '../components/KPICard';
-import { ExternalLink, HelpCircle } from 'lucide-react';
+import { ExternalLink, HelpCircle, Activity, BarChart2 } from 'lucide-react';
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
   PieChart, Pie, Cell, AreaChart, Area, Legend
@@ -43,17 +43,24 @@ const dataAvanceSemanal = [
   { week: '5', mes: 'febrero', avance: 6.0 },
   { week: '6', mes: '', avance: 8.7 },
   { week: '7', mes: '', avance: 8.8 },
-  { week: '8', mes: 'marzo', avance: 11.0 },
-  { week: '9', mes: '', avance: 12.1 },
+  { week: '8', mes: '', avance: 11.0 },
+  { week: '9', mes: 'marzo', avance: 12.1 },
   { week: '10', mes: '', avance: 12.2 },
-  { week: '11', mes: 'abril', avance: 14.6 },
+  { week: '11', mes: '', avance: 14.6 },
   { week: '12', mes: '', avance: 14.8 },
   { week: '13', mes: '', avance: 15.1 },
-  { week: '14', mes: '', avance: 15.5 },
+  { week: '14', mes: 'abril', avance: 15.5 },
   { week: '15', mes: '', avance: 16.0 },
   { week: '16', mes: '', avance: 16.2 },
   { week: '17', mes: '', avance: 16.5 },
-  { week: '18', mes: '', avance: 25.0 } // 25% para vulnerabilidades
+  { week: '18', mes: 'mayo', avance: 25.0 }, // 25% para vulnerabilidades
+  { week: '19', mes: '', avance: 26.5 },
+  { week: '20', mes: '', avance: 28.0 },
+  { week: '21', mes: '', avance: 30.5 },
+  { week: '22', mes: '', avance: 32.2 },
+  { week: '23', mes: 'junio', avance: 34.0 },
+  { week: '24', mes: '', avance: 35.5 },
+  { week: '25', mes: '', avance: 36.9 }
 ];
 
 const dataCircuitos = [
@@ -92,17 +99,24 @@ const dataAvanceSemanalKer = [
   { week: '5', mes: 'febrero', avance: 3.5 },
   { week: '6', mes: '', avance: 4.8 },
   { week: '7', mes: '', avance: 5.5 },
-  { week: '8', mes: 'marzo', avance: 7.2 },
-  { week: '9', mes: '', avance: 8.5 },
+  { week: '8', mes: '', avance: 7.2 },
+  { week: '9', mes: 'marzo', avance: 8.5 },
   { week: '10', mes: '', avance: 9.1 },
-  { week: '11', mes: 'abril', avance: 10.4 },
+  { week: '11', mes: '', avance: 10.4 },
   { week: '12', mes: '', avance: 11.2 },
   { week: '13', mes: '', avance: 12.0 },
-  { week: '14', mes: '', avance: 13.5 },
+  { week: '14', mes: 'abril', avance: 13.5 },
   { week: '15', mes: '', avance: 14.1 },
   { week: '16', mes: '', avance: 14.8 },
   { week: '17', mes: '', avance: 15.0 },
-  { week: '18', mes: '', avance: 15.0 } // 15% para keraunos
+  { week: '18', mes: 'mayo', avance: 15.0 }, // 15% para keraunos
+  { week: '19', mes: '', avance: 16.5 },
+  { week: '20', mes: '', avance: 17.0 },
+  { week: '21', mes: '', avance: 18.5 },
+  { week: '22', mes: '', avance: 20.2 },
+  { week: '23', mes: 'junio', avance: 22.0 },
+  { week: '24', mes: '', avance: 23.5 },
+  { week: '25', mes: '', avance: 24.9 }
 ];
 
 const dataCircuitosKer = [
@@ -168,10 +182,72 @@ const CustomAreaLabel = (props) => {
   );
 };
 
+const renderCustomHorizontalBarLabel = (props, dataArray, dataKey) => {
+  const { x, y, width, height, value } = props;
+  if (value === undefined || value === null) return null;
+  
+  const maxValor = Math.max(...dataArray.map(d => d[dataKey]));
+  if (value !== maxValor) return null;
+  
+  const text = `${value}%`;
+  const rectWidth = text.length * 7 + 16;
+  const rectHeight = 22;
+  
+  return (
+    <g>
+      <rect x={x + width + 6} y={y + height / 2 - rectHeight / 2} width={rectWidth} height={rectHeight} rx={6} fill="var(--card)" stroke="var(--border)" strokeWidth={1} style={{ filter: 'drop-shadow(0px 2px 4px rgba(0,0,0,0.08))' }} />
+      <text x={x + width + 6 + rectWidth / 2} y={y + height / 2} fill="var(--foreground)" textAnchor="middle" dominantBaseline="central" fontSize={11} fontWeight={600}>
+        {text}
+      </text>
+    </g>
+  );
+};
+
+const CustomXAxisTick = ({ x, y, payload, index, data }) => {
+  const getVirtualMonth = (idx) => {
+    for (let i = idx; i >= 0; i--) {
+      if (data[i].mes) return data[i].mes;
+    }
+    return '';
+  };
+
+  const currentMonth = getVirtualMonth(index);
+  const prevMonth = index > 0 ? getVirtualMonth(index - 1) : null;
+  const isFirstOfMonth = !prevMonth || prevMonth !== currentMonth;
+
+  let monthStartIndex = index;
+  while (monthStartIndex > 0 && getVirtualMonth(monthStartIndex - 1) === currentMonth) {
+    monthStartIndex--;
+  }
+  
+  let monthEndIndex = index;
+  while (monthEndIndex < data.length - 1 && getVirtualMonth(monthEndIndex + 1) === currentMonth) {
+    monthEndIndex++;
+  }
+  
+  const isMiddleOfMonth = index === Math.floor((monthStartIndex + monthEndIndex) / 2);
+
+  return (
+    <g transform={`translate(${x},${y})`}>
+      {isFirstOfMonth && index !== 0 && (
+        <line x1={-20} y1={0} x2={-20} y2={30} stroke="var(--border)" strokeDasharray="2 2" />
+      )}
+      <text x={0} y={0} dy={12} textAnchor="middle" fill="var(--muted-foreground)" fontSize={11}>
+        {data[index].week}
+      </text>
+      {isMiddleOfMonth && (
+        <text x={0} y={0} dy={26} textAnchor="middle" fill="var(--muted-foreground)" fontSize={11} className="capitalize">
+          {currentMonth}
+        </text>
+      )}
+    </g>
+  );
+};
+
 const Vulnerabilidades = () => {
   const [activeTab, setActiveTab] = useState('vulnerabilidades');
   const isKeraunos = activeTab === 'keraunos';
-  const themeColor = isKeraunos ? '#1d4ed8' : '#963133'; // blue-700 / geopark red
+  const themeColor = isKeraunos ? '#274472' : '#963133'; // color de Fallas / color de Eficiencia
 
   const currentAccionesTotales = isKeraunos ? 467 : 1043;
   const currentAccionesCerradas = isKeraunos ? 70 : 261;
@@ -284,9 +360,11 @@ const Vulnerabilidades = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         
         {/* Gráfico 1: Avance semanal */}
-        <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm p-5 flex flex-col">
-          <div className="flex justify-between items-start mb-4">
-            <h3 className="text-sm font-bold text-[var(--foreground)] uppercase tracking-wider">Avance semanal</h3>
+        <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm flex flex-col">
+          <div className="px-6 py-4 border-b border-[var(--border)] flex justify-between items-start">
+            <h3 className="text-[12px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest flex items-center gap-2">
+              <Activity size={14} /> Avance semanal
+            </h3>
             <div className="relative group">
               <HelpCircle size={14} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
               <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case">
@@ -294,29 +372,35 @@ const Vulnerabilidades = () => {
               </div>
             </div>
           </div>
-          <div className="h-[250px] w-full">
+          <div className="h-[250px] w-full p-5 pb-8">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={currentDataAvanceSemanal} margin={{ top: 20, right: 10, left: -20, bottom: 20 }}>
                 <defs>
-                  <linearGradient id="colorAvance" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor={themeColor} stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor={themeColor} stopOpacity={0}/>
+                  <linearGradient id="gradAvanceSemanal" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor={themeColor} stopOpacity={0.25} />
+                    <stop offset="95%" stopColor={themeColor} stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(128,128,128,0.15)" />
-                <XAxis dataKey="week" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: 'var(--muted-foreground)' }} />
-                <YAxis axisLine={false} tickLine={false} tickFormatter={(val) => `${val}%`} tick={{ fontSize: 10, fill: 'var(--muted-foreground)' }} />
-                <Tooltip content={<CustomTooltip />} />
-                <Area type="monotone" dataKey="avance" stroke={themeColor} strokeWidth={3} fillOpacity={1} fill="url(#colorAvance)" label={<CustomAreaLabel dataArray={currentDataAvanceSemanal} />} />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(128,128,128,0.15)" vertical={false} />
+                <XAxis dataKey="week" axisLine={false} tickLine={false} tick={<CustomXAxisTick data={currentDataAvanceSemanal} />} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} dx={-10} tickFormatter={(val) => `${val}%`} />
+                <Tooltip
+                  contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "black", fontSize: "12px" }}
+                  itemStyle={{ color: "black", fontSize: "13px" }}
+                  labelStyle={{ color: "black" }}
+                />
+                <Area type="monotone" dataKey="avance" name="Avance" stroke={themeColor} strokeWidth={2} fill="url(#gradAvanceSemanal)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
         </div>
 
         {/* Gráfico 2: Circuitos */}
-        <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm p-5 flex flex-col">
-          <div className="flex justify-between items-start mb-4">
-            <h3 className="text-sm font-bold text-[var(--foreground)] uppercase tracking-wider text-center flex-1">Circuitos</h3>
+        <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm flex flex-col">
+          <div className="px-6 py-4 border-b border-[var(--border)] flex justify-between items-start">
+            <h3 className="text-[12px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest flex items-center gap-2">
+              <BarChart2 size={14} /> Circuitos
+            </h3>
             <div className="relative group">
               <HelpCircle size={14} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
               <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case text-left">
@@ -324,17 +408,30 @@ const Vulnerabilidades = () => {
               </div>
             </div>
           </div>
-          <div className="h-[250px] w-full">
+          <div className="h-[250px] w-full p-5 pb-8">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={currentDataCircuitos} layout="vertical" margin={{ top: 0, right: 30, left: 20, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="rgba(128,128,128,0.05)" />
-                <XAxis type="number" hide />
-                <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: 'var(--foreground)', fontWeight: 500 }} width={80} />
-                <Tooltip content={<CustomTooltip />} />
-                <Bar dataKey="value" barSize={14} radius={[0, 4, 4, 0]} label={{ position: 'right', fill: 'var(--foreground)', fontSize: 10, formatter: (v) => `${v}%` }}>
-                  {currentDataCircuitos.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={getColorByRank(index, currentDataCircuitos.length, isKeraunos)} />
-                  ))}
+              <BarChart data={currentDataCircuitos} layout="vertical" margin={{ top: 0, right: 40, left: 20, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(128,128,128,0.15)" horizontal={false} />
+                <XAxis type="number" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} hide />
+                <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} width={80} />
+                <Tooltip 
+                  contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "black", fontSize: "12px" }} 
+                  itemStyle={{ color: "black", fontSize: "13px" }}
+                  labelStyle={{ color: "black" }}
+                  cursor={{ fill: 'rgba(128,128,128,0.1)' }} 
+                />
+                <Bar dataKey="value" radius={[0, 2, 2, 0]} barSize={20} label={(props) => renderCustomHorizontalBarLabel(props, currentDataCircuitos, 'value')}>
+                  {(() => {
+                    const sortedValues = [...currentDataCircuitos].map(d => d.value).sort((a, b) => b - a);
+                    const fallasPalette = ['#0E1A2B', '#1B3454', '#274472', '#5C7AA3', '#A4B7D7'];
+                    const eficiPalette = ['#6a2224', '#7d282a', '#963133', '#ae4247', '#cb5c62', '#dc7d82', '#efb2b6', '#f6c7ca'];
+                    const palette = isKeraunos ? fallasPalette : eficiPalette;
+                    return currentDataCircuitos.map((entry, index) => {
+                      const rank = sortedValues.indexOf(entry.value);
+                      const colorIndex = Math.floor((rank / Math.max(1, sortedValues.length - 1)) * (palette.length - 1));
+                      return <Cell key={`cell-${index}`} fill={palette[colorIndex]} />;
+                    });
+                  })()}
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
@@ -349,9 +446,11 @@ const Vulnerabilidades = () => {
         <div className="lg:col-span-7 flex flex-col gap-6">
           
           {/* Card: Avance Actividades 2026 */}
-          <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm p-6 overflow-hidden">
-            <div className="flex justify-between items-start mb-6">
-              <h3 className="text-sm font-bold text-[var(--foreground)] uppercase tracking-wider">AVANCE ACTIVIDADES 2026</h3>
+          <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm overflow-hidden flex flex-col">
+            <div className="px-6 py-4 border-b border-[var(--border)] flex justify-between items-start">
+              <h3 className="text-[12px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest flex items-center gap-2">
+                <BarChart2 size={14} /> AVANCE ACTIVIDADES 2026
+              </h3>
               <div className="relative group">
                 <HelpCircle size={14} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
                 <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case">
@@ -359,17 +458,30 @@ const Vulnerabilidades = () => {
                 </div>
               </div>
             </div>
-            <div className="h-[450px] ml-[-20px] sm:ml-0">
+            <div className="h-[450px] ml-[-20px] sm:ml-0 p-5 pb-8">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={currentDataAvance} layout="vertical" margin={{ top: 0, right: 30, left: 0, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="rgba(128,128,128,0.15)" />
-                  <XAxis type="number" domain={[0, 100]} tickFormatter={(val) => `${val}%`} axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }} />
-                  <YAxis dataKey="actividad" type="category" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: 'var(--foreground)', fontWeight: 500 }} width={250} />
-                  <Tooltip content={<CustomTooltip />} />
-                  <Bar dataKey="avance" barSize={12} radius={[0, 4, 4, 0]} label={{ position: 'right', fill: 'var(--foreground)', fontSize: 10, formatter: (v) => `${v}%` }}>
-                    {currentDataAvance.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={getColorByRank(index, currentDataAvance.length, isKeraunos)} />
-                    ))}
+              <BarChart data={currentDataAvance} layout="vertical" margin={{ top: 0, right: 40, left: 0, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(128,128,128,0.15)" horizontal={false} />
+                  <XAxis type="number" domain={[0, 100]} axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} />
+                  <YAxis dataKey="actividad" type="category" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} width={250} />
+                  <Tooltip 
+                    contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "black", fontSize: "12px" }} 
+                    itemStyle={{ color: "black", fontSize: "13px" }}
+                    labelStyle={{ color: "black" }}
+                    cursor={{ fill: 'rgba(128,128,128,0.1)' }} 
+                  />
+                  <Bar dataKey="avance" radius={[0, 2, 2, 0]} barSize={20} label={(props) => renderCustomHorizontalBarLabel(props, currentDataAvance, 'avance')}>
+                    {(() => {
+                      const sortedValues = [...currentDataAvance].map(d => d.avance).sort((a, b) => b - a);
+                      const fallasPalette = ['#0E1A2B', '#1B3454', '#274472', '#5C7AA3', '#A4B7D7'];
+                      const eficiPalette = ['#6a2224', '#7d282a', '#963133', '#ae4247', '#cb5c62', '#dc7d82', '#efb2b6', '#f6c7ca'];
+                      const palette = isKeraunos ? fallasPalette : eficiPalette;
+                      return currentDataAvance.map((entry, index) => {
+                        const rank = sortedValues.indexOf(entry.avance);
+                        const colorIndex = Math.floor((rank / Math.max(1, sortedValues.length - 1)) * (palette.length - 1));
+                        return <Cell key={`cell-${index}`} fill={palette[colorIndex]} />;
+                      });
+                    })()}
                   </Bar>
                 </BarChart>
               </ResponsiveContainer>
@@ -383,9 +495,11 @@ const Vulnerabilidades = () => {
 
         {/* Lado Derecho: Gráfico Presupuesto vs Ejecución */}
         <div className="lg:col-span-5 flex flex-col gap-6">
-          <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm p-6 flex flex-col h-full">
-            <div className="flex justify-between items-start mb-6">
-              <h3 className="text-sm font-bold text-[var(--foreground)] uppercase tracking-wider">PRESUPUESTO VS EJECUCIÓN</h3>
+          <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm flex flex-col h-full">
+            <div className="px-6 py-4 border-b border-[var(--border)] flex justify-between items-start">
+              <h3 className="text-[12px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest flex items-center gap-2">
+                <BarChart2 size={14} /> PRESUPUESTO VS EJECUCIÓN
+              </h3>
               <div className="relative group">
                 <HelpCircle size={14} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
                 <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case">
@@ -393,33 +507,25 @@ const Vulnerabilidades = () => {
                 </div>
               </div>
             </div>
-            <div className="h-[450px] w-full">
+            <div className="h-[450px] w-full p-5 pb-8">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={currentDataPresupuesto} margin={{ top: 20, right: 10, left: -20, bottom: 0 }}>
+                <BarChart data={currentDataPresupuesto.map(d => ({ ...d, porEjecutar: d.presupuesto - d.ejecutado }))} margin={{ top: 20, right: 10, left: -20, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(128,128,128,0.15)" />
-                  <XAxis dataKey="year" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: 'var(--muted-foreground)' }} />
-                  <YAxis axisLine={false} tickLine={false} tickFormatter={(val) => `$${val}M`} tick={{ fontSize: 10, fill: 'var(--muted-foreground)' }} />
-                  <Tooltip cursor={{fill: 'rgba(128,128,128,0.05)'}} content={({ active, payload, label }) => {
-                    if (active && payload && payload.length) {
-                      return (
-                        <div className="bg-[var(--popover)] border border-[var(--border)] p-3 rounded-lg shadow-xl">
-                          <p className="font-bold text-[var(--foreground)] mb-2 text-xs uppercase tracking-wider">{label}</p>
-                          <div className="flex flex-col gap-1.5">
-                            <span className="font-semibold text-gray-500 text-xs">
-                              Presupuesto: ${payload[0].value}M
-                            </span>
-                            <span className="font-semibold text-xs" style={{ color: themeColor }}>
-                              Ejecutado: ${payload[1].value}M
-                            </span>
-                          </div>
-                        </div>
-                      );
-                    }
-                    return null;
-                  }} />
-                  <Legend iconType="circle" wrapperStyle={{ fontSize: '12px' }} />
-                  <Bar dataKey="presupuesto" name="Presupuesto" fill="rgba(128,128,128,0.2)" radius={[4, 4, 0, 0]} barSize={40} />
-                  <Bar dataKey="ejecutado" name="Ejecutado" fill={themeColor} radius={[4, 4, 0, 0]} barSize={40} />
+                  <XAxis dataKey="year" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} />
+                  <YAxis axisLine={false} tickLine={false} tickFormatter={(val) => `$${val}M`} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} />
+                  <Tooltip 
+                    contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "black", fontSize: "12px" }}
+                    itemStyle={{ color: "black", fontSize: "13px" }}
+                    labelStyle={{ color: "black" }}
+                    cursor={{ fill: 'rgba(128,128,128,0.1)' }}
+                    formatter={(value, name, props) => {
+                      if (name === "Presupuesto") return [`$${props.payload.presupuesto}M`, "Presupuesto"];
+                      return [`$${value}M`, name];
+                    }}
+                  />
+                  <Legend iconType="circle" wrapperStyle={{ fontSize: '12px' }} formatter={(value) => <span style={{ color: 'black' }}>{value}</span>} />
+                  <Bar dataKey="ejecutado" name="Ejecutado" stackId="a" fill={isKeraunos ? '#274472' : '#963133'} barSize={40} />
+                  <Bar dataKey="porEjecutar" name="Presupuesto" stackId="a" fill={isKeraunos ? '#A4B7D7' : '#f6c7ca'} radius={[2, 2, 0, 0]} barSize={40} />
                 </BarChart>
               </ResponsiveContainer>
             </div>

@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import KPICard from '../components/KPICard';
 import StatusBadge from '../components/StatusBadge';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import { HelpCircle } from 'lucide-react';
+import { HelpCircle, BarChart2, List, Activity } from 'lucide-react';
 
 const dataDiarioCostos = [
   { hora: '12:00 a.m.', total: 600, solar: 0, gas: 240, diesel: 0, interconectada: 400, presupuesto: 600, fijoEnel: 300 },
@@ -17,6 +17,15 @@ const dataDiarioCostos = [
 ];
 
 const dataPronostico = [
+  { dia: '1', real: 49500, forecast: 49800 },
+  { dia: '2', real: 49800, forecast: 50100 },
+  { dia: '3', real: 50200, forecast: 50300 },
+  { dia: '4', real: 50100, forecast: 50500 },
+  { dia: '5', real: 50600, forecast: 50800 },
+  { dia: '6', real: 50900, forecast: 51000 },
+  { dia: '7', real: 51200, forecast: 51100 },
+  { dia: '8', real: 51000, forecast: 51400 },
+  { dia: '9', real: 51400, forecast: 51500 },
   { dia: '10', real: 51000, forecast: 51200 },
   { dia: '11', real: 51500, forecast: 51800 },
   { dia: '12', real: 52300, forecast: 52000 },
@@ -24,9 +33,59 @@ const dataPronostico = [
   { dia: '14', real: null, forecast: 52800 },
   { dia: '15', real: null, forecast: 53100 },
   { dia: '16', real: null, forecast: 53500 },
+  { dia: '17', real: null, forecast: 53200 },
+  { dia: '18', real: null, forecast: 53000 },
+  { dia: '19', real: null, forecast: 52800 },
+  { dia: '20', real: null, forecast: 53400 },
+  { dia: '21', real: null, forecast: 53600 },
+  { dia: '22', real: null, forecast: 53900 },
+  { dia: '23', real: null, forecast: 54100 },
+  { dia: '24', real: null, forecast: 54500 },
+  { dia: '25', real: null, forecast: 54200 },
+  { dia: '26', real: null, forecast: 54000 },
+  { dia: '27', real: null, forecast: 53800 },
+  { dia: '28', real: null, forecast: 53500 },
+  { dia: '29', real: null, forecast: 53800 },
+  { dia: '30', real: null, forecast: 54200 }
 ];
 
+const CustomPronosticoTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-white border border-[var(--border)] p-3 rounded-lg shadow-xl min-w-[160px]">
+        <p className="font-bold text-black mb-2 text-xs uppercase tracking-wider border-b border-gray-100 pb-2">{label} de Mayo</p>
+        <div className="flex flex-col gap-2">
+          {payload.map((entry, index) => {
+            if (entry.value === null || entry.value === undefined) return null;
+            return (
+              <div key={index} className="flex items-center justify-between gap-4 text-xs">
+                <div className="flex items-center gap-1.5">
+                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: entry.color }} />
+                  <span className="text-black font-medium">{entry.name === 'real' ? 'Demanda Real' : 'Pronóstico'}</span>
+                </div>
+                <span className="font-bold text-black">
+                  {entry.value.toLocaleString()} bbl/d
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+  return null;
+};
+
 const Pronostico = () => {
+  const [hiddenLines, setHiddenLines] = useState({});
+
+  const toggleLine = (dataKey) => {
+    setHiddenLines(prev => ({
+      ...prev,
+      [dataKey]: !prev[dataKey]
+    }));
+  };
+
   return (
     <div className="flex flex-col gap-6">
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -37,10 +96,12 @@ const Pronostico = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-[var(--card)] border border-[var(--border)] rounded-lg p-5 relative">
-          <div className="flex justify-between items-start mb-4">
-            <div>
-              <h3 className="text-[14px] font-medium text-[var(--foreground)]">Demanda real vs. forecast</h3>
+        <div className="lg:col-span-2 bg-[var(--card)] border border-[var(--border)] rounded-lg shadow-sm flex flex-col relative">
+          <div className="px-5 py-4 border-b border-[var(--border)] flex justify-between items-start">
+            <div className="flex flex-col gap-1">
+              <h3 className="text-[12px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest flex items-center gap-2">
+                <BarChart2 size={14} /> Demanda real vs. forecast
+              </h3>
               <p className="text-[12px] text-[var(--muted-foreground)]">Volumen diario bbl/d</p>
             </div>
             <div className="relative group">
@@ -50,13 +111,13 @@ const Pronostico = () => {
               </div>
             </div>
           </div>
-          <div className="h-[220px]">
+          <div className="h-[220px] p-5 pb-8">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={dataPronostico} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(128,128,128,0.15)" vertical={false} />
                 <XAxis dataKey="dia" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} dy={10} />
                 <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} dx={-10} domain={['dataMin - 1000', 'dataMax + 1000']} />
-                <Tooltip contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "var(--foreground)", fontSize: "12px" }} />
+                <Tooltip content={<CustomPronosticoTooltip />} />
                 <Line type="monotone" dataKey="real" stroke="#963133" strokeWidth={2} dot={{ r: 4, fill: "#963133" }} />
                 <Line type="monotone" dataKey="forecast" stroke="#ae4247" strokeWidth={1.5} strokeDasharray="5 3" dot={{ r: 3 }} connectNulls={false} />
               </LineChart>
@@ -64,10 +125,12 @@ const Pronostico = () => {
           </div>
         </div>
 
-        <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg p-5 flex flex-col relative">
-          <div className="flex justify-between items-start mb-6">
-            <div>
-              <h3 className="text-[14px] font-medium text-[var(--foreground)]">Distribución por Mercado</h3>
+        <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg shadow-sm flex flex-col relative">
+          <div className="px-5 py-4 border-b border-[var(--border)] flex justify-between items-start">
+            <div className="flex flex-col gap-1">
+              <h3 className="text-[12px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest flex items-center gap-2">
+                <BarChart2 size={14} /> Distribución por Mercado
+              </h3>
               <p className="text-[12px] text-[var(--muted-foreground)]">Demanda agregada por segmento</p>
             </div>
             <div className="relative group">
@@ -78,7 +141,7 @@ const Pronostico = () => {
             </div>
           </div>
           
-          <div className="flex flex-col gap-5 flex-1 justify-center">
+          <div className="flex flex-col gap-5 flex-1 justify-center p-5 pb-8">
             {[
               { label: 'Mercado Interno', pct: 45, color: '#963133', val: '23,535' },
               { label: 'Exportación', pct: 35, color: '#ae4247', val: '18,305' },
@@ -98,9 +161,11 @@ const Pronostico = () => {
         </div>
       </div>
 
-      <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg overflow-hidden relative">
+      <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg overflow-hidden relative shadow-sm mt-6">
         <div className="px-5 py-4 border-b border-[var(--border)] flex justify-between items-start">
-          <h3 className="text-[14px] font-medium text-[var(--foreground)]">Contratos y Clientes Principales</h3>
+          <h3 className="text-[12px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest flex items-center gap-2">
+            <List size={14} /> Contratos y Clientes Principales
+          </h3>
           <div className="relative group">
             <HelpCircle size={16} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
             <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case">
@@ -139,9 +204,9 @@ const Pronostico = () => {
       </div>
 
       <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg shadow-sm flex flex-col mt-6 relative">
-        <div className="px-6 py-4 border-b border-[var(--border)] flex justify-between items-start">
-          <h3 className="text-[14px] font-medium text-[var(--foreground)] uppercase tracking-widest text-center flex-1">
-            Costos de Energía por Fuentes de Generación
+        <div className="px-5 py-4 border-b border-[var(--border)] flex justify-between items-start">
+          <h3 className="text-[12px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest flex items-center gap-2">
+            <Activity size={14} /> Costos de Energía por Fuentes de Generación
           </h3>
           <div className="relative group">
             <HelpCircle size={16} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
@@ -157,14 +222,23 @@ const Pronostico = () => {
               <XAxis dataKey="hora" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: "var(--muted-foreground)" }} dy={10} interval="preserveStartEnd" />
               <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} tickFormatter={(val) => `$${val}`} />
               <Tooltip contentStyle={{ backgroundColor: "var(--popover)", border: "1px solid var(--border)", borderRadius: "6px", color: "var(--foreground)", fontSize: "12px" }} />
-              <Legend iconType="circle" wrapperStyle={{ fontSize: '10px', paddingTop: '20px' }} />
-              <Line type="monotone" dataKey="total" name="TOTAL" stroke="#963133" strokeWidth={2} dot={false} activeDot={{ r: 4 }} />
-              <Line type="monotone" dataKey="solar" name="SOLAR" stroke="#efb2b6" strokeWidth={2} dot={false} />
-              <Line type="monotone" dataKey="gas" name="GAS" stroke="#cb5c62" strokeWidth={2} dot={false} />
-              <Line type="monotone" dataKey="diesel" name="DIESEL" stroke="#dc7d82" strokeWidth={2} dot={false} />
-              <Line type="monotone" dataKey="interconectada" name="INTERCONECTADA" stroke="#ae4247" strokeWidth={2} dot={false} />
-              <Line type="stepAfter" dataKey="presupuesto" name="PRESUPUESTO" stroke="#8B5CF6" strokeWidth={2} dot={false} />
-              <Line type="monotone" dataKey="fijoEnel" name="FIJO ENEL" stroke="#F97316" strokeWidth={2} dot={false} />
+              <Legend 
+                iconType="circle" 
+                wrapperStyle={{ fontSize: '11px', paddingTop: '20px', cursor: 'pointer' }} 
+                onClick={(e) => toggleLine(e.dataKey)}
+                formatter={(value, entry) => (
+                  <span style={{ color: hiddenLines[entry.dataKey] ? '#9ca3af' : 'black', fontWeight: 500, textDecoration: hiddenLines[entry.dataKey] ? 'line-through' : 'none' }}>
+                    {value}
+                  </span>
+                )} 
+              />
+              <Line hide={hiddenLines.total} type="monotone" dataKey="total" name="Total" stroke="#963133" strokeWidth={2} dot={false} activeDot={{ r: 4 }} />
+              <Line hide={hiddenLines.solar} type="monotone" dataKey="solar" name="Solar" stroke="#efb2b6" strokeWidth={2} dot={false} />
+              <Line hide={hiddenLines.gas} type="monotone" dataKey="gas" name="Gas" stroke="#cb5c62" strokeWidth={2} dot={false} />
+              <Line hide={hiddenLines.diesel} type="monotone" dataKey="diesel" name="Diésel" stroke="#dc7d82" strokeWidth={2} dot={false} />
+              <Line hide={hiddenLines.interconectada} type="monotone" dataKey="interconectada" name="Interconectada" stroke="#ae4247" strokeWidth={2} dot={false} />
+              <Line hide={hiddenLines.presupuesto} type="stepAfter" dataKey="presupuesto" name="Presupuesto" stroke="#8B5CF6" strokeWidth={2} dot={false} />
+              <Line hide={hiddenLines.fijoEnel} type="monotone" dataKey="fijoEnel" name="Fijo Enel" stroke="#F97316" strokeWidth={2} dot={false} />
             </LineChart>
           </ResponsiveContainer>
         </div>
@@ -172,7 +246,10 @@ const Pronostico = () => {
 
       {/* Tabla Comparativa Diaria (Movida desde Despacho) */}
       <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg overflow-hidden shadow-sm mt-6 relative">
-        <div className="absolute top-4 right-6 z-20">
+        <div className="px-5 py-4 border-b border-[var(--border)] flex justify-between items-start">
+          <h3 className="text-[12px] font-bold text-[var(--muted-foreground)] uppercase tracking-widest flex items-center gap-2">
+            <List size={14} /> Tabla Comparativa Diaria
+          </h3>
           <div className="relative group">
             <HelpCircle size={16} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-help transition-colors" />
             <div className="absolute right-0 top-6 w-56 p-2.5 bg-[var(--popover)] border border-[var(--border)] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 text-[12px] text-[var(--foreground)] pointer-events-none leading-relaxed font-normal normal-case">
