@@ -413,6 +413,12 @@ Grid de gráficos:
 - Mobile: `grid-cols-1`
 - Desktop: `grid-cols-3` (2/3 + 1/3) o `grid-cols-2` (50/50)
 
+### Personalizaciones Avanzadas (Implementadas)
+
+- **Eje X a Doble Nivel (`CustomXAxisTick`)**: Muestra un nivel primario (e.g., Semana) y un nivel secundario agrupador (e.g., Mes) utilizando renderizado SVG personalizado para organizar el tiempo de forma visualmente clara.
+- **Data Labels Tipo Tarjeta (`CustomBarLabel` / `CustomPieLabel`)**: Etiquetas personalizadas en gráficos de barras y anillos construidas en SVG (`<g>`, `<rect>`, `<text>`). Tienen fondo `var(--card)`, bordes redondeados y una sutil sombra paralela (`drop-shadow`) para asegurar su legibilidad sobre las gráficas.
+- **Leyendas Dinámicas (Interactive Legends)**: Uso de estado local de React (`hiddenLines`) que permite mostrar u ocultar métricas haciendo clic en el ítem de la leyenda de Recharts. Al estar inactivo, el texto de la leyenda disminuye su opacidad.
+
 ---
 
 ## 9. Tablas
@@ -534,10 +540,12 @@ Cada proceso renderiza en el área de contenido principal y sigue la misma estru
 
 | Proceso | KPI destacado | Gráfico principal | Particularidad |
 |---|---|---|---|
-| **Eficiencia** | Eficiencia Global `91.4%` | AreaChart mensual real vs. meta | Bar chart horizontal por campo |
+| **Eficiencia** | Eficiencia Global `91.4%` | AreaChart mensual real vs. meta | Bar chart horizontal por campo, eje X doble |
 | **Despacho** | Despacho Hoy `50,412 bbl` | BarChart semanal prog. vs. real | Tabla con hora y estado de tránsito |
 | **Demanda** | Demanda Actual `52,300 bbl/d` | LineChart real vs. forecast | Panel de distribución con barras CSS |
 | **Confiabilidad** | Uptime Global `97.8%` | AreaChart uptime mensual | Alertas activas en header de tabla |
+| **Parex** | Demanda Llanos 34 `72.0 MW` | AreaChart semanal GN vs PEL | Medidor Aggreko y Data Labels tipo tarjeta |
+| **Pronóstico** | Predicción Demanda | LineChart Real vs Forecast con Leyenda Interactiva | Tabla comparativa de costos de energía |
 
 ---
 

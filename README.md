@@ -51,12 +51,15 @@ Dashboard nativo y robusto de **Análisis de Fallas** (reemplazando el antiguo i
 ### 7. Vulnerabilidades.jsx
 Módulo de **Mantenimiento y Vulnerabilidades** del sistema para el seguimiento detallado de activos críticos, soportado mediante integraciones interactivas de PowerBI.
 
-### 8. Parex (Próximamente)
-Módulo en desarrollo para seguimiento y gestión inteligente de energía para aliados. Actualmente visualizado de manera inactiva en el menú e inicio.
+### 8. Parex.jsx
+Módulo de **Seguimiento Cliente Parex**.
+* **KPIs Clave:** Demanda Llanos 34, Demanda Total Parex.
+* **Visualizaciones Principales:** Gráfico de Anillo (Distribución Demanda Parex), Gráfico de Área interactivo con eje doble (Comportamiento Semanal), Gráfico de Barras Horizontales con data labels personalizados (Distribución de Fuentes) y Medidor (Generación Gas Aggreko).
 
 ### 9. Pronostico.jsx
-Modulo de **Pronóstico y Demanda** de carga energética.
-* **Visualizaciones:** Gráfico de Líneas con proyección a futuro mediante Machine Learning (mostrando datos reales y la curva del forecast).
+Módulo de **Pronóstico y Demanda** de carga energética.
+* **Visualizaciones:** Gráfico de Líneas interactivo con proyección a futuro mediante Machine Learning (mostrando datos reales y la curva de forecast), leyenda interactiva dinámica para ocultar/mostrar variables y ejes agrupados por semanas y meses.
+* **Análisis Diario:** Tablas detalladas con formato estandarizado para revisar Costos de Energía y predicciones.
 
 ---
 
