@@ -118,8 +118,8 @@ const Pronostico = () => {
                 <XAxis dataKey="dia" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} dy={10} />
                 <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} dx={-10} domain={['dataMin - 1000', 'dataMax + 1000']} />
                 <Tooltip content={<CustomPronosticoTooltip />} />
-                <Line type="monotone" dataKey="real" stroke="#963133" strokeWidth={2} dot={{ r: 4, fill: "#963133" }} />
-                <Line type="monotone" dataKey="forecast" stroke="#ae4247" strokeWidth={1.5} strokeDasharray="5 3" dot={{ r: 3 }} connectNulls={false} />
+                <Line type="monotone" dataKey="real" stroke="#1B3454" strokeWidth={2} dot={{ r: 4, fill: "#1B3454" }} />
+                <Line type="monotone" dataKey="forecast" stroke="#274472" strokeWidth={1.5} strokeDasharray="5 3" dot={{ r: 3 }} connectNulls={false} />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -143,9 +143,9 @@ const Pronostico = () => {
           
           <div className="flex flex-col gap-5 flex-1 justify-center p-5 pb-8">
             {[
-              { label: 'Mercado Interno', pct: 45, color: '#963133', val: '23,535' },
-              { label: 'Exportación', pct: 35, color: '#ae4247', val: '18,305' },
-              { label: 'Industrial', pct: 20, color: '#cb5c62', val: '10,460' },
+              { label: 'Mercado Interno', pct: 45, color: '#1B3454', val: '23,535' },
+              { label: 'Exportación', pct: 35, color: '#274472', val: '18,305' },
+              { label: 'Industrial', pct: 20, color: '#5C7AA3', val: '10,460' },
             ].map((item, i) => (
               <div key={i} className="flex flex-col gap-2">
                 <div className="flex justify-between items-end">
@@ -232,11 +232,11 @@ const Pronostico = () => {
                   </span>
                 )} 
               />
-              <Line hide={hiddenLines.total} type="monotone" dataKey="total" name="Total" stroke="#963133" strokeWidth={2} dot={false} activeDot={{ r: 4 }} />
-              <Line hide={hiddenLines.solar} type="monotone" dataKey="solar" name="Solar" stroke="#efb2b6" strokeWidth={2} dot={false} />
-              <Line hide={hiddenLines.gas} type="monotone" dataKey="gas" name="Gas" stroke="#cb5c62" strokeWidth={2} dot={false} />
-              <Line hide={hiddenLines.diesel} type="monotone" dataKey="diesel" name="Diésel" stroke="#dc7d82" strokeWidth={2} dot={false} />
-              <Line hide={hiddenLines.interconectada} type="monotone" dataKey="interconectada" name="Interconectada" stroke="#ae4247" strokeWidth={2} dot={false} />
+              <Line hide={hiddenLines.total} type="monotone" dataKey="total" name="Total" stroke="#1B3454" strokeWidth={2} dot={false} activeDot={{ r: 4 }} />
+              <Line hide={hiddenLines.solar} type="monotone" dataKey="solar" name="Solar" stroke="#C4D4E8" strokeWidth={2} dot={false} />
+              <Line hide={hiddenLines.gas} type="monotone" dataKey="gas" name="Gas" stroke="#5C7AA3" strokeWidth={2} dot={false} />
+              <Line hide={hiddenLines.diesel} type="monotone" dataKey="diesel" name="Diésel" stroke="#A4B7D7" strokeWidth={2} dot={false} />
+              <Line hide={hiddenLines.interconectada} type="monotone" dataKey="interconectada" name="Interconectada" stroke="#274472" strokeWidth={2} dot={false} />
               <Line hide={hiddenLines.presupuesto} type="stepAfter" dataKey="presupuesto" name="Presupuesto" stroke="#8B5CF6" strokeWidth={2} dot={false} />
               <Line hide={hiddenLines.fijoEnel} type="monotone" dataKey="fijoEnel" name="Fijo Enel" stroke="#F97316" strokeWidth={2} dot={false} />
             </LineChart>
@@ -262,13 +262,13 @@ const Pronostico = () => {
             <thead className="border-b border-[var(--border)]">
               <tr>
                 <th className="px-6 py-4 bg-[var(--background)]"></th>
-                <th className="px-6 py-4 font-bold text-[12px] text-[#963133] text-center tracking-wider bg-[var(--background)] border-b-2 border-transparent">
+                <th className="px-6 py-4 font-bold text-[12px] text-[#1B3454] text-center tracking-wider bg-[var(--background)] border-b-2 border-transparent">
                   <div className="flex flex-col items-center">
                     <span>Despacho Energía</span>
                     <span>Día Siguiente</span>
                   </div>
                 </th>
-                <th className="px-6 py-4 font-bold text-[12px] text-[#963133] text-center tracking-wider bg-[var(--background)] border-b-2 border-transparent">
+                <th className="px-6 py-4 font-bold text-[12px] text-[#1B3454] text-center tracking-wider bg-[var(--background)] border-b-2 border-transparent">
                   <div className="flex flex-col items-center">
                     <span>Despacho Energía</span>
                     <span>Día Anterior</span>

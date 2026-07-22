@@ -7,23 +7,23 @@ const Inicio = ({ onLogout }) => {
     {
       title: 'Eficiencia Operacional',
       description: 'Monitoreo de eficiencia global, estatus de pozos, energía y metas mensuales.',
-      icon: <Zap size={24} className="text-[#963133]" />,
+      icon: <Zap size={24} className="text-[#1B3454]" />,
       path: '/eficiencia',
-      color: 'hover:border-[#963133]/50'
+      color: 'hover:border-[#1B3454]/50'
     },
     {
       title: 'Despacho Energético',
       description: 'Asignación de energía a campos, estado de fuentes de generación y balance real vs programado.',
-      icon: <Activity size={24} className="text-[#ae4247]" />,
+      icon: <Activity size={24} className="text-[#274472]" />,
       path: '/despacho',
-      color: 'hover:border-[#ae4247]/50'
+      color: 'hover:border-[#274472]/50'
     },
     {
       title: 'Confiabilidad del Sistema',
       description: 'Análisis de Uptime, métricas de fallas (MTBF/MTTR) y estado de equipos.',
-      icon: <Shield size={24} className="text-[#cb5c62]" />,
+      icon: <Shield size={24} className="text-[#5C7AA3]" />,
       path: '/confiabilidad',
-      color: 'hover:border-[#cb5c62]/50'
+      color: 'hover:border-[#5C7AA3]/50'
     },
     {
       title: 'Reporte de Fallas',
@@ -35,23 +35,23 @@ const Inicio = ({ onLogout }) => {
     {
       title: 'Vulnerabilidades y Mantenimiento',
       description: 'Seguimiento detallado en PowerBI',
-      icon: <Wrench size={24} className="text-[#dc7d82]" />,
+      icon: <Wrench size={24} className="text-[#A4B7D7]" />,
       path: '/vulnerabilidades',
-      color: 'hover:border-[#dc7d82]/50'
+      color: 'hover:border-[#A4B7D7]/50'
     },
     {
       title: 'Pronóstico y Demanda',
       description: 'Predicción de comportamiento, proyecciones ML y distribución por mercado.',
-      icon: <TrendingUp size={24} className="text-[#963133]" />,
+      icon: <TrendingUp size={24} className="text-[#1B3454]" />,
       path: '/pronostico',
-      color: 'hover:border-[#963133]/50'
+      color: 'hover:border-[#1B3454]/50'
     },
     {
       title: 'Parex',
       description: 'Seguimiento y gestión inteligente de energía para aliados.',
-      icon: <UtilityPole size={24} className="text-[#ae4247]" />,
+      icon: <UtilityPole size={24} className="text-[#274472]" />,
       path: '/parex',
-      color: 'hover:border-[#ae4247]/50'
+      color: 'hover:border-[#274472]/50'
     }
   ];
 
@@ -69,7 +69,7 @@ const Inicio = ({ onLogout }) => {
       <div className="absolute top-6 right-8 z-50">
         <button 
           onClick={onLogout}
-          className="flex items-center gap-2 px-4 py-2 bg-black/20 hover:bg-[#C41230]/80 border border-white/10 hover:border-transparent text-white/80 hover:text-white rounded-full transition-all backdrop-blur-sm shadow-sm cursor-pointer"
+          className="flex items-center gap-2 px-4 py-2 bg-black/20 hover:bg-[#1B3454]/80 border border-white/10 hover:border-transparent text-white/80 hover:text-white rounded-full transition-all backdrop-blur-sm shadow-sm cursor-pointer"
         >
           <LogOut size={16} />
           <span className="text-sm font-medium">Cerrar Sesión</span>

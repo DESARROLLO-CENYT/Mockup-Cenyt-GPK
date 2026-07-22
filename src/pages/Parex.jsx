@@ -32,7 +32,7 @@ const Parex = () => {
   ].sort((a, b) => b.value - a.value);
 
   // Colores para la gráfica de fuentes
-  const palette = ['#963133', '#ae4247', '#cb5c62', '#dc7d82', '#efb2b6'];
+  const palette = ['#0E1A2B', '#1B3454', '#274472', '#5C7AA3', '#A4B7D7'];
   const getColor = (entry, index, total) => {
     if (entry.name.includes('Gas')) {
       return '#475569'; // Mantenemos gris oscuro para diferenciar Gas, o puedes cambiarlo. Asumo mantenerlo para mantener consistencia funcional.
@@ -119,17 +119,17 @@ const Parex = () => {
   };
 
   const dataCamposMenores = [
-    { name: 'TILO', value: 0.886, color: '#963133', text: '#ffffff' },
-    { name: 'CHIRICOCA', value: 0.522, color: '#ae4247', text: '#ffffff' },
-    { name: 'MAX', value: 0.462, color: '#cb5c62', text: '#ffffff' },
-    { name: 'JACAMAR', value: 0.266, color: '#dc7d82', text: '#ffffff' },
-    { name: 'GUACO', value: 0.0, color: '#efb2b6', text: '#475569' },
+    { name: 'TILO', value: 0.886, color: '#0E1A2B', text: '#ffffff' },
+    { name: 'CHIRICOCA', value: 0.522, color: '#1B3454', text: '#ffffff' },
+    { name: 'MAX', value: 0.462, color: '#274472', text: '#ffffff' },
+    { name: 'JACAMAR', value: 0.266, color: '#5C7AA3', text: '#ffffff' },
+    { name: 'GUACO', value: 0.0, color: '#A4B7D7', text: '#475569' },
   ];
   const maxCampoValue = 0.886;
   const totalMenoresMW = "2,136";
 
   const dataAggreko = [
-    { name: 'Generado', value: 13.60, color: '#963133' },
+    { name: 'Generado', value: 13.60, color: '#1B3454' },
     { name: 'Disponible', value: 2.40, color: '#f3f4f6' }
   ];
 
@@ -139,7 +139,7 @@ const Parex = () => {
       {/* Cabecera */}
       <div className="flex flex-col gap-1">
         <h2 className="text-xl font-bold text-[var(--foreground)] tracking-tight flex items-center gap-2">
-          <div className="w-2 h-6 rounded-full transition-colors bg-[#963133]"></div>
+          <div className="w-2 h-6 rounded-full transition-colors bg-[#1B3454]"></div>
           Seguimiento Cliente Parex
         </h2>
         <p className="text-sm text-[var(--muted-foreground)]">
@@ -167,11 +167,11 @@ const Parex = () => {
             </div>
             <div className="flex flex-col mt-2 gap-2">
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-[#16a34a]"></div>
+                <div className="w-3 h-3 rounded-full bg-[#1B3454]"></div>
                 <div className="text-sm font-semibold text-[var(--foreground)]">GN Parex: <span className="font-normal text-[var(--muted-foreground)]">13.6 MW</span></div>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-[#eab308]"></div>
+                <div className="w-3 h-3 rounded-full bg-[#5C7AA3]"></div>
                 <div className="text-sm font-semibold text-[var(--foreground)]">PEL Parex: <span className="font-normal text-[var(--muted-foreground)]">3.0 MW</span></div>
               </div>
             </div>
@@ -181,8 +181,8 @@ const Parex = () => {
               <PieChart>
                 <Pie
                   data={[
-                    { name: 'GN Parex', value: 13.6, color: '#16a34a' },
-                    { name: 'PEL Parex', value: 3.0, color: '#eab308' }
+                    { name: 'GN Parex', value: 13.6, color: '#1B3454' },
+                    { name: 'PEL Parex', value: 3.0, color: '#5C7AA3' }
                   ]}
                   cx="50%" cy="50%"
                   innerRadius={25} outerRadius={40}
@@ -207,8 +207,8 @@ const Parex = () => {
                     );
                   }}
                 >
-                  <Cell fill="#16a34a" />
-                  <Cell fill="#eab308" />
+                  <Cell fill="#1B3454" />
+                  <Cell fill="#5C7AA3" />
                 </Pie>
                 <RechartsTooltip content={<CustomTooltip />} />
               </PieChart>
@@ -241,8 +241,8 @@ const Parex = () => {
               <AreaChart data={dataSemanal} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <defs>
                   <linearGradient id="colorGN" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#963133" stopOpacity={0.4}/>
-                    <stop offset="95%" stopColor="#963133" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#1B3454" stopOpacity={0.4}/>
+                    <stop offset="95%" stopColor="#1B3454" stopOpacity={0}/>
                   </linearGradient>
                   <linearGradient id="colorPEL" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#475569" stopOpacity={0.4}/>
@@ -254,7 +254,7 @@ const Parex = () => {
                 <YAxis axisLine={false} tickLine={false} tickFormatter={(val) => `${val} MW`} tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }} />
                 <RechartsTooltip content={<CustomTooltip />} />
                 <Legend iconType="circle" wrapperStyle={{ fontSize: '12px', paddingTop: '25px' }} formatter={(value) => <span style={{ color: 'black', fontWeight: 500 }}>{value}</span>} />
-                <Area type="monotone" dataKey="GN Parex" stackId="1" stroke="#963133" strokeWidth={2} fill="url(#colorGN)" />
+                <Area type="monotone" dataKey="GN Parex" stackId="1" stroke="#1B3454" strokeWidth={2} fill="url(#colorGN)" />
                 <Area type="monotone" dataKey="PEL Parex" stackId="1" stroke="#475569" strokeWidth={2} fill="url(#colorPEL)" />
               </AreaChart>
             </ResponsiveContainer>

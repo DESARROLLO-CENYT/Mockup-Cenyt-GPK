@@ -4,16 +4,16 @@ import { PieChart, Pie, Cell, AreaChart, Area, BarChart, Bar, LineChart, Line, X
 import { ChevronRight, ChevronDown, Activity, Zap, PieChart as PieChartIcon, HelpCircle } from 'lucide-react';
 
 const dataCampos = [
-  { name: 'Interconectados', value: 70, color: '#963133' },
-  { name: 'Menores', value: 5, color: '#cb5c62' },
+  { name: 'Interconectados', value: 70, color: '#1B3454' },
+  { name: 'Menores', value: 5, color: '#5C7AA3' },
 ];
 
 const dataFuentes = [
-  { name: 'PEL', value: 55.08, color: '#963133' },
-  { name: 'Gas - Sur Energy', value: 11.98, color: '#ae4247' },
-  { name: 'Gas Propio', value: 0.77, color: '#cb5c62' },
-  { name: 'Gas - Aggreko', value: 0, color: '#dc7d82' },
-  { name: 'Diesel', value: 0, color: '#efb2b6' },
+  { name: 'PEL', value: 55.08, color: '#0E1A2B' },
+  { name: 'Gas - Sur Energy', value: 11.98, color: '#1B3454' },
+  { name: 'Gas Propio', value: 0.77, color: '#274472' },
+  { name: 'Gas - Aggreko', value: 0, color: '#5C7AA3' },
+  { name: 'Diesel', value: 0, color: '#A4B7D7' },
   { name: 'Genersa', value: 0, color: '#8B5CF6' },
   { name: 'Biomasa', value: 0, color: '#10B981' },
   { name: 'Solar', value: 0, color: '#E8A838' },
@@ -55,13 +55,13 @@ const dataSemanal = semanasBase.map((s) => {
 
 const tableDataNew = [
   { id: 'pel', fuente: 'PEL', real: '55,081', prog: '54,500', desv: '+1.0%', cop: '627.5', estado: 'ACT', desvColor: 'text-emerald-600 dark:text-emerald-400 font-bold', badgeClass: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400' },
-  { id: 'sur', fuente: 'Gas - Sur Energy', real: '11,982', prog: '12,500', desv: '-4.1%', cop: '580.4', estado: 'ACT', desvColor: 'text-[#963133] dark:text-red-400 font-bold', badgeClass: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400' },
-  { id: 'propio', fuente: 'Gas Propio', real: '777', prog: '800', desv: '-2.8%', cop: '240.1', estado: 'ACT', desvColor: 'text-[#963133] dark:text-red-400 font-bold', badgeClass: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400' },
+  { id: 'sur', fuente: 'Gas - Sur Energy', real: '11,982', prog: '12,500', desv: '-4.1%', cop: '580.4', estado: 'ACT', desvColor: 'text-[#1B3454] dark:text-[#5C7AA3] font-bold', badgeClass: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400' },
+  { id: 'propio', fuente: 'Gas Propio', real: '777', prog: '800', desv: '-2.8%', cop: '240.1', estado: 'ACT', desvColor: 'text-[#1B3454] dark:text-[#5C7AA3] font-bold', badgeClass: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400' },
   { id: 'agg', fuente: 'Gas - Aggreko', real: '0', prog: '—', desv: '—', cop: '—', estado: 'S/BY', desvColor: 'text-[var(--muted-foreground)]', badgeClass: 'bg-orange-100 text-orange-700 dark:bg-orange-500/20 dark:text-orange-400' },
   { id: 'dsl', fuente: 'Diesel', real: '0', prog: '—', desv: '—', cop: '—', estado: 'S/BY', desvColor: 'text-[var(--muted-foreground)]', badgeClass: 'bg-orange-100 text-orange-700 dark:bg-orange-500/20 dark:text-orange-400' },
   { id: 'gen', fuente: 'Genersa', real: '—', prog: '—', desv: '—', cop: '—', estado: 'FUT', desvColor: 'text-[var(--muted-foreground)]', badgeClass: 'bg-purple-100 text-purple-700 dark:bg-purple-500/20 dark:text-purple-400' },
   { id: 'bio', fuente: 'Biomasa', real: '—', prog: '—', desv: '—', cop: '—', estado: 'FUT', desvColor: 'text-[var(--muted-foreground)]', badgeClass: 'bg-purple-100 text-purple-700 dark:bg-purple-500/20 dark:text-purple-400' },
-  { id: 'sol', fuente: 'Solar', real: '0', prog: '0', desv: '—', cop: '—', estado: 'FUERA', desvColor: 'text-[var(--muted-foreground)]', badgeClass: 'bg-red-100 text-[#963133] dark:bg-red-500/20 dark:text-red-400' },
+  { id: 'sol', fuente: 'Solar', real: '0', prog: '0', desv: '—', cop: '—', estado: 'FUERA', desvColor: 'text-[var(--muted-foreground)]', badgeClass: 'bg-red-100 text-[#1B3454] dark:bg-red-500/20 dark:text-[#5C7AA3]' },
 ];
 
 
@@ -274,16 +274,16 @@ const Despacho = () => {
             <AreaChart data={dataSemanal} margin={{ top: 10, right: 10, left: 10, bottom: 20 }}>
               <defs>
                 <linearGradient id="colorPel" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#C41230" stopOpacity={0.3}/>
-                  <stop offset="95%" stopColor="#C41230" stopOpacity={0}/>
+                  <stop offset="5%" stopColor="#1B3454" stopOpacity={0.3}/>
+                  <stop offset="95%" stopColor="#1B3454" stopOpacity={0}/>
                 </linearGradient>
                 <linearGradient id="colorSur" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#B56D24" stopOpacity={0.3}/>
-                  <stop offset="95%" stopColor="#B56D24" stopOpacity={0}/>
+                  <stop offset="5%" stopColor="#274472" stopOpacity={0.3}/>
+                  <stop offset="95%" stopColor="#274472" stopOpacity={0}/>
                 </linearGradient>
                 <linearGradient id="colorGas" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#107C41" stopOpacity={0.3}/>
-                  <stop offset="95%" stopColor="#107C41" stopOpacity={0}/>
+                  <stop offset="5%" stopColor="#5C7AA3" stopOpacity={0.3}/>
+                  <stop offset="95%" stopColor="#5C7AA3" stopOpacity={0}/>
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(128,128,128,0.15)" />
@@ -295,9 +295,9 @@ const Despacho = () => {
                 labelStyle={{ color: "black" }}
               />
               <Legend iconType="circle" wrapperStyle={{ fontSize: '10px', paddingTop: '20px', color: 'black' }} formatter={(value) => <span style={{ color: 'black' }}>{value}</span>} />
-              <Area type="monotone" dataKey="pel" name="PEL" stackId="1" stroke="#963133" fill="url(#colorPel)" strokeWidth={2} activeDot={{ r: 6, fill: "#963133" }} />
-              <Area type="monotone" dataKey="sur" name="Gas - Sur Energy" stackId="1" stroke="#ae4247" fill="url(#colorSur)" strokeWidth={2} activeDot={{ r: 6, fill: "#ae4247" }} />
-              <Area type="monotone" dataKey="gas" name="Gas Propio" stackId="1" stroke="#cb5c62" fill="url(#colorGas)" strokeWidth={2} activeDot={{ r: 6, fill: "#cb5c62" }} />
+              <Area type="monotone" dataKey="pel" name="PEL" stackId="1" stroke="#1B3454" fill="url(#colorPel)" strokeWidth={2} activeDot={{ r: 6, fill: "#1B3454" }} />
+              <Area type="monotone" dataKey="sur" name="Gas - Sur Energy" stackId="1" stroke="#274472" fill="url(#colorSur)" strokeWidth={2} activeDot={{ r: 6, fill: "#274472" }} />
+              <Area type="monotone" dataKey="gas" name="Gas Propio" stackId="1" stroke="#5C7AA3" fill="url(#colorGas)" strokeWidth={2} activeDot={{ r: 6, fill: "#5C7AA3" }} />
             </AreaChart>
           </ResponsiveContainer>
         </div>
@@ -324,14 +324,14 @@ const Despacho = () => {
           {/* Progress Bar */}
           <div className="flex flex-col gap-3">
             <div className="w-full h-3 flex rounded-full overflow-hidden">
-              <div className="bg-[#C41230]" style={{ width: '81.2%' }}></div>
-              <div className="bg-[#B56D24]" style={{ width: '17.6%' }}></div>
-              <div className="bg-[#107C41]" style={{ width: '1.2%' }}></div>
+              <div className="bg-[#1B3454]" style={{ width: '81.2%' }}></div>
+              <div className="bg-[#274472]" style={{ width: '17.6%' }}></div>
+              <div className="bg-[#5C7AA3]" style={{ width: '1.2%' }}></div>
             </div>
             <div className="flex gap-4 text-[11.5px] font-medium text-[var(--muted-foreground)]">
-              <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 bg-[#C41230] rounded-sm"></div>PEL 81.2%</div>
-              <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 bg-[#B56D24] rounded-sm"></div>Gas S.E. 17.6%</div>
-              <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 bg-[#107C41] rounded-sm"></div>Gas Propio 1.2%</div>
+              <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 bg-[#1B3454] rounded-sm"></div>PEL 81.2%</div>
+              <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 bg-[#274472] rounded-sm"></div>Gas S.E. 17.6%</div>
+              <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 bg-[#5C7AA3] rounded-sm"></div>Gas Propio 1.2%</div>
             </div>
           </div>
         </div>
@@ -397,20 +397,20 @@ const Despacho = () => {
               <AreaChart data={dataDiarioPotencia} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
                 <defs>
                   <linearGradient id="colorPelDiario" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#C41230" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#C41230" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#1B3454" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="#1B3454" stopOpacity={0}/>
                   </linearGradient>
                   <linearGradient id="colorSurDiario" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#B56D24" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#B56D24" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#274472" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="#274472" stopOpacity={0}/>
                   </linearGradient>
                   <linearGradient id="colorGasDiario" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#107C41" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#107C41" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#5C7AA3" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="#5C7AA3" stopOpacity={0}/>
                   </linearGradient>
                   <linearGradient id="colorSolDiario" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#EAB308" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#EAB308" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#A4B7D7" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="#A4B7D7" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(128,128,128,0.15)" />
@@ -422,10 +422,10 @@ const Despacho = () => {
                   labelStyle={{ color: "black" }}
                 />
                 <Legend iconType="circle" wrapperStyle={{ fontSize: '10px', paddingTop: '20px', color: 'black' }} formatter={(value) => <span style={{ color: 'black' }}>{value}</span>} />
-                <Area type="monotone" dataKey="pel" name="PEL" stackId="1" stroke="#963133" fill="url(#colorPelDiario)" strokeWidth={2} />
-                <Area type="monotone" dataKey="sur" name="Gas - Sur Energy" stackId="1" stroke="#ae4247" fill="url(#colorSurDiario)" strokeWidth={2} />
-                <Area type="monotone" dataKey="gas" name="Gas Propio" stackId="1" stroke="#cb5c62" fill="url(#colorGasDiario)" strokeWidth={2} />
-                <Area type="monotone" dataKey="sol" name="Solar" stackId="1" stroke="#efb2b6" fill="url(#colorSolDiario)" strokeWidth={2} />
+                <Area type="monotone" dataKey="pel" name="PEL" stackId="1" stroke="#1B3454" fill="url(#colorPelDiario)" strokeWidth={2} />
+                <Area type="monotone" dataKey="sur" name="Gas - Sur Energy" stackId="1" stroke="#274472" fill="url(#colorSurDiario)" strokeWidth={2} />
+                <Area type="monotone" dataKey="gas" name="Gas Propio" stackId="1" stroke="#5C7AA3" fill="url(#colorGasDiario)" strokeWidth={2} />
+                <Area type="monotone" dataKey="sol" name="Solar" stackId="1" stroke="#A4B7D7" fill="url(#colorSolDiario)" strokeWidth={2} />
               </AreaChart>
             </ResponsiveContainer>
           </div>

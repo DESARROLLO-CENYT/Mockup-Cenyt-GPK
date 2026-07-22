@@ -225,8 +225,8 @@ const Eficiencia = () => {
               <AreaChart data={dataSemanas} margin={{ bottom: 20 }}>
                 <defs>
                   <linearGradient id="gradReal" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#963133" stopOpacity={0.25} />
-                    <stop offset="95%" stopColor="#963133" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#1B3454" stopOpacity={0.25} />
+                    <stop offset="95%" stopColor="#1B3454" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(128,128,128,0.15)" vertical={false} />
@@ -237,8 +237,8 @@ const Eficiencia = () => {
                   itemStyle={{ color: "black", fontSize: "13px" }}
                   labelStyle={{ color: "black" }}
                 />
-                <Area type="monotone" dataKey="meta" name="Esperada" stroke="#ae4247" strokeWidth={1.5} strokeDasharray="4 3" fill="none" />
-                <Area type="monotone" dataKey="real" name="Real" stroke="#963133" strokeWidth={2} fill="url(#gradReal)" />
+                <Area type="monotone" dataKey="meta" name="Esperada" stroke="#274472" strokeWidth={1.5} strokeDasharray="4 3" fill="none" />
+                <Area type="monotone" dataKey="real" name="Real" stroke="#1B3454" strokeWidth={2} fill="url(#gradReal)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
@@ -271,7 +271,7 @@ const Eficiencia = () => {
                 <Bar dataKey="valor" radius={[0, 2, 2, 0]} barSize={20} label={renderCustomHorizontalBarLabel}>
                   {(() => {
                     const sortedValues = [...dataCampos].map(d => d.valor).sort((a, b) => a - b);
-                    const palette = ['#963133', '#ae4247', '#c04e54', '#cb5c62', '#dc7d82', '#e99a9f', '#efb2b6', '#f6c7ca'];
+                    const palette = ['#0E1A2B', '#1B3454', '#274472', '#5C7AA3', '#A4B7D7', '#C4D4E8', '#DEE8F5', '#F0F5FA'];
                     return dataCampos.map((entry, index) => {
                       const rank = sortedValues.indexOf(entry.valor);
                       const colorIndex = Math.floor((rank / Math.max(1, sortedValues.length - 1)) * (palette.length - 1));

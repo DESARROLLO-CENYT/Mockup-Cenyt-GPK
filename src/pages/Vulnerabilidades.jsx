@@ -6,7 +6,7 @@ import {
   PieChart, Pie, Cell, AreaChart, Area, Legend
 } from 'recharts';
 
-const palette = ['#963133', '#ae4247', '#cb5c62', '#dc7d82', '#efb2b6'];
+const palette = ['#0E1A2B', '#1B3454', '#274472', '#5C7AA3', '#A4B7D7'];
 const getColorByRank = (index, total, isKeraunos) => {
   if (isKeraunos) {
     const minLightness = 30; // Oscuro
@@ -62,6 +62,13 @@ const dataAvanceSemanal = [
   { week: '24', mes: '', avance: 35.5 },
   { week: '25', mes: '', avance: 36.9 }
 ];
+
+  const riskColors = {
+    'Crítico': '#0E1A2B', // Rojo oscuro para crítico
+    'Alto': '#1B3454', // Rojo para alto
+    'Medio': '#274472', // Naranja/Rojo claro para medio
+    'Bajo': '#5C7AA3' // Rosa para bajo
+  };
 
 const dataCircuitos = [
   { name: 'JAC - JCS', value: 72.7 },
@@ -247,7 +254,7 @@ const CustomXAxisTick = ({ x, y, payload, index, data }) => {
 const Vulnerabilidades = () => {
   const [activeTab, setActiveTab] = useState('vulnerabilidades');
   const isKeraunos = activeTab === 'keraunos';
-  const themeColor = isKeraunos ? '#274472' : '#963133'; // color de Fallas / color de Eficiencia
+  const themeColor = isKeraunos ? '#274472' : '#274472';
 
   const currentAccionesTotales = isKeraunos ? 467 : 1043;
   const currentAccionesCerradas = isKeraunos ? 70 : 261;
@@ -292,7 +299,7 @@ const Vulnerabilidades = () => {
           onClick={() => setActiveTab('vulnerabilidades')}
           className={`px-4 py-2.5 text-sm font-semibold whitespace-nowrap border-b-2 transition-colors ${
             !isKeraunos
-              ? 'border-[#963133] text-[#963133] dark:text-red-400 dark:border-red-400'
+              ? 'border-[#274472] text-[#274472] dark:text-blue-400 dark:border-blue-400'
               : 'border-transparent text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:border-[var(--border)]'
           }`}
         >
@@ -302,7 +309,7 @@ const Vulnerabilidades = () => {
           onClick={() => setActiveTab('keraunos')}
           className={`px-4 py-2.5 text-sm font-semibold whitespace-nowrap border-b-2 transition-colors ${
             isKeraunos
-              ? 'border-[#1d4ed8] text-[#1d4ed8] dark:text-blue-400 dark:border-blue-400'
+              ? 'border-[#274472] text-[#274472] dark:text-blue-400 dark:border-blue-400'
               : 'border-transparent text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:border-[var(--border)]'
           }`}
         >
@@ -423,9 +430,8 @@ const Vulnerabilidades = () => {
                 <Bar dataKey="value" radius={[0, 2, 2, 0]} barSize={20} label={(props) => renderCustomHorizontalBarLabel(props, currentDataCircuitos, 'value')}>
                   {(() => {
                     const sortedValues = [...currentDataCircuitos].map(d => d.value).sort((a, b) => b - a);
-                    const fallasPalette = ['#0E1A2B', '#1B3454', '#274472', '#5C7AA3', '#A4B7D7'];
-                    const eficiPalette = ['#6a2224', '#7d282a', '#963133', '#ae4247', '#cb5c62', '#dc7d82', '#efb2b6', '#f6c7ca'];
-                    const palette = isKeraunos ? fallasPalette : eficiPalette;
+                    const bluePalette = ['#0E1A2B', '#1B3454', '#274472', '#5C7AA3', '#A4B7D7'];
+                    const palette = bluePalette;
                     return currentDataCircuitos.map((entry, index) => {
                       const rank = sortedValues.indexOf(entry.value);
                       const colorIndex = Math.floor((rank / Math.max(1, sortedValues.length - 1)) * (palette.length - 1));
@@ -473,9 +479,8 @@ const Vulnerabilidades = () => {
                   <Bar dataKey="avance" radius={[0, 2, 2, 0]} barSize={20} label={(props) => renderCustomHorizontalBarLabel(props, currentDataAvance, 'avance')}>
                     {(() => {
                       const sortedValues = [...currentDataAvance].map(d => d.avance).sort((a, b) => b - a);
-                      const fallasPalette = ['#0E1A2B', '#1B3454', '#274472', '#5C7AA3', '#A4B7D7'];
-                      const eficiPalette = ['#6a2224', '#7d282a', '#963133', '#ae4247', '#cb5c62', '#dc7d82', '#efb2b6', '#f6c7ca'];
-                      const palette = isKeraunos ? fallasPalette : eficiPalette;
+                      const bluePalette = ['#0E1A2B', '#1B3454', '#274472', '#5C7AA3', '#A4B7D7'];
+                      const palette = bluePalette;
                       return currentDataAvance.map((entry, index) => {
                         const rank = sortedValues.indexOf(entry.avance);
                         const colorIndex = Math.floor((rank / Math.max(1, sortedValues.length - 1)) * (palette.length - 1));
@@ -524,8 +529,8 @@ const Vulnerabilidades = () => {
                     }}
                   />
                   <Legend iconType="circle" wrapperStyle={{ fontSize: '12px' }} formatter={(value) => <span style={{ color: 'black' }}>{value}</span>} />
-                  <Bar dataKey="ejecutado" name="Ejecutado" stackId="a" fill={isKeraunos ? '#274472' : '#963133'} barSize={40} />
-                  <Bar dataKey="porEjecutar" name="Presupuesto" stackId="a" fill={isKeraunos ? '#A4B7D7' : '#f6c7ca'} radius={[2, 2, 0, 0]} barSize={40} />
+                  <Bar dataKey="ejecutado" name="Ejecutado" stackId="a" fill={'#274472'} barSize={40} />
+                  <Bar dataKey="porEjecutar" name="Presupuesto" stackId="a" fill={'#A4B7D7'} radius={[2, 2, 0, 0]} barSize={40} />
                 </BarChart>
               </ResponsiveContainer>
             </div>

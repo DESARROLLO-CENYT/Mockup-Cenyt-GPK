@@ -166,16 +166,16 @@ const Confiabilidad = () => {
             <ComposedChart data={currentData} margin={{ top: 10, right: 10, left: -20, bottom: 20 }}>
               <defs>
                 <linearGradient id="colorDynamic" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#963133" stopOpacity={0.2} />
-                  <stop offset="95%" stopColor="#963133" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#1B3454" stopOpacity={0.2} />
+                  <stop offset="95%" stopColor="#1B3454" stopOpacity={0} />
                 </linearGradient>
                 <linearGradient id="colorOtros" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#e5a8a9" stopOpacity={0.6} />
-                  <stop offset="95%" stopColor="#e5a8a9" stopOpacity={0.1} />
+                  <stop offset="5%" stopColor="#5C7AA3" stopOpacity={0.6} />
+                  <stop offset="95%" stopColor="#5C7AA3" stopOpacity={0.1} />
                 </linearGradient>
                 <linearGradient id="colorRed" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#963133" stopOpacity={0.6} />
-                  <stop offset="95%" stopColor="#963133" stopOpacity={0.1} />
+                  <stop offset="5%" stopColor="#1B3454" stopOpacity={0.6} />
+                  <stop offset="95%" stopColor="#1B3454" stopOpacity={0.1} />
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(128,128,128,0.15)" />
@@ -194,21 +194,21 @@ const Confiabilidad = () => {
               />
               {indicator === 'Bbls diferidos' ? (
                 <>
-                  <Area type="monotone" dataKey="value" name="Total Bbls" stroke="#963133" strokeWidth={2.5} fill="url(#colorDynamic)" dot={{ r: 3, fill: "#963133" }} activeDot={{ r: 6, fill: "#963133" }} />
-                  <Line type="monotone" dataKey="red" name="Bbls de Red" stroke="#e5a8a9" strokeWidth={2.5} dot={{ r: 3, fill: '#e5a8a9' }} activeDot={{ r: 6 }} />
+                  <Area type="monotone" dataKey="value" name="Total Bbls" stroke="#1B3454" strokeWidth={2.5} fill="url(#colorDynamic)" dot={{ r: 3, fill: "#1B3454" }} activeDot={{ r: 6, fill: "#1B3454" }} />
+                  <Line type="monotone" dataKey="red" name="Bbls de Red" stroke="#5C7AA3" strokeWidth={2.5} dot={{ r: 3, fill: '#5C7AA3' }} activeDot={{ r: 6 }} />
                 </>
               ) : indicator === 'Eventos' ? (
                 <>
-                  <Area type="monotone" dataKey="value" name="Total Eventos" stroke="#963133" strokeWidth={2.5} fill="url(#colorDynamic)" dot={{ r: 3, fill: "#963133" }} activeDot={{ r: 6, fill: "#963133" }} />
-                  <Line type="monotone" dataKey="red" name="Eventos de Red" stroke="#e5a8a9" strokeWidth={2.5} dot={{ r: 3, fill: '#e5a8a9' }} activeDot={{ r: 6 }} />
+                  <Area type="monotone" dataKey="value" name="Total Eventos" stroke="#1B3454" strokeWidth={2.5} fill="url(#colorDynamic)" dot={{ r: 3, fill: "#1B3454" }} activeDot={{ r: 6, fill: "#1B3454" }} />
+                  <Line type="monotone" dataKey="red" name="Eventos de Red" stroke="#5C7AA3" strokeWidth={2.5} dot={{ r: 3, fill: '#5C7AA3' }} activeDot={{ r: 6 }} />
                 </>
               ) : indicator === 'Pozos Afectados' ? (
                 <>
-                  <Area type="monotone" dataKey="value" name="Total Pozos" stroke="#963133" strokeWidth={2.5} fill="url(#colorDynamic)" dot={{ r: 3, fill: "#963133" }} activeDot={{ r: 6, fill: "#963133" }} />
-                  <Line type="monotone" dataKey="red" name="Pozos de Red" stroke="#e5a8a9" strokeWidth={2.5} dot={{ r: 3, fill: '#e5a8a9' }} activeDot={{ r: 6 }} />
+                  <Area type="monotone" dataKey="value" name="Total Pozos" stroke="#1B3454" strokeWidth={2.5} fill="url(#colorDynamic)" dot={{ r: 3, fill: "#1B3454" }} activeDot={{ r: 6, fill: "#1B3454" }} />
+                  <Line type="monotone" dataKey="red" name="Pozos de Red" stroke="#5C7AA3" strokeWidth={2.5} dot={{ r: 3, fill: '#5C7AA3' }} activeDot={{ r: 6 }} />
                 </>
               ) : (
-                <Area type="monotone" dataKey="value" stroke="#963133" strokeWidth={2.5} fill="url(#colorDynamic)" dot={{ r: 3, fill: "#963133" }} activeDot={{ r: 6, fill: "#963133" }} />
+                <Area type="monotone" dataKey="value" stroke="#1B3454" strokeWidth={2.5} fill="url(#colorDynamic)" dot={{ r: 3, fill: "#1B3454" }} activeDot={{ r: 6, fill: "#1B3454" }} />
               )}
             </ComposedChart>
           </ResponsiveContainer>
@@ -294,7 +294,7 @@ const Confiabilidad = () => {
                     </td>
                     <td className="px-5 py-3.5 text-left text-[var(--muted-foreground)]">{row.ubicacion}</td>
                     <td className="px-5 py-3.5 text-left text-[var(--muted-foreground)]">{row.causa}</td>
-                    <td className="px-5 py-3.5 text-right font-bold text-[#C41230] dark:text-red-400">{row.diferida}</td>
+                    <td className="px-5 py-3.5 text-right font-bold text-[#1B3454] dark:text-[#5C7AA3]">{row.diferida}</td>
                     <td className="px-5 py-3.5 text-right font-medium text-[var(--foreground)]">{row.pozos}</td>
                   </tr>
                   {expandedRow === i && (
@@ -318,7 +318,7 @@ const Confiabilidad = () => {
                                 <tr key={idx} className="border-b border-[var(--border)]/30 last:border-0">
                                   <td className="py-2">{detalle.cluster}</td>
                                   <td className="py-2 font-medium">{detalle.pozo}</td>
-                                  <td className="py-2 text-right text-[#C41230] dark:text-red-400 font-semibold">{detalle.bbls}</td>
+                                  <td className="py-2 text-right text-[#1B3454] dark:text-[#5C7AA3] font-semibold">{detalle.bbls}</td>
                                   <td className="py-2 pl-6">
                                     <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${detalle.estado === 'Restablecido' ? 'bg-emerald-400/10 text-emerald-500' : 'bg-amber-400/10 text-amber-500'}`}>
                                       {detalle.estado}
