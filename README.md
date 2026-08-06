@@ -74,25 +74,71 @@ Módulo de **Pronóstico y Demanda** de carga energética.
 
 ---
 
-## 🚀 Instrucciones de Inicio Rápido
+## 🚀 Guía de Instalación y Uso (Para Principiantes)
 
-Para clonar y levantar la aplicación localmente, ejecuta los siguientes comandos en tu terminal:
+Si es la primera vez que vas a correr un proyecto de este tipo y no tienes nada instalado en tu computadora, sigue estos pasos desde cero:
 
-### 1. Instalar dependencias
+### 1. Requisitos Previos (Instalaciones necesarias)
+Antes de descargar el proyecto, necesitas instalar dos herramientas fundamentales en tu computadora:
+
+* **Node.js:** Es el entorno que permite ejecutar JavaScript en tu computadora. 
+  * 👉 **Descárgalo aquí:** [https://nodejs.org/es/](https://nodejs.org/es/) (Descarga la versión "LTS" recomendada para la mayoría).
+  * *Instalación:* Simplemente abre el archivo descargado y dale "Siguiente" a todo hasta finalizar.
+* **Git (Opcional pero recomendado):** Sirve para clonar repositorios de código.
+  * 👉 **Descárgalo aquí:** [https://git-scm.com/downloads](https://git-scm.com/downloads).
+
+### 2. Descargar el Repositorio
+
+Tienes dos opciones para obtener el código fuente en tu computadora:
+
+**Opción A: Usando Git (Recomendado)**
+1. Abre tu terminal (En Windows puedes buscar "Símbolo del sistema", "PowerShell" o "Git Bash").
+2. Navega a la carpeta donde quieres guardar el proyecto (ej. `cd Desktop`).
+3. Ejecuta el siguiente comando para clonar el repositorio:
+   ```bash
+   git clone <URL_DEL_REPOSITORIO>
+   ```
+4. Entra a la carpeta del proyecto:
+   ```bash
+   cd APP_Gestion_Energia
+   ```
+
+**Opción B: Descargar como archivo ZIP**
+1. Ve a la parte superior de esta página en GitHub.
+2. Haz clic en el botón verde que dice **"<> Code"**.
+3. Selecciona **"Download ZIP"**.
+4. Descomprime el archivo descargado en tu computadora.
+5. Abre una terminal y navega hasta esa carpeta usando el comando `cd ruta/de/la/carpeta`.
+
+### 3. Instalar Dependencias
+Una vez que estés dentro de la carpeta del proyecto en tu terminal, necesitas instalar todas las librerías que utiliza la aplicación (como React, Recharts, Tailwind, etc.). Para ello, escribe:
+
 ```bash
 npm install
 ```
+*(Esto puede tardar unos minutos. Verás una barra de progreso mientras descarga los paquetes en una carpeta llamada `node_modules`).*
 
-### 2. Ejecutar servidor de desarrollo
+### 4. Ejecutar la Aplicación
+Cuando la instalación termine, levanta el servidor local con el siguiente comando:
+
 ```bash
 npm run dev
 ```
-La consola te indicará el puerto local (usualmente `http://localhost:5173`) donde estará corriendo la maqueta.
 
-### 3. Generar la compilación para producción
+### 5. ¡Abre el Dashboard!
+En tu terminal aparecerá un mensaje con un enlace local, normalmente es:
+👉 **`http://localhost:5173/`**
+
+Presiona la tecla `Ctrl` y haz clic en el enlace, o cópialo y pégalo en tu navegador web favorito (Chrome, Edge, Firefox). ¡Listo! Ya estás ejecutando el Dashboard localmente.
+
+---
+
+## 📦 Compilación para Producción (Avanzado)
+Si deseas generar los archivos estáticos listos para subir a un servidor web real, ejecuta:
 ```bash
 npm run build
 ```
+Esto creará una carpeta `/dist` con todo el código minificado y optimizado.
 
 ---
 
